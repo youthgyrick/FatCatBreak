@@ -27,9 +27,18 @@
 open dist/FatCatBreak.app
 ```
 
-构建脚本采用免编译打包：把 JXA（JavaScript for Automation）应用入口与启动器复制到 `.app` 中。运行时使用 macOS 自带的 `/usr/bin/osascript`、AppKit 和 WebKit，不调用 `clang`、Swift、`xcrun`、SDK 或 `xctest`，因此不受本机 Command Line Tools 版本混装影响。
+构建脚本通过 macOS 自带的 `/usr/bin/osacompile` 把 JXA（JavaScript for Automation）保存为正规的 applet。运行时使用系统 AppKit 和 WebKit，不调用 `clang`、Swift、`xcrun`、SDK 或 `xctest`，因此不受本机 Command Line Tools 版本混装影响。
 
 第一次打开未签名的本地构建时，如果 macOS 阻止启动，可在 Finder 中右键应用并选择“打开”。正式分发时应使用 Apple Developer 证书签名并公证。
+
+如果执行 `open` 后没有出现窗口，请运行：
+
+```bash
+./scripts/run_debug.sh
+cat ~/Library/Logs/FatCatBreak.log
+```
+
+调试脚本会在前台显示 JXA 错误；应用本身也会把启动和异常信息写入日志。
 
 ## 开发
 

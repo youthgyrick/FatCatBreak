@@ -1,9 +1,9 @@
 ObjC.import('AppKit');
 ObjC.import('WebKit');
 
-var app = $.NSApplication.sharedApplication;
+var app = null;
 var windows = [];
-var previousPresentationOptions = app.presentationOptions;
+var previousPresentationOptions = 0;
 
 function htmlPage() {
     return `<!doctype html>
@@ -92,6 +92,8 @@ function createWindow(screen) {
 }
 
 function startBreak() {
+    app = $.NSApplication.sharedApplication;
+    previousPresentationOptions = app.presentationOptions;
     var options = $.NSApplicationPresentationHideDock |
                   $.NSApplicationPresentationHideMenuBar |
                   $.NSApplicationPresentationDisableAppleMenu |
@@ -100,23 +102,63 @@ function startBreak() {
                   $.NSApplicationPresentationDisableSessionTermination |
                   $.NSApplicationPresentationDisableHideApplication;
     app.setActivationPolicy($.NSApplicationActivationPolicyAccessory);
-    app.presentationOptions = options;
 
     var screens = $.NSScreen.screens;
     for (var index = 0; index < screens.count; index += 1) {
         createWindow(screens.objectAtIndex(index));
     }
     app.activateIgnoringOtherApps(true);
+    try {
+        app.presentationOptions = options;
+    } catch (presentationError) {
+        logMessage('无法启用全部系统限制，将继续显示休息窗口：' + presentationError);
+    }
     $.NSRunLoop.currentRunLoop.runUntilDate($.NSDate.dateWithTimeIntervalSinceNow(20.2));
 }
 
 function finishBreak() {
     windows.forEach(function (window) { window.orderOut(null); });
-    app.presentationOptions = previousPresentationOptions;
+    if (app) {
+        try { app.presentationOptions = previousPresentationOptions; } catch (error) { logMessage(error); }
+    }
 }
 
-try {
-    startBreak();
-} finally {
-    finishBreak();
+function logMessage(message) {
+    try {
+        var manager = $.NSFileManager.defaultManager;
+        var logs = manager.URLsForDirectoryInDomains($.NSLibraryDirectory, $.NSUserDomainMask).lastObject
+            .URLByAppendingPathComponent('Logs');
+        manager.createDirectoryAtURLWithIntermediateDirectoriesAttributesError(logs, true, $(), null);
+        var logURL = logs.URLByAppendingPathComponent('FatCatBreak.log');
+        var stamp = $.NSDate.date.description.js;
+        var line = $(stamp + ' ' + String(message) + '\n');
+        var data = line.dataUsingEncoding($.NSUTF8StringEncoding);
+        if (manager.fileExistsAtPath(logURL.path)) {
+            var handle = $.NSFileHandle.fileHandleForWritingToURLerror(logURL, null);
+            handle.seekToEndOfFile;
+            handle.writeData(data);
+            handle.closeFile;
+        } else {
+            data.writeToURLAtomically(logURL, true);
+        }
+    } catch (ignored) {}
+}
+
+function run() {
+    logMessage('应用开始启动');
+    try {
+        startBreak();
+        logMessage('20 秒休息正常结束');
+    } catch (error) {
+        logMessage('启动失败：' + error + (error.stack ? '\n' + error.stack : ''));
+        var current = Application.currentApplication();
+        current.includeStandardAdditions = true;
+        try {
+            current.displayAlert('胖猫休息启动失败', {
+                message: '请在终端运行 scripts/run_debug.sh，并查看 ~/Library/Logs/FatCatBreak.log'
+            });
+        } catch (ignored) {}
+    } finally {
+        finishBreak();
+    }
 }
