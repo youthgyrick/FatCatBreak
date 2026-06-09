@@ -23,12 +23,48 @@ done
 mkdir -p "$out/Contents/MacOS" "$out/Contents/Resources/Scripts"
 printf '#!/bin/bash\n' > "$out/Contents/MacOS/applet"
 chmod +x "$out/Contents/MacOS/applet"
-printf '<plist version="1.0"><dict><key>CFBundleIdentifier</key><string>mock</string><key>CFBundleName</key><string>mock</string></dict></plist>\n' > "$out/Contents/Info.plist"
+# Deliberately omit CFBundleIdentifier and most metadata keys while retaining
+# one existing key, exercising both the Add and Set branches.
+python3 - "$out/Contents/Info.plist" <<'PY'
+import plistlib
+import sys
+with open(sys.argv[1], 'wb') as output:
+    plistlib.dump({'CFBundleName': 'mock'}, output)
+PY
 cp "$source" "$out/Contents/Resources/Scripts/main.js"
 MOCK
 cat > "$FAKE_BIN/PlistBuddy" <<'MOCK'
-#!/usr/bin/env bash
-exit 0
+#!/usr/bin/env python3
+import plistlib
+import shlex
+import sys
+
+command = sys.argv[sys.argv.index('-c') + 1]
+path = sys.argv[-1]
+parts = shlex.split(command)
+action = parts[0]
+key = parts[1].lstrip(':')
+with open(path, 'rb') as source:
+    data = plistlib.load(source)
+
+if action == 'Set':
+    if key not in data:
+        print(f'Set: Entry, ":{key}", Does Not Exist', file=sys.stderr)
+        raise SystemExit(1)
+    value = ' '.join(parts[2:])
+elif action == 'Add':
+    if key in data:
+        raise SystemExit(1)
+    kind = parts[2]
+    value = ' '.join(parts[3:])
+    if kind == 'bool':
+        value = value.lower() == 'true'
+else:
+    raise SystemExit(2)
+
+data[key] = value
+with open(path, 'wb') as output:
+    plistlib.dump(data, output)
 MOCK
 cat > "$FAKE_BIN/plutil" <<'MOCK'
 #!/usr/bin/env bash
@@ -47,9 +83,27 @@ APP="$ROOT/dist/FatCatBreak.app"
 [[ -f "$APP/Contents/Info.plist" ]]
 cmp "$ROOT/Native/main.js" "$APP/Contents/Resources/Scripts/main.js"
 
+python3 - "$APP/Contents/Info.plist" <<'PY'
+import plistlib
+import sys
+with open(sys.argv[1], 'rb') as source:
+    plist = plistlib.load(source)
+expected = {
+    'CFBundleIdentifier': 'com.hellocodex.fatcatbreak',
+    'CFBundleName': '胖猫休息',
+    'CFBundleDisplayName': '胖猫休息',
+    'CFBundleShortVersionString': '1.0.5',
+    'CFBundleVersion': '6',
+    'LSUIElement': True,
+    'NSHighResolutionCapable': True,
+}
+for key, value in expected.items():
+    assert plist.get(key) == value, (key, plist.get(key), value)
+PY
+
 if rg -n '(^|[[:space:]])(xcrun|clang|swiftc|swift)[[:space:]]' "$ROOT/scripts/build_app.sh"; then
   echo "错误：打包脚本重新引入了编译器依赖。" >&2
   exit 1
 fi
 
-printf 'JXA applet 打包检查通过。\n'
+printf 'JXA applet 打包及缺失 plist 字段回归检查通过。\n'

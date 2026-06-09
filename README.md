@@ -40,6 +40,8 @@ cat ~/Library/Logs/FatCatBreak.log
 
 调试脚本会在前台显示 JXA 错误；应用本身也会把启动和异常信息写入日志。
 
+打包脚本兼容不同 macOS 版本生成的 applet：如果 `Info.plist` 缺少 `CFBundleIdentifier` 等字段，会自动创建，而不是因 `PlistBuddy Set` 失败而中止。
+
 ## 开发
 
 ```bash

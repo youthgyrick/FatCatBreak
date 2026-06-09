@@ -21,18 +21,31 @@ mkdir -p "$ROOT/dist"
 printf '正在创建胖猫休息 applet（无需 Xcode 或 SDK）…\n'
 "$OSACOMPILE" -l JavaScript -o "$APP" "$ROOT/Native/main.js"
 
-"$PLIST_BUDDY" -c 'Set :CFBundleIdentifier com.hellocodex.fatcatbreak' "$APP/Contents/Info.plist"
-"$PLIST_BUDDY" -c 'Set :CFBundleName 胖猫休息' "$APP/Contents/Info.plist"
-"$PLIST_BUDDY" -c 'Add :CFBundleDisplayName string 胖猫休息' "$APP/Contents/Info.plist" 2>/dev/null || \
-  "$PLIST_BUDDY" -c 'Set :CFBundleDisplayName 胖猫休息' "$APP/Contents/Info.plist"
-"$PLIST_BUDDY" -c 'Add :CFBundleShortVersionString string 1.0.4' "$APP/Contents/Info.plist" 2>/dev/null || \
-  "$PLIST_BUDDY" -c 'Set :CFBundleShortVersionString 1.0.4' "$APP/Contents/Info.plist"
-"$PLIST_BUDDY" -c 'Add :CFBundleVersion string 5' "$APP/Contents/Info.plist" 2>/dev/null || \
-  "$PLIST_BUDDY" -c 'Set :CFBundleVersion 5' "$APP/Contents/Info.plist"
-"$PLIST_BUDDY" -c 'Add :LSUIElement bool true' "$APP/Contents/Info.plist" 2>/dev/null || \
-  "$PLIST_BUDDY" -c 'Set :LSUIElement true' "$APP/Contents/Info.plist"
-"$PLIST_BUDDY" -c 'Add :NSHighResolutionCapable bool true' "$APP/Contents/Info.plist" 2>/dev/null || \
-  "$PLIST_BUDDY" -c 'Set :NSHighResolutionCapable true' "$APP/Contents/Info.plist"
+PLIST="$APP/Contents/Info.plist"
+if [[ ! -f "$PLIST" ]]; then
+  echo "错误：osacompile 未生成 Info.plist：$PLIST" >&2
+  exit 1
+fi
+
+set_or_add_plist_value() {
+  local key="$1"
+  local type="$2"
+  local value="$3"
+
+  # Different macOS releases generate different applet plist keys. Update an
+  # existing key first; if it is absent, create it with the requested type.
+  if ! "$PLIST_BUDDY" -c "Set :$key $value" "$PLIST" 2>/dev/null; then
+    "$PLIST_BUDDY" -c "Add :$key $type $value" "$PLIST"
+  fi
+}
+
+set_or_add_plist_value CFBundleIdentifier string com.hellocodex.fatcatbreak
+set_or_add_plist_value CFBundleName string 胖猫休息
+set_or_add_plist_value CFBundleDisplayName string 胖猫休息
+set_or_add_plist_value CFBundleShortVersionString string 1.0.5
+set_or_add_plist_value CFBundleVersion string 6
+set_or_add_plist_value LSUIElement bool true
+set_or_add_plist_value NSHighResolutionCapable bool true
 
 plutil -lint "$APP/Contents/Info.plist" >/dev/null
 printf '构建完成：%s\n' "$APP"
