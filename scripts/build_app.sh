@@ -7,39 +7,27 @@ if [[ "$(uname -s)" != "Darwin" ]]; then
 fi
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-BUILD_DIR="$ROOT/.build/app-release"
 APP="$ROOT/dist/FatCatBreak.app"
-EXECUTABLE="$APP/Contents/MacOS/FatCatBreak"
-SOURCE="$ROOT/Native/main.m"
+MACOS_DIR="$APP/Contents/MacOS"
+RESOURCES_DIR="$APP/Contents/Resources"
+EXECUTABLE="$MACOS_DIR/FatCatBreak"
+OSASCRIPT_CHECK="${OSASCRIPT_BIN:-/usr/bin/osascript}"
 
-# The distributable app is compiled as Objective-C/AppKit on purpose. This
-# avoids both SwiftPM's xctest dependency and mismatched Swift compiler/SDK
-# module versions in older standalone Command Line Tools installations.
-if ! CLANG="$(xcrun --sdk macosx --find clang 2>/dev/null)"; then
-  echo "错误：找不到 clang。请安装或更新 Xcode Command Line Tools：" >&2
-  echo "  xcode-select --install" >&2
+if [[ ! -x "$OSASCRIPT_CHECK" ]]; then
+  echo "错误：系统缺少 /usr/bin/osascript，无法创建免编译版本。" >&2
   exit 1
 fi
 
-if ! SDK_PATH="$(xcrun --sdk macosx --show-sdk-path 2>/dev/null)"; then
-  echo "错误：找不到 macOS SDK。请安装或更新 Xcode Command Line Tools。" >&2
-  exit 1
-fi
+rm -rf "$APP"
+mkdir -p "$MACOS_DIR" "$RESOURCES_DIR"
+cp "$ROOT/Native/main.js" "$RESOURCES_DIR/main.js"
 
-rm -rf "$BUILD_DIR" "$APP"
-mkdir -p "$BUILD_DIR" "$APP/Contents/MacOS" "$APP/Contents/Resources"
-
-printf '正在编译胖猫休息（兼容模式，不使用 Swift/xctest）…\n'
-"$CLANG" \
-  -fobjc-arc \
-  -fmodules \
-  -O2 \
-  -mmacosx-version-min=10.15 \
-  -isysroot "$SDK_PATH" \
-  -framework AppKit \
-  -framework QuartzCore \
-  "$SOURCE" \
-  -o "$EXECUTABLE"
+cat > "$EXECUTABLE" <<'LAUNCHER'
+#!/bin/bash
+set -e
+CONTENTS_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+exec /usr/bin/osascript -l JavaScript "$CONTENTS_DIR/Resources/main.js"
+LAUNCHER
 chmod +x "$EXECUTABLE"
 
 cat > "$APP/Contents/Info.plist" <<'PLIST'
@@ -51,8 +39,8 @@ cat > "$APP/Contents/Info.plist" <<'PLIST'
   <key>CFBundleName</key><string>胖猫休息</string>
   <key>CFBundleDisplayName</key><string>胖猫休息</string>
   <key>CFBundlePackageType</key><string>APPL</string>
-  <key>CFBundleShortVersionString</key><string>1.0.2</string>
-  <key>CFBundleVersion</key><string>3</string>
+  <key>CFBundleShortVersionString</key><string>1.0.3</string>
+  <key>CFBundleVersion</key><string>4</string>
   <key>LSMinimumSystemVersion</key><string>10.15</string>
   <key>LSUIElement</key><true/>
   <key>NSHighResolutionCapable</key><true/>
@@ -60,5 +48,6 @@ cat > "$APP/Contents/Info.plist" <<'PLIST'
 PLIST
 
 plutil -lint "$APP/Contents/Info.plist" >/dev/null
+printf '正在打包胖猫休息（免编译模式，不使用 clang、Swift、SDK 或 xctest）…\n'
 printf '构建完成：%s\n' "$APP"
 printf '运行命令：open "%s"\n' "$APP"
