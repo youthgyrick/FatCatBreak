@@ -23,9 +23,11 @@
 在终端中运行：
 
 ```bash
-./scripts/build-app.sh
+./scripts/build_app.sh
 open dist/FatCatBreak.app
 ```
+
+构建脚本直接调用 macOS Swift 编译器，不会调用 `xctest`；仅安装 Xcode Command Line Tools 也可以构建应用。如果系统找不到编译器，可先运行 `xcode-select --install`。
 
 第一次打开未签名的本地构建时，如果 macOS 阻止启动，可在 Finder 中右键应用并选择“打开”。正式分发时应使用 Apple Developer 证书签名并公证。
 
@@ -33,6 +35,7 @@ open dist/FatCatBreak.app
 
 ```bash
 swift run FatCatBreak
+# 单元测试需要完整 Xcode 中的 xctest
 swift test
 ```
 
