@@ -95,14 +95,20 @@ expected = {
     'CFBundleIdentifier': 'com.hellocodex.fatcatbreak',
     'CFBundleName': '胖猫休息',
     'CFBundleDisplayName': '胖猫休息',
-    'CFBundleShortVersionString': '1.0.6',
-    'CFBundleVersion': '7',
+    'CFBundleShortVersionString': '1.0.7',
+    'CFBundleVersion': '8',
     'LSUIElement': True,
     'NSHighResolutionCapable': True,
 }
 for key, value in expected.items():
     assert plist.get(key) == value, (key, plist.get(key), value)
 PY
+
+
+if rg -n "\(\)'s" "$ROOT/Native/main.applescript"; then
+  echo "错误：AppleScriptObjC 中重新出现了旧版解析器不支持的链式调用。" >&2
+  exit 1
+fi
 
 if rg -n '(^|[[:space:]])(xcrun|clang|swiftc|swift)[[:space:]]' "$ROOT/scripts/build_app.sh"; then
   echo "错误：打包脚本重新引入了编译器依赖。" >&2

@@ -16,18 +16,27 @@ end htmlPage
 
 on createBreakWindow(theScreen)
 	set screenFrame to theScreen's frame()
-	set theWindow to current application's NSWindow's alloc()'s initWithContentRect:screenFrame styleMask:0 backing:2 defer:false screen:theScreen
+	set windowClass to current application's NSWindow
+	set windowAllocation to windowClass's alloc()
+	set theWindow to windowAllocation's initWithContentRect:screenFrame styleMask:0 backing:2 defer:false screen:theScreen
 	theWindow's setLevel:1000
 	theWindow's setOpaque:false
-	theWindow's setBackgroundColor:(current application's NSColor's blackColor())
+	set colorClass to current application's NSColor
+	set blackColor to colorClass's blackColor()
+	theWindow's setBackgroundColor:blackColor
 	theWindow's setHasShadow:false
 	theWindow's setIgnoresMouseEvents:false
 	theWindow's setAcceptsMouseMovedEvents:true
 	theWindow's setCollectionBehavior:273
 	
-	set configuration to current application's WKWebViewConfiguration's alloc()'s init()
-	set contentFrame to theWindow's contentView()'s bounds()
-	set webView to current application's WKWebView's alloc()'s initWithFrame:contentFrame configuration:configuration
+	set configurationClass to current application's WKWebViewConfiguration
+	set configurationAllocation to configurationClass's alloc()
+	set configuration to configurationAllocation's init()
+	set contentView to theWindow's contentView()
+	set contentFrame to contentView's bounds()
+	set webViewClass to current application's WKWebView
+	set webViewAllocation to webViewClass's alloc()
+	set webView to webViewAllocation's initWithFrame:contentFrame configuration:configuration
 	webView's setAutoresizingMask:18
 	webView's loadHTMLString:(my htmlPage()) baseURL:(missing value)
 	theWindow's setContentView:webView
@@ -60,11 +69,13 @@ on run
 	my writeLog("应用开始启动（AppleScriptObjC）")
 	try
 		set breakWindows to {}
-		set app to current application's NSApplication's sharedApplication()
+		set applicationClass to current application's NSApplication
+		set app to applicationClass's sharedApplication()
 		set previousPresentationOptions to app's presentationOptions()
 		app's setActivationPolicy:1
 		
-		set screenList to current application's NSScreen's screens()
+		set screenClass to current application's NSScreen
+		set screenList to screenClass's screens()
 		set screenCount to (screenList's |count|()) as integer
 		repeat with screenIndex from 0 to (screenCount - 1)
 			set theScreen to screenList's objectAtIndex:screenIndex
@@ -79,8 +90,11 @@ on run
 			my writeLog("系统限制未完全启用：" & restrictionError)
 		end try
 		
-		set finishDate to current application's NSDate's dateWithTimeIntervalSinceNow:(breakDuration + 0.2)
-		current application's NSRunLoop's currentRunLoop()'s runUntilDate:finishDate
+		set dateClass to current application's NSDate
+		set finishDate to dateClass's dateWithTimeIntervalSinceNow:(breakDuration + 0.2)
+		set runLoopClass to current application's NSRunLoop
+		set currentRunLoop to runLoopClass's currentRunLoop()
+		currentRunLoop's runUntilDate:finishDate
 		my writeLog("20 秒休息正常结束")
 	on error errorMessage number errorNumber
 		my writeLog("启动失败 " & errorNumber & "：" & errorMessage)

@@ -18,8 +18,11 @@ fi
 
 rm -rf "$APP"
 mkdir -p "$ROOT/dist"
-printf '正在创建胖猫休息 applet（无需 Xcode 或 SDK）…\n'
-"$OSACOMPILE" -l AppleScript -o "$APP" "$ROOT/Native/main.applescript"
+printf '正在检查 AppleScriptObjC 语法并创建 applet（无需 Xcode 或 SDK）…\n'
+if ! "$OSACOMPILE" -l AppleScript -o "$APP" "$ROOT/Native/main.applescript"; then
+  echo "错误：AppleScriptObjC 语法检查失败，未生成应用。" >&2
+  exit 1
+fi
 
 PLIST="$APP/Contents/Info.plist"
 if [[ ! -f "$PLIST" ]]; then
@@ -42,8 +45,8 @@ set_or_add_plist_value() {
 set_or_add_plist_value CFBundleIdentifier string com.hellocodex.fatcatbreak
 set_or_add_plist_value CFBundleName string 胖猫休息
 set_or_add_plist_value CFBundleDisplayName string 胖猫休息
-set_or_add_plist_value CFBundleShortVersionString string 1.0.6
-set_or_add_plist_value CFBundleVersion string 7
+set_or_add_plist_value CFBundleShortVersionString string 1.0.7
+set_or_add_plist_value CFBundleVersion string 8
 set_or_add_plist_value LSUIElement bool true
 set_or_add_plist_value NSHighResolutionCapable bool true
 

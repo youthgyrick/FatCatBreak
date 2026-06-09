@@ -40,7 +40,7 @@ cat ~/Library/Logs/FatCatBreak.log
 
 调试脚本会在前台显示 AppleScriptObjC 错误；应用本身也会把启动和异常信息写入日志。
 
-当前发布入口不再使用 JXA 的 Objective-C Bridge，因此不会触发旧版 macOS 在解析 `CGRect`/`NSScreen.frame` 时出现的 `NSGetSizeAndAlignment` 崩溃。
+当前发布入口不再使用 JXA 的 Objective-C Bridge，因此不会触发旧版 macOS 在解析 `CGRect`/`NSScreen.frame` 时出现的 `NSGetSizeAndAlignment` 崩溃。 AppleScriptObjC 调用也已拆成逐步变量，避免旧版 AppleScript 解析器无法处理 `object()’s method()` 链式语法。
 
 打包脚本兼容不同 macOS 版本生成的 applet：如果 `Info.plist` 缺少 `CFBundleIdentifier` 等字段，会自动创建，而不是因 `PlistBuddy Set` 失败而中止。
 
