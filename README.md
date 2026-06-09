@@ -15,8 +15,8 @@
 
 ## 系统要求
 
-- macOS 13 Ventura 或更高版本
-- Xcode 15 或 Swift 5.9+
+- macOS 10.15 Catalina 或更高版本
+- Xcode Command Line Tools（无需完整 Xcode）
 
 ## 构建 `.app`
 
@@ -27,7 +27,9 @@
 open dist/FatCatBreak.app
 ```
 
-构建脚本直接调用 macOS Swift 编译器，不会调用 `xctest`；仅安装 Xcode Command Line Tools 也可以构建应用。如果系统找不到编译器，可先运行 `xcode-select --install`。
+构建脚本使用 Command Line Tools 中的 `clang` 编译 Objective-C/AppKit 发布入口，不调用 Swift 或 `xctest`。这样可以避开旧版 Command Line Tools 中 Swift 编译器与 SDK 模块版本不一致（例如 Swift 5.4 编译器读取 Swift 5.5 SDK）的问题。
+
+如果系统找不到编译器，可先运行 `xcode-select --install`。若已经安装但工具损坏，可先执行 `sudo rm -rf /Library/Developer/CommandLineTools`，再重新运行安装命令。
 
 第一次打开未签名的本地构建时，如果 macOS 阻止启动，可在 Finder 中右键应用并选择“打开”。正式分发时应使用 Apple Developer 证书签名并公证。
 
@@ -39,4 +41,4 @@ swift run FatCatBreak
 swift test
 ```
 
-核心倒计时逻辑位于 `BreakSession`，界面与猫咪绘制位于 `BreakView`。需要调整休息时长时，修改 `BreakSession.defaultDuration`。
+`scripts/build_app.sh` 打包的是 `Native/main.m` 中不依赖 Swift 运行时的兼容版本。Swift Package 保留用于现代 Xcode 下的开发与倒计时单元测试。两个入口的默认休息时长均为 20 秒。
