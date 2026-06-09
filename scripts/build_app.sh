@@ -12,14 +12,14 @@ OSACOMPILE="${OSACOMPILE_BIN:-/usr/bin/osacompile}"
 PLIST_BUDDY="${PLIST_BUDDY_BIN:-/usr/libexec/PlistBuddy}"
 
 if [[ ! -x "$OSACOMPILE" ]]; then
-  echo "错误：系统缺少 /usr/bin/osacompile，无法创建 JXA applet。" >&2
+  echo "错误：系统缺少 /usr/bin/osacompile，无法创建 AppleScriptObjC applet。" >&2
   exit 1
 fi
 
 rm -rf "$APP"
 mkdir -p "$ROOT/dist"
 printf '正在创建胖猫休息 applet（无需 Xcode 或 SDK）…\n'
-"$OSACOMPILE" -l JavaScript -o "$APP" "$ROOT/Native/main.js"
+"$OSACOMPILE" -l AppleScript -o "$APP" "$ROOT/Native/main.applescript"
 
 PLIST="$APP/Contents/Info.plist"
 if [[ ! -f "$PLIST" ]]; then
@@ -42,8 +42,8 @@ set_or_add_plist_value() {
 set_or_add_plist_value CFBundleIdentifier string com.hellocodex.fatcatbreak
 set_or_add_plist_value CFBundleName string 胖猫休息
 set_or_add_plist_value CFBundleDisplayName string 胖猫休息
-set_or_add_plist_value CFBundleShortVersionString string 1.0.5
-set_or_add_plist_value CFBundleVersion string 6
+set_or_add_plist_value CFBundleShortVersionString string 1.0.6
+set_or_add_plist_value CFBundleVersion string 7
 set_or_add_plist_value LSUIElement bool true
 set_or_add_plist_value NSHighResolutionCapable bool true
 

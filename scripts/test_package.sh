@@ -13,13 +13,16 @@ cat > "$FAKE_BIN/osacompile" <<'MOCK'
 #!/usr/bin/env bash
 out=""
 source=""
+language=""
 while [[ $# -gt 0 ]]; do
   case "$1" in
     -o) shift; out="$1" ;;
-    *.js) source="$1" ;;
+    -l) shift; language="$1" ;;
+    *.applescript) source="$1" ;;
   esac
   shift
 done
+[[ "$language" == "AppleScript" ]] || exit 3
 mkdir -p "$out/Contents/MacOS" "$out/Contents/Resources/Scripts"
 printf '#!/bin/bash\n' > "$out/Contents/MacOS/applet"
 chmod +x "$out/Contents/MacOS/applet"
@@ -31,7 +34,7 @@ import sys
 with open(sys.argv[1], 'wb') as output:
     plistlib.dump({'CFBundleName': 'mock'}, output)
 PY
-cp "$source" "$out/Contents/Resources/Scripts/main.js"
+cp "$source" "$out/Contents/Resources/Scripts/main.scpt"
 MOCK
 cat > "$FAKE_BIN/PlistBuddy" <<'MOCK'
 #!/usr/bin/env python3
@@ -79,9 +82,9 @@ PLIST_BUDDY_BIN="$FAKE_BIN/PlistBuddy" \
 APP="$ROOT/dist/FatCatBreak.app"
 
 [[ -x "$APP/Contents/MacOS/applet" ]]
-[[ -f "$APP/Contents/Resources/Scripts/main.js" ]]
+[[ -f "$APP/Contents/Resources/Scripts/main.scpt" ]]
 [[ -f "$APP/Contents/Info.plist" ]]
-cmp "$ROOT/Native/main.js" "$APP/Contents/Resources/Scripts/main.js"
+cmp "$ROOT/Native/main.applescript" "$APP/Contents/Resources/Scripts/main.scpt"
 
 python3 - "$APP/Contents/Info.plist" <<'PY'
 import plistlib
@@ -92,8 +95,8 @@ expected = {
     'CFBundleIdentifier': 'com.hellocodex.fatcatbreak',
     'CFBundleName': '胖猫休息',
     'CFBundleDisplayName': '胖猫休息',
-    'CFBundleShortVersionString': '1.0.5',
-    'CFBundleVersion': '6',
+    'CFBundleShortVersionString': '1.0.6',
+    'CFBundleVersion': '7',
     'LSUIElement': True,
     'NSHighResolutionCapable': True,
 }
@@ -106,4 +109,4 @@ if rg -n '(^|[[:space:]])(xcrun|clang|swiftc|swift)[[:space:]]' "$ROOT/scripts/b
   exit 1
 fi
 
-printf 'JXA applet 打包及缺失 plist 字段回归检查通过。\n'
+printf 'AppleScriptObjC applet 打包及缺失 plist 字段回归检查通过。\n'

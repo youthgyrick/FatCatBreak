@@ -27,7 +27,7 @@
 open dist/FatCatBreak.app
 ```
 
-构建脚本通过 macOS 自带的 `/usr/bin/osacompile` 把 JXA（JavaScript for Automation）保存为正规的 applet。运行时使用系统 AppKit 和 WebKit，不调用 `clang`、Swift、`xcrun`、SDK 或 `xctest`，因此不受本机 Command Line Tools 版本混装影响。
+构建脚本通过 macOS 自带的 `/usr/bin/osacompile` 把 AppleScriptObjC 脚本保存为正规的 applet。运行时使用系统 AppKit 和 WebKit，不调用 `clang`、Swift、`xcrun`、SDK 或 `xctest`，因此不受本机 Command Line Tools 版本混装影响。
 
 第一次打开未签名的本地构建时，如果 macOS 阻止启动，可在 Finder 中右键应用并选择“打开”。正式分发时应使用 Apple Developer 证书签名并公证。
 
@@ -38,7 +38,9 @@ open dist/FatCatBreak.app
 cat ~/Library/Logs/FatCatBreak.log
 ```
 
-调试脚本会在前台显示 JXA 错误；应用本身也会把启动和异常信息写入日志。
+调试脚本会在前台显示 AppleScriptObjC 错误；应用本身也会把启动和异常信息写入日志。
+
+当前发布入口不再使用 JXA 的 Objective-C Bridge，因此不会触发旧版 macOS 在解析 `CGRect`/`NSScreen.frame` 时出现的 `NSGetSizeAndAlignment` 崩溃。
 
 打包脚本兼容不同 macOS 版本生成的 applet：如果 `Info.plist` 缺少 `CFBundleIdentifier` 等字段，会自动创建，而不是因 `PlistBuddy Set` 失败而中止。
 
@@ -50,4 +52,4 @@ swift run FatCatBreak
 swift test
 ```
 
-`scripts/build_app.sh` 打包的是 `Native/main.js` 中的免编译版本。Swift Package 仅保留给拥有现代 Xcode 的开发者进行源码开发与倒计时单元测试；普通用户构建和运行应用不需要 Swift。两个入口的默认休息时长均为 20 秒。
+`scripts/build_app.sh` 打包的是 `Native/main.applescript` 中的免编译版本。Swift Package 仅保留给拥有现代 Xcode 的开发者进行源码开发与倒计时单元测试；普通用户构建和运行应用不需要 Swift。两个入口的默认休息时长均为 20 秒。
