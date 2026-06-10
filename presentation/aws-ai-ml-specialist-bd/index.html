@@ -1,0 +1,847 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07111f">
+  <title>AWS AI/ML Specialist BD — Field Playbook</title>
+  <style>
+    :root {
+      --ink: #f5f7fb;
+      --muted: #9aabc0;
+      --night: #07111f;
+      --panel: rgba(15, 29, 48, .78);
+      --line: rgba(255, 255, 255, .12);
+      --orange: #ff9900;
+      --amber: #ffc46b;
+      --cyan: #44d7e8;
+      --green: #62d6a5;
+      --blue: #4f8cff;
+      --purple: #a584ff;
+      --shadow: 0 24px 80px rgba(0, 0, 0, .38);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--night);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    button { font: inherit; }
+
+    .deck {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      isolation: isolate;
+      background:
+        radial-gradient(circle at 82% 18%, rgba(68, 215, 232, .10), transparent 26%),
+        radial-gradient(circle at 13% 78%, rgba(255, 153, 0, .08), transparent 30%),
+        linear-gradient(145deg, #07111f 0%, #091728 50%, #07111f 100%);
+    }
+
+    .deck::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      opacity: .18;
+      background-image:
+        linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: linear-gradient(to bottom, black, transparent 90%);
+    }
+
+    .topbar {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 20;
+      height: 74px;
+      padding: 0 4vw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+
+    .brand, .chapter {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 22px;
+      position: relative;
+      display: inline-grid;
+      place-items: center;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: -.04em;
+    }
+
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      width: 29px;
+      height: 8px;
+      left: 3px;
+      bottom: -2px;
+      border-bottom: 2px solid var(--orange);
+      border-radius: 0 0 50% 50%;
+      transform: rotate(-4deg);
+    }
+
+    .slides { width: 100%; height: 100%; }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      padding: clamp(92px, 10vh, 120px) 6vw clamp(76px, 8vh, 96px);
+      display: grid;
+      align-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(40px) scale(.985);
+      transition: opacity .5s ease, transform .55s cubic-bezier(.2,.75,.2,1), visibility .5s;
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(0) scale(1);
+    }
+
+    .slide.leaving { transform: translateX(-40px) scale(.985); }
+
+    .slide-inner {
+      width: min(1240px, 100%);
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      color: var(--orange);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 28px;
+      height: 2px;
+      background: currentColor;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1 {
+      max-width: 920px;
+      margin-bottom: 26px;
+      font-size: clamp(54px, 7.4vw, 110px);
+      line-height: .92;
+      letter-spacing: -.06em;
+      font-weight: 760;
+    }
+
+    h2 {
+      max-width: 940px;
+      margin-bottom: 28px;
+      font-size: clamp(38px, 5vw, 70px);
+      line-height: .98;
+      letter-spacing: -.045em;
+      font-weight: 730;
+    }
+
+    h3 {
+      margin-bottom: 10px;
+      font-size: clamp(18px, 1.8vw, 25px);
+      line-height: 1.15;
+      letter-spacing: -.025em;
+    }
+
+    .gradient-text {
+      color: transparent;
+      background: linear-gradient(100deg, #fff 10%, var(--cyan) 52%, var(--amber) 94%);
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    .lead {
+      max-width: 780px;
+      color: #bac7d7;
+      font-size: clamp(18px, 2vw, 27px);
+      line-height: 1.45;
+      letter-spacing: -.015em;
+    }
+
+    .micro { color: var(--muted); font-size: 13px; line-height: 1.55; }
+    .accent { color: var(--orange); }
+    .cyan { color: var(--cyan); }
+    .green { color: var(--green); }
+
+    .title-grid {
+      display: grid;
+      grid-template-columns: 1.35fr .65fr;
+      gap: 6vw;
+      align-items: end;
+    }
+
+    .signal {
+      position: relative;
+      min-height: 360px;
+      display: grid;
+      place-items: center;
+    }
+
+    .orbit {
+      position: absolute;
+      width: min(30vw, 360px);
+      aspect-ratio: 1;
+      border: 1px solid rgba(68, 215, 232, .24);
+      border-radius: 50%;
+      animation: spin 20s linear infinite;
+    }
+
+    .orbit:nth-child(2) { width: min(22vw, 270px); border-color: rgba(255,153,0,.24); animation-direction: reverse; animation-duration: 14s; }
+    .orbit::before, .orbit::after {
+      content: "";
+      position: absolute;
+      width: 10px;
+      aspect-ratio: 1;
+      top: 8%;
+      left: 20%;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 22px currentColor;
+    }
+    .orbit::after { inset: auto 14% 12% auto; background: var(--orange); }
+
+    .core {
+      width: 130px;
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 32px;
+      background: linear-gradient(145deg, rgba(255,255,255,.12), rgba(255,255,255,.025));
+      box-shadow: var(--shadow), inset 0 1px rgba(255,255,255,.15);
+      transform: rotate(45deg);
+    }
+
+    .core span { transform: rotate(-45deg); font-size: 42px; font-weight: 800; letter-spacing: -.1em; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .section-number {
+      position: absolute;
+      right: 6vw;
+      bottom: 7vh;
+      color: rgba(255,255,255,.035);
+      font-size: clamp(140px, 22vw, 330px);
+      line-height: .7;
+      font-weight: 800;
+      letter-spacing: -.09em;
+      pointer-events: none;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      position: relative;
+      min-height: 185px;
+      padding: 26px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: linear-gradient(145deg, rgba(21,39,62,.90), rgba(9,23,40,.72));
+      box-shadow: 0 14px 42px rgba(0,0,0,.16);
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: auto -18% -45% auto;
+      width: 150px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: var(--glow, var(--cyan));
+      opacity: .08;
+      filter: blur(4px);
+    }
+
+    .card-kicker {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 34px;
+      height: 34px;
+      margin-bottom: 24px;
+      padding: 0 10px;
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 10px;
+      color: var(--glow, var(--cyan));
+      background: rgba(255,255,255,.035);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .card p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.5; }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 36px;
+    }
+
+    .stat {
+      padding: 18px 20px;
+      border-top: 1px solid var(--line);
+    }
+
+    .stat strong { display: block; margin-bottom: 6px; font-size: clamp(28px, 3vw, 44px); letter-spacing: -.055em; }
+    .stat span { color: var(--muted); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+
+    .split {
+      display: grid;
+      grid-template-columns: .82fr 1.18fr;
+      gap: clamp(30px, 6vw, 86px);
+      align-items: center;
+    }
+
+    .stack { display: grid; gap: 12px; }
+
+    .layer {
+      position: relative;
+      padding: 18px 22px 18px 70px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(13,29,48,.76);
+    }
+
+    .layer b {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      color: var(--night);
+      background: var(--layer-color, var(--cyan));
+      transform: translateY(-50%);
+    }
+
+    .layer strong { display: block; margin-bottom: 3px; font-size: 16px; }
+    .layer span { color: var(--muted); font-size: 13px; }
+
+    .funnel {
+      display: grid;
+      gap: 12px;
+      width: min(560px, 100%);
+    }
+
+    .funnel-step {
+      width: var(--width);
+      margin: 0 auto;
+      padding: 17px 22px;
+      display: flex;
+      justify-content: space-between;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: linear-gradient(90deg, rgba(79,140,255,.18), rgba(68,215,232,.06));
+    }
+    .funnel-step:nth-child(2) { background: linear-gradient(90deg, rgba(68,215,232,.18), rgba(98,214,165,.06)); }
+    .funnel-step:nth-child(3) { background: linear-gradient(90deg, rgba(98,214,165,.18), rgba(255,153,0,.06)); }
+    .funnel-step:nth-child(4) { background: linear-gradient(90deg, rgba(255,153,0,.22), rgba(255,196,107,.08)); }
+    .funnel-step span { color: var(--muted); font-size: 13px; }
+
+    .plays {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .play {
+      padding: 22px 24px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 18px;
+      align-items: start;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .play-num {
+      color: var(--orange);
+      font: 700 13px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+      letter-spacing: .08em;
+    }
+    .play h3 { font-size: 19px; }
+    .play p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.45; }
+
+    .timeline {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 44px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      top: 18px;
+      left: 4%;
+      right: 4%;
+      height: 1px;
+      background: linear-gradient(90deg, var(--blue), var(--cyan), var(--green), var(--orange));
+    }
+
+    .phase { position: relative; padding-top: 54px; }
+    .phase::before {
+      content: "";
+      position: absolute;
+      z-index: 1;
+      top: 10px;
+      left: 0;
+      width: 16px;
+      aspect-ratio: 1;
+      border: 5px solid var(--night);
+      border-radius: 50%;
+      background: var(--phase, var(--cyan));
+      box-shadow: 0 0 0 1px var(--phase, var(--cyan)), 0 0 20px color-mix(in srgb, var(--phase, var(--cyan)) 50%, transparent);
+    }
+    .phase small { color: var(--phase, var(--cyan)); font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    .phase h3 { margin-top: 8px; }
+    .phase p { color: var(--muted); font-size: 14px; line-height: 1.5; }
+
+    .matrix {
+      position: relative;
+      height: min(53vh, 480px);
+      margin-top: 28px;
+      border-left: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
+      background-size: 25% 25%;
+    }
+
+    .axis-y, .axis-x { position: absolute; color: var(--muted); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
+    .axis-y { left: -54px; top: 50%; transform: rotate(-90deg); }
+    .axis-x { right: 0; bottom: -28px; }
+
+    .bubble {
+      position: absolute;
+      left: var(--x);
+      bottom: var(--y);
+      width: var(--size);
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      padding: 12px;
+      border: 1px solid color-mix(in srgb, var(--bubble) 65%, white);
+      border-radius: 50%;
+      color: white;
+      background: color-mix(in srgb, var(--bubble) 22%, rgba(7,17,31,.78));
+      box-shadow: 0 0 38px color-mix(in srgb, var(--bubble) 18%, transparent);
+      text-align: center;
+      font-size: clamp(10px, 1vw, 13px);
+      font-weight: 700;
+      transform: translate(-50%, 50%);
+    }
+
+    .scorecard {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 32px;
+      align-items: stretch;
+    }
+
+    .metric-list { display: grid; gap: 12px; }
+    .metric {
+      display: grid;
+      grid-template-columns: 150px 1fr 58px;
+      gap: 16px;
+      align-items: center;
+      font-size: 14px;
+    }
+    .bar { height: 8px; overflow: hidden; border-radius: 99px; background: rgba(255,255,255,.08); }
+    .bar i { display: block; width: var(--fill); height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--cyan), var(--green)); }
+    .metric b { text-align: right; color: var(--green); font-size: 13px; }
+
+    .north-star {
+      display: grid;
+      place-items: center;
+      padding: 34px;
+      border: 1px solid rgba(255,153,0,.22);
+      border-radius: 24px;
+      background: radial-gradient(circle at 50% 30%, rgba(255,153,0,.15), transparent 55%), rgba(12,26,44,.72);
+      text-align: center;
+    }
+    .north-star strong { display: block; color: var(--orange); font-size: clamp(56px, 7vw, 90px); letter-spacing: -.07em; }
+    .north-star span { max-width: 260px; color: #c8d1dc; font-size: 15px; line-height: 1.4; }
+
+    .quote {
+      max-width: 1080px;
+      font-size: clamp(38px, 5.2vw, 74px);
+      line-height: 1.05;
+      letter-spacing: -.045em;
+      font-weight: 650;
+    }
+    .quote em { color: var(--orange); font-style: normal; }
+
+    .cta-row { display: flex; gap: 14px; margin-top: 38px; flex-wrap: wrap; }
+    .pill {
+      padding: 12px 18px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: #d4dde8;
+      background: rgba(255,255,255,.04);
+      font-size: 13px;
+    }
+    .pill.primary { border-color: var(--orange); color: #17100a; background: var(--orange); font-weight: 800; }
+
+    .controls {
+      position: fixed;
+      z-index: 30;
+      left: 4vw;
+      right: 4vw;
+      bottom: 24px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      pointer-events: none;
+    }
+
+    .progress-track {
+      width: min(280px, 26vw);
+      height: 3px;
+      overflow: hidden;
+      border-radius: 99px;
+      background: rgba(255,255,255,.12);
+    }
+    .progress-fill { width: 0; height: 100%; background: linear-gradient(90deg, var(--orange), var(--cyan)); transition: width .45s ease; }
+
+    .nav { display: flex; gap: 8px; pointer-events: auto; }
+    .nav button {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      color: white;
+      background: rgba(8,19,33,.75);
+      cursor: pointer;
+      transition: border-color .2s, background .2s, transform .2s;
+    }
+    .nav button:hover { border-color: var(--orange); background: rgba(255,153,0,.1); transform: translateY(-2px); }
+    .nav button:disabled { opacity: .3; cursor: default; transform: none; }
+
+    .counter { justify-self: end; color: var(--muted); font: 700 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .12em; }
+    .counter b { color: white; }
+
+    .hint {
+      position: fixed;
+      z-index: 35;
+      right: 4vw;
+      bottom: 65px;
+      color: rgba(255,255,255,.38);
+      font-size: 10px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      transition: opacity .4s;
+    }
+
+    @media (max-width: 900px) {
+      .slide { padding-left: 5vw; padding-right: 5vw; overflow-y: auto; align-content: start; }
+      .title-grid, .split, .scorecard { grid-template-columns: 1fr; }
+      .signal { display: none; }
+      .cards { grid-template-columns: 1fr 1fr; }
+      .card { min-height: 150px; }
+      .stat-row { grid-template-columns: 1fr 1fr; }
+      .timeline { grid-template-columns: 1fr 1fr; }
+      .timeline::before { display: none; }
+      .phase { padding-top: 28px; }
+      .phase::before { top: 0; }
+      .matrix { height: 420px; }
+    }
+
+    @media (max-width: 620px) {
+      .chapter, .hint { display: none; }
+      .slide { padding-top: 84px; padding-bottom: 78px; }
+      h1 { font-size: 51px; }
+      h2 { font-size: 38px; }
+      .cards, .plays, .timeline, .stat-row { grid-template-columns: 1fr; }
+      .metric { grid-template-columns: 110px 1fr 42px; gap: 8px; }
+      .controls { grid-template-columns: 1fr auto; }
+      .progress-track { width: 38vw; }
+      .counter { display: none; }
+      .card { min-height: auto; }
+      .bubble { --size: 82px !important; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="deck" aria-label="AWS AI and ML Specialist Business Development slide deck">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">aws</span><span>AI / ML Specialist BD</span></div>
+      <div class="chapter" id="chapter">Field playbook · 2026</div>
+    </header>
+
+    <div class="slides" id="slides">
+      <section class="slide active" data-chapter="Field playbook · 2026">
+        <div class="slide-inner title-grid">
+          <div>
+            <div class="eyebrow">From possibility to production</div>
+            <h1>Make AI<br><span class="gradient-text">move business.</span></h1>
+            <p class="lead">A field playbook for creating demand, proving value, and scaling durable AI/ML workloads on AWS.</p>
+            <div class="cta-row"><span class="pill primary">Specialist BD</span><span class="pill">Executive narrative</span><span class="pill">12 slides</span></div>
+          </div>
+          <div class="signal" aria-hidden="true">
+            <div class="orbit"></div><div class="orbit"></div>
+            <div class="core"><span>AI</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-chapter="01 · The mandate">
+        <div class="section-number">01</div>
+        <div class="slide-inner">
+          <div class="eyebrow">The mandate</div>
+          <h2>Customers don’t need more AI theater.<br><span class="cyan">They need a path to value.</span></h2>
+          <div class="cards">
+            <article class="card" style="--glow:var(--blue)"><div class="card-kicker">01</div><h3>Find the wedge</h3><p>Anchor on a high-friction workflow with executive relevance, measurable economics, and accessible data.</p></article>
+            <article class="card" style="--glow:var(--cyan)"><div class="card-kicker">02</div><h3>De-risk the first move</h3><p>Turn ambiguity into a scoped experiment with clear owners, architecture guardrails, and success criteria.</p></article>
+            <article class="card" style="--glow:var(--orange)"><div class="card-kicker">03</div><h3>Design for the second win</h3><p>Build the operating model, platform primitives, and internal proof needed to scale beyond one use case.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-chapter="02 · Market signal">
+        <div class="slide-inner">
+          <div class="eyebrow">Read the market signal</div>
+          <h2>The opportunity is shifting<br>from <span class="accent">models</span> to <span class="green">systems.</span></h2>
+          <p class="lead">Winning conversations connect intelligence to the full production stack—not just a benchmark.</p>
+          <div class="stat-row">
+            <div class="stat"><strong class="cyan">Data</strong><span>Context + quality</span></div>
+            <div class="stat"><strong class="green">Trust</strong><span>Security + governance</span></div>
+            <div class="stat"><strong class="accent">Action</strong><span>Agents + workflows</span></div>
+            <div class="stat"><strong style="color:var(--purple)">Scale</strong><span>Ops + economics</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-chapter="03 · The AWS advantage">
+        <div class="slide-inner split">
+          <div>
+            <div class="eyebrow">The AWS advantage</div>
+            <h2>Choice at every layer.<br><span class="gradient-text">One path to production.</span></h2>
+            <p class="lead">Start where the customer is—and connect infrastructure, models, data, and applications without creating another island.</p>
+          </div>
+          <div class="stack">
+            <div class="layer" style="--layer-color:var(--orange)"><b>4</b><strong>Business applications</strong><span>Amazon Q · agentic workflows · industry solutions</span></div>
+            <div class="layer" style="--layer-color:var(--green)"><b>3</b><strong>Build with foundation models</strong><span>Amazon Bedrock · model choice · agents · guardrails</span></div>
+            <div class="layer" style="--layer-color:var(--cyan)"><b>2</b><strong>Build, train, and deploy ML</strong><span>Amazon SageMaker AI · MLOps · data and analytics</span></div>
+            <div class="layer" style="--layer-color:var(--blue)"><b>1</b><strong>High-performance infrastructure</strong><span>AWS Trainium · AWS Inferentia · GPUs · elastic compute</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-chapter="04 · Qualification">
+        <div class="slide-inner split">
+          <div>
+            <div class="eyebrow">Qualify for momentum</div>
+            <h2>Start with the <span class="cyan">business event.</span><br>Not the demo.</h2>
+            <p class="lead">A qualified AI opportunity has pain, power, proof, and a production path.</p>
+          </div>
+          <div class="funnel">
+            <div class="funnel-step" style="--width:100%"><strong>Business pressure</strong><span>Why now?</span></div>
+            <div class="funnel-step" style="--width:88%"><strong>Economic owner</strong><span>Who wins?</span></div>
+            <div class="funnel-step" style="--width:76%"><strong>Evidence plan</strong><span>What proves it?</span></div>
+            <div class="funnel-step" style="--width:64%"><strong>Scale path</strong><span>Then what?</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-chapter="05 · Conversation plays">
+        <div class="slide-inner">
+          <div class="eyebrow">Four conversation plays</div>
+          <h2>Meet the customer at<br><span class="gradient-text">their moment of change.</span></h2>
+          <div class="plays">
+            <article class="play"><div class="play-num">01</div><div><h3>Reinvent a workflow</h3><p>Compress cycle time, improve quality, and augment expert judgment with generative AI.</p></div></article>
+            <article class="play"><div class="play-num">02</div><div><h3>Modernize the ML estate</h3><p>Unify fragmented tooling, industrialize MLOps, and improve utilization and governance.</p></div></article>
+            <article class="play"><div class="play-num">03</div><div><h3>Activate proprietary data</h3><p>Ground models in trusted enterprise context while preserving permissions and lineage.</p></div></article>
+            <article class="play"><div class="play-num">04</div><div><h3>Build an AI factory</h3><p>Create reusable platform capabilities that turn isolated pilots into a portfolio of outcomes.</p></div></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-chapter="06 · Value architecture">
+        <div class="slide-inner">
+          <div class="eyebrow">Value architecture</div>
+          <h2>Translate one idea into a<br><span class="green">decision-ready case.</span></h2>
+          <div class="timeline">
+            <div class="phase" style="--phase:var(--blue)"><small>Frame</small><h3>Outcome</h3><p>Name the business metric, baseline, owner, and cost of inaction.</p></div>
+            <div class="phase" style="--phase:var(--cyan)"><small>Prove</small><h3>Evidence</h3><p>Test the riskiest assumption with representative data and users.</p></div>
+            <div class="phase" style="--phase:var(--green)"><small>Plan</small><h3>Production</h3><p>Map security, integration, change, operations, and unit economics.</p></div>
+            <div class="phase" style="--phase:var(--orange)"><small>Scale</small><h3>Portfolio</h3><p>Reuse patterns, fund the roadmap, and amplify internal advocates.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-chapter="07 · Portfolio focus">
+        <div class="slide-inner">
+          <div class="eyebrow">Portfolio focus</div>
+          <h2>Prioritize for <span class="accent">velocity</span> and <span class="cyan">repetition.</span></h2>
+          <div class="matrix" role="img" aria-label="Opportunity matrix plotting use cases by time to value and strategic leverage">
+            <span class="axis-y">Strategic leverage →</span><span class="axis-x">Time to value →</span>
+            <div class="bubble" style="--x:22%;--y:71%;--size:126px;--bubble:var(--green)">Knowledge assistant</div>
+            <div class="bubble" style="--x:48%;--y:78%;--size:145px;--bubble:var(--cyan)">Developer productivity</div>
+            <div class="bubble" style="--x:75%;--y:64%;--size:136px;--bubble:var(--purple)">Intelligent operations</div>
+            <div class="bubble" style="--x:34%;--y:28%;--size:112px;--bubble:var(--blue)">Document processing</div>
+            <div class="bubble" style="--x:71%;--y:24%;--size:104px;--bubble:var(--orange)">Custom model</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-chapter="08 · First 90 days">
+        <div class="slide-inner">
+          <div class="eyebrow">First 90 days</div>
+          <h2>Build signal. Create proof.<br><span class="gradient-text">Earn the right to scale.</span></h2>
+          <div class="cards">
+            <article class="card" style="--glow:var(--blue)"><div class="card-kicker">0—30</div><h3>Map the territory</h3><p>Segment accounts, identify executive triggers, align account teams, and recruit lighthouse partners.</p></article>
+            <article class="card" style="--glow:var(--cyan)"><div class="card-kicker">31—60</div><h3>Create evidence</h3><p>Run focused discovery, launch working-backwards sessions, and shape a small set of decisive proofs.</p></article>
+            <article class="card" style="--glow:var(--orange)"><div class="card-kicker">61—90</div><h3>Codify the motion</h3><p>Convert wins into repeatable plays, references, enablement, and a prioritized scale pipeline.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-chapter="09 · Operating rhythm">
+        <div class="slide-inner scorecard">
+          <div>
+            <div class="eyebrow">Operating rhythm</div>
+            <h2>Measure the motion,<br>not just the <span class="accent">moment.</span></h2>
+            <div class="metric-list">
+              <div class="metric"><span>Exec discovery</span><div class="bar"><i style="--fill:86%"></i></div><b>weekly</b></div>
+              <div class="metric"><span>Qualified value</span><div class="bar"><i style="--fill:76%"></i></div><b>↑ QoQ</b></div>
+              <div class="metric"><span>Proof → prod.</span><div class="bar"><i style="--fill:64%"></i></div><b>rate</b></div>
+              <div class="metric"><span>Partner leverage</span><div class="bar"><i style="--fill:72%"></i></div><b>attach</b></div>
+              <div class="metric"><span>Repeatability</span><div class="bar"><i style="--fill:58%"></i></div><b>plays</b></div>
+            </div>
+          </div>
+          <div class="north-star"><div><strong>1→N</strong><span>Every lighthouse win should make the next customer faster, safer, and more likely to succeed.</span></div></div>
+        </div>
+      </section>
+
+      <section class="slide" data-chapter="10 · Principles">
+        <div class="slide-inner">
+          <div class="eyebrow">Field principles</div>
+          <h2>How we show up.</h2>
+          <div class="cards">
+            <article class="card" style="--glow:var(--orange)"><div class="card-kicker">A</div><h3>Lead with curiosity</h3><p>Ask better questions before offering better technology.</p></article>
+            <article class="card" style="--glow:var(--cyan)"><div class="card-kicker">B</div><h3>Make value concrete</h3><p>Give every experiment a baseline, a metric, and a decision.</p></article>
+            <article class="card" style="--glow:var(--green)"><div class="card-kicker">C</div><h3>Build trust by design</h3><p>Security, responsible AI, and governance belong in the first conversation.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-chapter="The next move">
+        <div class="slide-inner">
+          <div class="eyebrow">The next move</div>
+          <div class="quote">Find the workload that matters.<br>Prove what’s possible.<br><em>Turn one win into a movement.</em></div>
+          <div class="cta-row"><span class="pill primary">Start with the customer</span><span class="pill">Think big</span><span class="pill">Start small</span><span class="pill">Scale fast</span></div>
+        </div>
+      </section>
+    </div>
+
+    <div class="hint" id="hint">Use ← → keys or swipe</div>
+    <footer class="controls">
+      <div class="progress-track"><div class="progress-fill" id="progress"></div></div>
+      <nav class="nav" aria-label="Slide controls">
+        <button type="button" id="prev" aria-label="Previous slide">←</button>
+        <button type="button" id="next" aria-label="Next slide">→</button>
+      </nav>
+      <div class="counter"><b id="current">01</b> / <span id="total">12</span></div>
+    </footer>
+  </main>
+
+  <script>
+    const slides = [...document.querySelectorAll('.slide')];
+    const progress = document.getElementById('progress');
+    const current = document.getElementById('current');
+    const total = document.getElementById('total');
+    const chapter = document.getElementById('chapter');
+    const prev = document.getElementById('prev');
+    const next = document.getElementById('next');
+    const hint = document.getElementById('hint');
+    let index = 0;
+    let touchStart = 0;
+
+    total.textContent = String(slides.length).padStart(2, '0');
+
+    function showSlide(nextIndex) {
+      const bounded = Math.max(0, Math.min(slides.length - 1, nextIndex));
+      if (bounded === index && slides[index].classList.contains('active')) return;
+      slides[index].classList.remove('active');
+      slides[index].classList.add('leaving');
+      window.setTimeout(() => slides.forEach(slide => slide.classList.remove('leaving')), 550);
+      index = bounded;
+      slides[index].classList.add('active');
+      current.textContent = String(index + 1).padStart(2, '0');
+      progress.style.width = `${((index + 1) / slides.length) * 100}%`;
+      chapter.textContent = slides[index].dataset.chapter;
+      prev.disabled = index === 0;
+      next.disabled = index === slides.length - 1;
+      document.title = `${slides[index].dataset.chapter} — AWS AI/ML Specialist BD`;
+    }
+
+    prev.addEventListener('click', () => showSlide(index - 1));
+    next.addEventListener('click', () => showSlide(index + 1));
+    document.addEventListener('keydown', event => {
+      if (['ArrowRight', 'PageDown', ' '].includes(event.key)) { event.preventDefault(); showSlide(index + 1); }
+      if (['ArrowLeft', 'PageUp'].includes(event.key)) { event.preventDefault(); showSlide(index - 1); }
+      if (event.key === 'Home') showSlide(0);
+      if (event.key === 'End') showSlide(slides.length - 1);
+    });
+    document.addEventListener('touchstart', event => { touchStart = event.changedTouches[0].screenX; }, { passive: true });
+    document.addEventListener('touchend', event => {
+      const distance = event.changedTouches[0].screenX - touchStart;
+      if (Math.abs(distance) > 45) showSlide(index + (distance < 0 ? 1 : -1));
+    }, { passive: true });
+    window.setTimeout(() => { hint.style.opacity = '0'; }, 5000);
+    showSlide(0);
+    progress.style.width = `${100 / slides.length}%`;
+    prev.disabled = true;
+  </script>
+</body>
+</html>
