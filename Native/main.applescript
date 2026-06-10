@@ -4,7 +4,7 @@ use scripting additions
 
 property breakDuration : 20
 property breakWindows : {}
-property app : missing value
+property breakApplication : missing value
 property previousPresentationOptions : 0
 
 on htmlPage()
@@ -59,9 +59,9 @@ on finishBreak()
 			theWindow's orderOut:(missing value)
 		end try
 	end repeat
-	if app is not missing value then
+	if breakApplication is not missing value then
 		try
-			app's setPresentationOptions:previousPresentationOptions
+			breakApplication's setPresentationOptions:previousPresentationOptions
 		end try
 	end if
 	set breakWindows to {}
@@ -72,9 +72,11 @@ on run
 	try
 		set breakWindows to {}
 		set applicationClass to current application's NSApplication
-		set app to applicationClass's sharedApplication()
-		set previousPresentationOptions to app's presentationOptions()
-		app's setActivationPolicy:1
+		-- `app` is an alias for AppleScript's read-only `application` term on some
+		-- older releases, so keep the NSApplication instance under a distinct name.
+		set breakApplication to applicationClass's sharedApplication()
+		set previousPresentationOptions to breakApplication's presentationOptions()
+		breakApplication's setActivationPolicy:1
 		
 		set screenClass to current application's NSScreen
 		set screenList to screenClass's screens()
@@ -84,10 +86,10 @@ on run
 			my createBreakWindow(theScreen)
 		end repeat
 		
-		app's activateIgnoringOtherApps:true
+		breakApplication's activateIgnoringOtherApps:true
 		try
 			-- Hide Dock/menu bar and suppress ordinary app switching while active.
-			app's setPresentationOptions:1262
+			breakApplication's setPresentationOptions:1262
 		on error restrictionError
 			my writeLog("系统限制未完全启用：" & restrictionError)
 		end try

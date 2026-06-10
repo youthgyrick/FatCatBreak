@@ -95,8 +95,8 @@ expected = {
     'CFBundleIdentifier': 'com.hellocodex.fatcatbreak',
     'CFBundleName': '胖猫休息',
     'CFBundleDisplayName': '胖猫休息',
-    'CFBundleShortVersionString': '1.0.8',
-    'CFBundleVersion': '9',
+    'CFBundleShortVersionString': '1.0.9',
+    'CFBundleVersion': '10',
     'LSUIElement': True,
     'NSHighResolutionCapable': True,
 }
@@ -112,6 +112,11 @@ fi
 
 if rg -n "'s[[:space:]]+bounds\(\)" "$ROOT/Native/main.applescript"; then
   echo "错误：bounds 是旧版 AppleScript 的保留术语，不能直接作为无参 Objective-C 方法调用。" >&2
+  exit 1
+fi
+
+if rg -n '^[[:space:]]*(property[[:space:]]+app[[:space:]]*:|set[[:space:]]+app[[:space:]]+to|app.s)' "$ROOT/Native/main.applescript"; then
+  echo "错误：app 会被旧版 AppleScript 解析为只读的 application 术语。" >&2
   exit 1
 fi
 
