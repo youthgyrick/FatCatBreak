@@ -45,8 +45,8 @@ set_or_add_plist_value() {
 set_or_add_plist_value CFBundleIdentifier string com.hellocodex.fatcatbreak
 set_or_add_plist_value CFBundleName string 胖猫休息
 set_or_add_plist_value CFBundleDisplayName string 胖猫休息
-set_or_add_plist_value CFBundleShortVersionString string 1.0.7
-set_or_add_plist_value CFBundleVersion string 8
+set_or_add_plist_value CFBundleShortVersionString string 1.0.8
+set_or_add_plist_value CFBundleVersion string 9
 set_or_add_plist_value LSUIElement bool true
 set_or_add_plist_value NSHighResolutionCapable bool true
 

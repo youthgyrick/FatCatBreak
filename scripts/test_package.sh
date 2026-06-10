@@ -95,8 +95,8 @@ expected = {
     'CFBundleIdentifier': 'com.hellocodex.fatcatbreak',
     'CFBundleName': '胖猫休息',
     'CFBundleDisplayName': '胖猫休息',
-    'CFBundleShortVersionString': '1.0.7',
-    'CFBundleVersion': '8',
+    'CFBundleShortVersionString': '1.0.8',
+    'CFBundleVersion': '9',
     'LSUIElement': True,
     'NSHighResolutionCapable': True,
 }
@@ -107,6 +107,11 @@ PY
 
 if rg -n "\(\)'s" "$ROOT/Native/main.applescript"; then
   echo "错误：AppleScriptObjC 中重新出现了旧版解析器不支持的链式调用。" >&2
+  exit 1
+fi
+
+if rg -n "'s[[:space:]]+bounds\(\)" "$ROOT/Native/main.applescript"; then
+  echo "错误：bounds 是旧版 AppleScript 的保留术语，不能直接作为无参 Objective-C 方法调用。" >&2
   exit 1
 fi
 

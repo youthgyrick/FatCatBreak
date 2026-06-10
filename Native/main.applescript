@@ -33,7 +33,9 @@ on createBreakWindow(theScreen)
 	set configurationAllocation to configurationClass's alloc()
 	set configuration to configurationAllocation's init()
 	set contentView to theWindow's contentView()
-	set contentFrame to contentView's bounds()
+	-- `bounds` is an AppleScript terminology keyword on older releases. Using
+	-- the content view's frame avoids the parser treating bounds() as a property.
+	set contentFrame to contentView's frame()
 	set webViewClass to current application's WKWebView
 	set webViewAllocation to webViewClass's alloc()
 	set webView to webViewAllocation's initWithFrame:contentFrame configuration:configuration
