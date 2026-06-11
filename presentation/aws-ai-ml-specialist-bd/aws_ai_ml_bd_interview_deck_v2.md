@@ -4,7 +4,7 @@
 > - 正文说明尽量使用中文短句，减少口号化表达。  
 > - AI / Cloud / Architecture 相关专业词汇保留英文。  
 > - 架构图建议在 HTML/PPT 中重新绘制，不要直接使用 ASCII 图。  
-> - 建议输出顺序：Emotibot → Convertlab → XiaoIce → Summary。
+> - 建议输出顺序：按Page顺序输出。
 
 ---
 
@@ -48,11 +48,11 @@ Amazon Web Services
 
 它需要能同时理解：
 
-- 客户业务问题
-- AI/ML 产品能力
-- 企业 IT 环境
-- GTM 和竞争策略
-- 从 Pilot 到 Production 的路径
+- 客户业务问题 （需求分析）
+- AI/ML 产品 （带过产研）
+- 企业 IT 环境 （一直深耕2B）
+- GTM 和竞争策略 （竞品分析，AI趋势，售前策略）
+- 从 Pilot 到 Production 的路径 （蹲过很多现场）
 
 ---
 
@@ -75,9 +75,6 @@ Amazon Web Services
 我既能和客户高管讨论业务价值，  
 也能和技术团队讨论架构、数据、模型和落地风险。
 
----
-
-# SECTION 1 — Emotibot
 
 ---
 
@@ -91,31 +88,26 @@ Product Director / AICC & Voice AI Solutions
 
 ---
 
-## 这段经历为什么重要
+## 竹间的产品线
 
-竹间的项目更接近 AWS AI/ML BD 的核心场景：
+- BotFactory Platform （训练平台+Agent平台）
+- AI Contact Center （行业应用）
+- Voice Assitant （客户定制应用） 
+- SaaS + Private Deployment （交付方式）
+- KA行业，包括银行、保险、手机、汽车、互联网、IT管理等
 
-- 企业级 AI Platform
-- AI Contact Center
-- Voice AI
-- Workflow Integration
-- SaaS + Private Deployment
-- 大客户售前和交付
-- 与 IBM / Microsoft / Alibaba 等方案竞争
-
----
+--
 
 ## Core Capabilities
 
 - BotFactory Platform
 - FAQ Engine
-- Multi-turn Dialogue
-- Entity Extraction
+- Task Engine
+- NLP （Intent、NER、Emotion）
 - Knowledge Graph
-- Voice Bot
-- Agent Assist
-- Smart QA
-- Long-text Understanding
+- Voice Assistant Skill
+- AICC（外呼、坐席助手、陪练、质检）
+- Long-text Understanding（知识库检索、VOC舆情分析、长文本或表单理解）
 
 ---
 
@@ -130,11 +122,12 @@ Omnichannel Access Layer
         │
         ▼
 BotFactory AI Platform
+        ├── Orchestrator
         ├── FAQ Engine
-        ├── Multi-turn Dialogue
+        ├── Task Engine
         ├── Entity Extraction
         ├── Knowledge Graph
-        └── Workflow Engine
+        └── Human in the loop
         │
         ▼
 Enterprise Systems
@@ -143,19 +136,19 @@ HR / ITSM / CRM / ERP
 
 ---
 
-## PAGE 4 — Emotibot STAR Case
+## PAGE 4 — Emotibot Customer Case
 
-# STAR Case — BotFactory Enterprise AI Platform
+# Customer Case — 某为 Enterprise AI Platform
 
 ## Situation
 
-客户想引入 AI，但常见问题很明显：
+客户IT流程部门想引入 AI，考察了多家供应商后，关键需求指标：
 
-- FAQ Bot 很难扩展
-- NLP 能力分散在不同团队
-- 私有化部署要求高
-- 对接企业系统成本高
-- 多场景上线速度慢
+- 支持私有部署
+- 支持内部员工持续运营知识+AI流程
+- FAQ的准确率
+- NER的准确率
+- 支持二次开发
 
 ---
 
@@ -165,28 +158,21 @@ HR / ITSM / CRM / ERP
 而是做一个可复用的平台。
 
 平台需要支持：
-
-- SaaS
 - Private Deployment
-- 多行业场景
+- 多行业场景（IT Helpdesk，财务，行政，人事，销售，客服）
 - 多算法能力统一接入
 - 面向大客户的快速 POC
+- 客户技术人员能上手亲自配置
+- QA、意图、NER，识别准确率要求高
 
 ---
 
 ## Action
 
-我们把多个算法能力整合成 BotFactory Platform。
-
-核心模块包括：
-
-- FAQ Engine
-- Dialogue Engine
-- Entity Extraction
-- Knowledge Graph
-- Workflow Orchestration
-- Admin Console
-- Scenario Template
+1，客户现场私有部署全套Botfactory
+2，培训客户如何扩写语料提升模型精度
+3，设计有难度的Task（比如报销、会议预约中的抽取实体）
+4，指导客户如何调用外部系统数据
 
 ---
 
@@ -203,20 +189,20 @@ HR / ITSM / CRM / ERP
 
 重点放在：
 
-- 中文 NLP 理解能力
-- 多轮对话可定制
-- 私有化部署
-- 更短交付周期
+- 中文 NLP 理解能力（QA和NER，引导测试集）
+- 多轮对话可定制（在对话流中打通某为内部系统数据）
+- 私有化部署（并商定按年付租用费）
+- 更短交付周期 （POC做完，客户已经可以上线查工资/查报销/预约会议室）
 - 可量化的识别准确率
 
 ---
 
 ## Result
-
-- 年度订单突破 RMB 100M
+整个BotFactory产品（包含AICC业绩）
+- 年度订单突破 RMB 100M（KA占比90%，SMB占比10%）
 - 成为国内同类产品领先方案
-- 识别准确率较行业基线提升约 15%
-- 支撑金融、银行、制造等行业客户落地
+- 在同等数据下，识别准确率较行业基线提升约 6-15%
+- 开放Core SDK给若干家合作伙伴实施
 
 ---
 
@@ -228,16 +214,16 @@ HR / ITSM / CRM / ERP
 
 ---
 
-## 当下客户的新刚需
+## 当时客户的刚需
 
-### 1. 客户不再接受生硬的 IVR
-
-过去的 IVR 和 FAQ Bot 交互割裂。  
-客户现在希望对话更自然。
+### 1. AI呼叫一直存在，但无法做到任务型呼叫
+市面上的外呼以通知类为主，但遇到需要多轮和确认信息的都做不好。
+例如，信用卡M1阶段催收（身份确认、还款意向识别，延期方案确认等）
+同样IVR都是按键选择+录音播放，无法做到收集信息
+例如：海底捞订餐（几人位，包房，有无小孩...）
 
 需要：
-
-- Natural Conversation
+- Conversation Understanding 
 - Context Memory
 - Multi-turn Dialogue
 - Personalized Response
@@ -245,16 +231,15 @@ HR / ITSM / CRM / ERP
 ---
 
 ### 2. 企业希望 AI 帮助坐席，而不是替代一切
-
 很多客户不敢一次性全自动化。  
 更可行的路径是先增强坐席能力。
 
 典型场景：
 
-- Real-time Agent Assist
+- Real-time Agent Assist（转录、SmartQA、SOP检查）
 - Knowledge Retrieval
 - Auto Summary
-- Smart QA
+- Auto Tag（Risk，Profile...）
 - Next Best Action
 
 ---
@@ -263,7 +248,6 @@ HR / ITSM / CRM / ERP
 
 客户真正关心的是：  
 AI 能不能完成动作。
-
 例如：
 
 - 查询订单
@@ -325,18 +309,19 @@ CRM / ERP / Ticket / Order Systems
 很多企业已经做过 Bot。  
 但继续扩展时会遇到三个问题：
 
-- 只能回答，不能执行
-- 每个场景都要重复开发
-- 缺少统一治理和监控
+- Workflow开发成本太高，Tool Calling不灵活
+- 对于小模型来说，当意图到达500以上后，存在准确率下降问题
+- QA是预设定的，无法像LLM+知识库那样即时生成答案
+- 缺少企业级的Agentic框架，来支持任务的计划、执行、检查、回复
+
 
 ---
 
 ## 当前必须升级的刚需
 
 ### 1. 从 Chatbot 升级到 AI Agent
-
 客户不只要问答。  
-他们需要 AI 能调用工具、处理流程。
+他们需要 AI 能调用工具、处理流程
 
 ---
 
@@ -389,8 +374,6 @@ Traditional Workflow Bot
         ↓
 RAG Assistant
         ↓
-AI Copilot
-        ↓
 AI Worker / AI Agent
 ```
 
@@ -404,88 +387,11 @@ AI Worker / AI Agent
 - 支持跨部门扩展
 - 保留企业治理和安全边界
 
----
-
-## PAGE 7 — Enterprise AI Adoption Insight
-
-# Enterprise AI Adoption Insight
-
-## 我在企业项目中的一个判断
-
-客户的问题通常不是：  
-“哪个模型最好”。
-
-更常见的问题是：
-
-- 现有系统怎么接进去
-- 谁负责数据和权限
-- 怎么从 POC 进入生产
-- 如何证明 ROI
-- 后续如何持续运营
 
 ---
 
-## 企业 AI 项目常见卡点
 
-### 1. Pilot 很多，但很难 Scale
-
-原因通常是：
-
-- 每个项目单独做
-- 缺少统一平台
-- 没有标准评估方法
-- 没有统一权限和日志
-
----
-
-### 2. AI 能回答，但不能进入 Workflow
-
-很多项目停在问答。  
-但真正的业务价值在动作。
-
-例如：
-
-- 调系统
-- 发通知
-- 建工单
-- 触发审批
-- 写回业务系统
-
----
-
-### 3. 业务部门期待很高，IT 部门担心风险
-
-AI 项目要落地，必须同时解决：
-
-- 业务效果
-- 安全
-- 合规
-- 权限
-- 稳定性
-- 成本
-
----
-
-## AWS 的机会
-
-AWS 的价值不是只提供一个模型。  
-而是提供企业可落地的一整套能力：
-
-- Amazon Bedrock
-- Amazon SageMaker
-- Bedrock AgentCore
-- Knowledge Bases for Bedrock
-- OpenSearch
-- IAM / Guardrails / CloudWatch
-- Lambda / Step Functions
-
----
-
-# SECTION 2 — Convertlab
-
----
-
-## PAGE 8 — Convertlab Overview
+## PAGE 7 — Convertlab Overview
 
 # Convertlab — Data + AI + Predictive Intelligence
 
@@ -495,12 +401,8 @@ Product Director / AI HUB
 
 ---
 
-## 这段经历为什么重要
-
-Convertlab 的项目更贴近 AWS AI/ML 中的 Data + AI 场景。
-
-重点不是“做一个模型”。  
-而是把企业已有数据转成可执行的营销决策。
+## Convertlab 的核心产品和解决方案
+AI Hub（Industry based FeatureStore和自动训练）
 
 ---
 
@@ -513,7 +415,7 @@ Convertlab 的项目更贴近 AWS AI/ML 中的 Data + AI 场景。
 - Customer Segmentation
 - Campaign Optimization
 - Dashboard
-- AWS SageMaker
+- AWS SageMaker（某项目使用）
 
 ---
 
@@ -539,9 +441,9 @@ Marketing Dashboard / Campaign Engine
 
 ---
 
-## PAGE 9 — Convertlab STAR Case
+## PAGE 8 — Convertlab Customer Case
 
-# STAR Case — CIE Precision Marketing Platform
+# Customer Case — 某迪 CIE Platform
 
 ## Situation
 
@@ -609,53 +511,81 @@ Marketing Dashboard / Campaign Engine
 
 ---
 
-## PAGE 10 — Convertlab AWS Modernization
+## PAGE 9 — Convertlab AWS Modernization
 
 # AWS Modernization — Real-time AI Marketing Platform
 
 ## 当前客户的新刚需
 
-### 1. 从历史分析走向实时预测
+### 从人工 ETL 开发走向 AI-assisted Data Workflow
 
-过去看报表。  
-现在客户希望在用户行为发生后，马上做判断。
+过去：字段 mapping，Transformation rule，SQL 编写，Pipeline 调试
+大量依赖 Data Engineer 手工完成。
+
+现在客户开始希望：
+AI 能帮助生成和维护数据流程。
+例如：
+根据字段说明生成 mapping
+根据自然语言生成 transformation logic
+自动生成 SQL / ETL code
+自动识别字段关系
+加速数据迁移和 pipeline 开发
+
+---
+
+### 2. 从人工 Campaign Workflow 走向 AI-assisted Journey Orchestration
+
+过去：Campaign 配置高度依赖人工：
+Audience Selection，Tag Mapping，Channel Configuration，Branch Logic，Wait Strategy，Engagement Workflow
+大量流程需要运营和工程师协同完成。
+
+现在客户开始希望：
+AI 能帮助生成和优化营销流程。
 
 例如：
-
-- 推荐内容
-- 推送优惠
-- 流失提醒
-- 客群调整
-
----
-
-### 2. 从人工配置 Campaign 走向 AI-assisted Campaign
-
-营销团队希望 AI 帮助完成：
-
-- Audience Segment
-- Campaign Strategy
-- Content Suggestion
-- Personalization
-- Performance Analysis
+根据自然语言生成 Campaign
+自动推荐 Audience Segment
+自动生成 Workflow Logic
+动态调整 Engagement Strategy
+根据用户行为实时优化 Journey
 
 ---
 
-### 3. 从 CDP 走向 Predictive Intelligence
+### 3. 从历史分析走向 Real-time Prediction
 
-很多客户已经有数据平台。  
-下一步要回答的是：
+过去：
+系统主要分析历史数据。
 
-- 这个用户接下来可能做什么
-- 我现在应该触达谁
-- 应该给什么权益
-- 哪个动作最可能带来转化
+现在客户希望：
+
+实时预测用户行为
+动态调整推荐和优惠
+根据实时状态触发 Engagement
 
 ---
 
 ## Proposed AWS Architecture
 
 ```text
+Business User / Marketing Ops
+             │
+             ▼
+Natural Language Requirement
+(ELT rules / Campaign goal / Journey rule)
+             │
+             ▼
+Amazon Bedrock Agent
+             │
+ ┌───────────┼────────────────┐
+ ▼           ▼                ▼
+ELT Code     Campaign         Validation
+Generator    Workflow         & Review
+             Generator
+             │
+             ▼
+Metadata / Schema / Rule Repository
+             │
+             ▼
 Customer App / CRM / CDP
              │
              ▼
@@ -665,7 +595,7 @@ Amazon Kinesis
 Amazon S3 Data Lake
              │
              ▼
-AWS Glue ETL
+AWS Glue / Generated ELT Jobs
              │
              ▼
 SageMaker Feature Store
@@ -677,7 +607,10 @@ SageMaker Training Pipeline
 Real-time Inference Endpoint
              │
              ▼
-Campaign / Recommendation Engine
+AI-assisted Journey Orchestration
+             │
+             ▼
+Campaign / Recommendation / Engagement Channels
 ```
 
 ---
@@ -700,86 +633,14 @@ Campaign / Recommendation Engine
 ## Future Expansion
 
 ```text
-Predictive AI
+Manual Workflow
       ↓
-AI Recommendation
+AI-assisted Data Workflow
       ↓
-Marketing Copilot
+Real-time Decision
       ↓
-Autonomous Campaign Agent
+AI-assisted Campaign Journey
 ```
-
----
-
-## PAGE 11 — Data + AI BD Insight
-
-# Data + AI BD Insight
-
-## 一个重要判断
-
-很多企业已经建了 CDP、Data Lake 或 BI。  
-但业务部门仍然觉得“不够有用”。
-
-原因是：
-
-数据系统经常停在“解释过去”。  
-业务更需要“判断下一步”。
-
----
-
-## 从 BD 角度看，客户容易被打动的点
-
-### 1. 用业务指标讲 AI
-
-不要先讲模型。  
-先讲：
-
-- 转化率
-- 留存率
-- 客单价
-- 营销成本
-- 人群命中率
-
----
-
-### 2. 用 POC 缩短决策周期
-
-客户不一定相信大方案。  
-但愿意看一个清晰 POC：
-
-- 一个场景
-- 一组数据
-- 一个模型
-- 一个业务指标
-- 一个对照结果
-
----
-
-### 3. 把 AI 做成可复用能力
-
-单个模型价值有限。  
-更大的价值来自：
-
-- Feature Store
-- MLOps
-- Reusable Pipeline
-- Dashboard
-- Campaign Integration
-
----
-
-## AWS Opportunity
-
-AWS 可以把客户从“数据平台”带到“预测平台”：
-
-- S3 / Glue / Kinesis 负责数据基础
-- SageMaker 负责训练、特征和推理
-- QuickSight 负责业务可见性
-- Bedrock 负责新的营销 Copilot 和内容生成
-
----
-
-# SECTION 3 — XiaoIce
 
 ---
 
@@ -793,15 +654,9 @@ Director of Products & Solutions
 
 ---
 
-## 这段经历为什么重要
+## 小冰的核心产品
+数字人产品，应用于口播短视频，24小时直播，企业品牌宣传，企业数字人名片
 
-小冰项目代表的是 AI 在客户体验层的应用。
-
-它不是后台系统，  
-而是直接面对终端用户。
-
-这类项目的关键不是“能不能回答”，  
-而是“是否符合品牌体验”。
 
 ---
 
@@ -810,7 +665,6 @@ Director of Products & Solutions
 - Virtual Human
 - Multi-turn Dialogue
 - Knowledge Q&A
-- Intent Recognition
 - Emotional Interaction
 - TTS / Brand Voice
 - Intelligent Customer Service
@@ -841,359 +695,251 @@ TTS / Virtual Human Rendering
 
 ---
 
-## PAGE 13 — XiaoIce STAR Case
+## PAGE 13 — XiaoIce Customer Case
 
-# STAR Case — European Beauty Brand AI Customer Service
+# Customer Case — Florasis AI Brand Experience Project
 
 ## Situation
 
-客户是一家欧洲美妆品牌。  
-他们希望升级智能客服体验。
+某西子希望尝试新的品牌展示方式。
 
-传统客服系统的问题是：
+传统广告和宣传视频成本高，制作周期长。
+同时，品牌希望在直播、电商和社交媒体场景中，探索更数字化的互动体验。
 
-- FAQ 感太强
-- 回复不够自然
-- 很难体现品牌调性
-- 多轮对话能力有限
-- 缺少有记忆感的互动体验
+客户当时关注几个方向：
 
-竞争对手包括：
-
-- Alibaba Cloud
-- Ronglian
-- Huanxin
+* 品牌声音的一致性
+* 更年轻化的互动形式
+* 虚拟形象展示
+* 更低的视频制作成本
+* 更高频的内容生产能力
 
 ---
 
 ## Task
 
-我的任务是主导售前过程：
+我的职责是负责整体方案设计和售前推进，包括：
 
-- 方案撰写
-- 技术演示
-- 招投标支持
-- Demo 设计
-- 客户需求澄清
-- 与技术团队协同落地
+* 客户需求沟通
+* AI 方案设计
+* Demo 演示
+* 虚拟形象方向讨论
+* AI Voice Clone 展示方案
+* 展示视频脚本和体验设计
+* 与算法和交付团队协同
+
+项目目标不是做一个普通 AI 客服。
+而是让客户看到：
+
+# AI 如何进入品牌内容和互动体验。
 
 ---
 
 ## Action
 
-我们没有把它定义成普通客服 Bot。  
-而是定义为：
+项目核心包括三个部分：
 
-# AI Brand Assistant
+### 1. Voice Clone
 
-核心设计包括：
+基于品牌声音素材，生成可复用的 AI Voice。
 
-- 品牌语气
-- 情绪化交互
-- 多轮对话
-- 定制 TTS
-- 虚拟人体验
-- 知识问答
+重点关注：
+
+* 声音相似度
+* 情绪表达
+* 中文语气自然度
+* 品牌风格一致性
+
+---
+
+### 2. Virtual Human Experience
+
+设计虚拟形象展示方案。
+
+包括：
+
+* 虚拟人形象方向
+* 对话体验
+* 展示动作
+* 品牌风格适配
 
 ---
 
 ## Competitive Strategy
 
-竞争对手更偏传统客服系统。  
-他们强调工单、FAQ 和坐席流程。
+当时很多方案仍然偏传统数字人展示：
 
-我们的差异化是：
+* 动作固定（口播视频为主）
+* 互动性弱
+* 更像预录视频
 
-- 品牌声音一致性
-- 情绪化互动
-- 多轮对话体验
-- 虚拟人能力
-- 更强的客户感知
+我们的重点在如何设计面向某西子在社交媒体宣传方向，具有审美要求的数字人。
+
+# 品牌体验的一致性。
+
+我们更强调：
+
+* 声音风格
+* 品牌表达
+* 更多、更自然的动作
+* 内容生成能力
+* 更低的内容生产成本
 
 ---
 
 ## Result
 
-- 赢得客户签约
-- 与传统客服 SaaS 形成差异化
-- 帮助客户看到 AI 在品牌体验中的价值
-- 验证了“AI + Brand Experience”的商业可行性
+* 完成客户 Demo 和方案展示
+* 帮助客户验证 AI 品牌互动方向
+* 让客户看到 AI 在内容生产和品牌体验中的潜力
+* 积累了 Voice Clone 和 Virtual Human 的项目经验
+* 为后续 AI Engagement 场景提供参考
 
 ---
+## PAGE 14 — How I Would Rebuild This with AWS Agentic AI Framework
 
-## PAGE 14 — XiaoIce AWS Modernization
+## 一个新的变化
 
-# AWS Modernization — AI Engagement Platform
+过去：数字人项目通常是：
+
+* 单次制作
+* 人工流程
+* 多工具手工协作
+
+例如：
+
+* 文案团队写脚本
+* 视频团队做素材
+* 配音团队处理声音
+* 运营团队修改内容
+* 外包团队负责剪辑
+
+整个流程高度依赖人工协同。
+
+---
 
 ## 当前客户的新刚需
 
-### 1. 客户期待更自然的互动
+### 1. 从单次内容制作走向 AI-assisted Content Pipeline
 
-用户已经习惯 ChatGPT-like Experience。  
-企业客服如果仍然像 FAQ，会显得落后。
+客户希望：
 
----
-
-### 2. 企业需要统一管理知识和品牌表达
-
-品牌方不只关心答案是否正确。  
-还关心语气、边界和一致性。
+* 更低的视频制作成本
+* 更快的内容生成速度
+* 多平台内容复用
+* 更高频的营销内容产出
 
 ---
 
-### 3. 企业需要 Multi-model Strategy
+### 2. 从固定工作流走向 Agentic Workflow
 
-不同场景可能适合不同模型。  
-客户不希望被单一模型绑定。
+过去：每一步都需要人工切换工具。
+
+现在客户开始希望：
+
+# AI 能自动协调整个内容生产流程。
+
+例如：
+
+* 自动生成脚本
+* 自动拆分镜头
+* 自动生成配音
+* 自动生成数字人视频
+* 自动完成内容审核
+* 自动发布到不同渠道
 
 ---
 
-## Proposed AWS Architecture
+### 3. 从单工具能力走向 Multi-tool Orchestration
+
+企业已经开始使用很多 AI 工具：
+
+* Voice Clone
+* Avatar Generation
+* Video Rendering
+* Image Generation
+* Subtitle Generation
+
+问题不在“有没有工具”。而在：
+
+# 如何把这些工具串成可运营的平台。
+
+---
+
+## Proposed AWS Agentic Content Production Architecture
 
 ```text
-Customer Channels
-(Web / App / Voice / Avatar)
-           │
-           ▼
-Amazon API Gateway
-           │
-           ▼
-Amazon Bedrock Agents
-           │
- ┌─────────┼─────────┐
- ▼         ▼         ▼
-Claude     Nova      Titan
-           │
-           ▼
-Knowledge Bases for Bedrock
-           │
-           ▼
-Amazon OpenSearch Vector Store
-           │
-           ▼
-CRM / Product / Marketing Systems
+Marketing / Content Team
+              │
+              ▼
+Natural Language Campaign Request
+              │
+              ▼
+Amazon Bedrock Agent
+              │
+ ┌────────────┼─────────────┬─────────────┐
+ ▼            ▼             ▼             ▼
+Script        Storyboard    Review        Publishing
+Generation    Planning      Workflow      Workflow
+              │
+              ▼
+Agentic Tool Orchestration Layer
+              │
+ ┌────────────┼─────────────┬─────────────┐
+ ▼            ▼             ▼             ▼
+Voice Clone   Avatar        Video         Subtitle
+Tool          Tool          Rendering     Tool
+              │
+              ▼
+Brand Knowledge / Product / Campaign Assets
+              │
+              ▼
+Amazon S3 + Metadata Repository
 ```
-
----
-
-## Governance Side Rail
-
-- Guardrails
-- IAM
-- CloudWatch
-- Brand Policy
-- Safety Rules
-- Human Review
 
 ---
 
 ## AWS Service Mapping
 
-| Capability | AWS Service |
-|---|---|
-| Foundation Model | Amazon Bedrock |
-| Agent Workflow | Bedrock Agents |
-| Knowledge Retrieval | Knowledge Bases for Bedrock |
-| Vector Search | Amazon OpenSearch |
-| Voice Output | Amazon Polly |
-| API Integration | API Gateway / Lambda |
-| Governance | Guardrails / IAM |
-| Monitoring | CloudWatch |
+| Capability                 | AWS Service                        |
+| -------------------------- | ---------------------------------- |
+| Agent Workflow             | Amazon Bedrock Agents              |
+| Multi-step Orchestration   | Bedrock AgentCore / Step Functions |
+| Knowledge & Prompt Context | Knowledge Bases for Bedrock        |
+| Asset Storage              | Amazon S3                          |
+| Metadata & Search          | Amazon OpenSearch                  |
+| API Integration            | Lambda / API Gateway               |
+| Monitoring                 | CloudWatch                         |
+| Security & Governance      | IAM / Guardrails                   |
+
+---
+
+## 这个方向更适合 AWS
+
+AWS 不一定提供最强的数字人生成工具。但 AWS 很适合做：
+
+# AI Content Orchestration Platform
+
+核心价值包括：
+
+* Agent Workflow
+* Multi-tool Coordination
+* Scalable Pipeline
+* Enterprise Governance
+* Asset Management
+* API Integration
+* Multi-model Strategy
 
 ---
 
 ## Business Value
 
-- 提升客户互动体验
-- 支持品牌一致性
-- 降低模型切换成本
-- 更容易接入 CRM 和营销系统
-- 为后续 AI Agent 扩展打基础
+* 大幅降低内容生产成本
+* 缩短视频制作周期
+* 支持大规模内容生成
+* 降低对人工流程的依赖
+* 更容易接入企业营销系统
+* 支持未来 AI-native Content Operation
+
 
 ---
-
-# SECTION 4 — Summary
-
----
-
-## PAGE 15 — Enterprise AI Modernization Framework
-
-# Enterprise AI Modernization Framework
-
-## 企业 AI 正在从单点功能走向平台化
-
----
-
-## Evolution Path
-
-```text
-Traditional Software
-          ↓
-Rule-based Automation
-          ↓
-AI Assistant
-          ↓
-RAG Platform
-          ↓
-Agentic AI Platform
-          ↓
-AI-supported Enterprise
-```
-
----
-
-## 我的三个项目对应的企业 AI 层次
-
-| Company | Core Scenario | AWS Relevance |
-|---|---|---|
-| Emotibot | Enterprise AI Platform / Contact Center | Bedrock AgentCore / Connect / Knowledge Bases |
-| Convertlab | Data + AI / Predictive Marketing | SageMaker / S3 / Glue / Kinesis |
-| XiaoIce | Conversational AI / Brand Experience | Bedrock / Agents / OpenSearch / Polly |
-
----
-
-## 共同结论
-
-企业真正需要的不是一个孤立 AI 功能。  
-而是一条清楚的落地路径：
-
-- 从业务问题开始
-- 用 POC 验证价值
-- 用平台承接规模化
-- 用治理保证可控
-- 用指标证明 ROI
-
----
-
-## PAGE 16 — AI/ML BD Methodology
-
-# How I Drive Enterprise AI Adoption
-
-## 我的 AI/ML BD 方法论
-
-```text
-Business Challenge
-        ↓
-AI Opportunity Discovery
-        ↓
-Architecture Workshop
-        ↓
-POC Validation
-        ↓
-Executive Alignment
-        ↓
-Migration Strategy
-        ↓
-Enterprise Scale Adoption
-```
-
----
-
-## 1. Business Reframing
-
-帮助客户重新定义问题。
-
-例如：
-
-从：
-- “我们要做一个客服 Bot”
-
-转向：
-- “我们要降低服务成本，同时提升客户体验”
-
----
-
-## 2. Competitive Positioning
-
-避免陷入单纯功能对比。
-
-重点讲：
-
-- 业务结果
-- 架构可扩展性
-- 部署路径
-- 安全和治理
-- 后续运营成本
-
----
-
-## 3. POC Validation
-
-用小范围 POC 帮客户降低决策风险。
-
-一个好的 POC 应该有：
-
-- 明确业务场景
-- 明确成功指标
-- 明确数据边界
-- 明确上线路径
-
----
-
-## 4. Executive Alignment
-
-高管通常不关心技术细节。  
-他们关心：
-
-- 为什么现在必须做
-- 不做有什么风险
-- 需要投入多少
-- 能带来什么变化
-- 如何分阶段落地
-
----
-
-## PAGE 17 — Why Me
-
-# Why Me for AWS AI/ML Specialist BD
-
-## Enterprise AI Experience
-
-- 50+ enterprise AI projects
-- 8+ years AI/ML product and solution experience
-- Voice AI / NLP / Agent platform
-- Retail / Finance / Manufacturing / Government
-
----
-
-## Business Development Experience
-
-- Executive-level communication
-- Architecture workshop
-- POC design
-- Competitive strategy
-- Deal support
-- Partner coordination
-
----
-
-## AI Platform Perspective
-
-我不是只看单个模型或单个功能。  
-我更关注：
-
-- AI 如何进入业务流程
-- 如何进入生产环境
-- 如何跨部门复用
-- 如何持续优化
-- 如何形成客户长期价值
-
----
-
-## AWS AI Alignment
-
-我的经历和 AWS AI 方向高度一致：
-
-- Amazon Bedrock
-- Amazon SageMaker
-- Bedrock AgentCore
-- Knowledge Bases for Bedrock
-- Amazon Connect
-- Multi-model Strategy
-- Enterprise AI Governance
-
----
-
-## Closing Statement
-
-I help enterprises move from isolated AI pilots to scalable AI platforms that deliver measurable business value.
