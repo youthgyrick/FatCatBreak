@@ -47,3 +47,17 @@ http://localhost:4173/presentation/aws-ai-ml-specialist-bd/
 - GitHub source: `https://github.com/youthgyrick/FatCatBreak/blob/codex/create-html-slide-deck-in-folder/presentation/aws-ai-ml-specialist-bd/aws_ai_ml_bd_interview_deck.md`
 
 源文件位于另一个 GitHub 分支；本目录中的 HTML 已按其中的候选人信息、项目事实和量化成果进行校正。
+
+## v7 演示版本
+
+当前目录还提供两套基于 `aws_ai_ml_bd_interview_deck_v7.md` 的演示：
+
+- `html-deck/`：完整 60 页版本，适合完整面试或详细方案评审。
+- `html-deck-compact/`：紧凑 35 页版本，适合时间较短的面试或 Executive Briefing。
+
+本地访问地址：
+
+```text
+http://localhost:4173/presentation/aws-ai-ml-specialist-bd/html-deck/
+http://localhost:4173/presentation/aws-ai-ml-specialist-bd/html-deck-compact/
+```
