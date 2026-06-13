@@ -332,6 +332,13 @@ button { cursor: pointer; }
 .reference-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
 .reference-symbol { font-family: Georgia, serif; font-size: 32px; font-weight: bold; line-height: 1.2; }
 .reference-name { color: var(--muted); font-size: 13px; }
+.reference-aliases {
+  min-height: 34px;
+  margin-top: 4px;
+  color: #7a6f9b;
+  font-size: 12px;
+  line-height: 1.45;
+}
 .valence { margin-top: 12px; color: var(--primary); font-size: 18px; font-weight: 800; }
 .mastery-stars { margin-top: 6px; color: #e0a23b; font-size: 12px; letter-spacing: 1px; }
 .variable-label {

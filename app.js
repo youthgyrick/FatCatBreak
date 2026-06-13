@@ -33,14 +33,57 @@ const valences = [
 }));
 
 const formulas = [
-  ["H2O", "水"], ["CO2", "二氧化碳"], ["NO2", "二氧化氮"], ["FeO", "氧化亚铁"],
+  ["H2O", "水"], ["CO2", "二氧化碳", ["干冰"]], ["NO2", "二氧化氮"], ["FeO", "氧化亚铁"],
   ["MgO", "氧化镁"], ["HgO", "氧化汞"], ["SO3", "三氧化硫"], ["P2O5", "五氧化二磷"],
   ["SO2", "二氧化硫"], ["Fe2O3", "氧化铁"], ["ZnO", "氧化锌"], ["Al2O3", "氧化铝"],
-  ["CO", "一氧化碳"], ["H2O2", "过氧化氢"], ["CaO", "氧化钙"],
-  ["Fe3O4", "四氧化三铁"], ["MnO2", "二氧化锰"], ["CuO", "氧化铜"]
-].map(([symbol, name]) => ({
-  id: `formula-${symbol}`, symbol, name, category: "formula", subgroup: "formula"
+  ["CO", "一氧化碳", ["有毒气体"]], ["H2O2", "过氧化氢"], ["CaO", "氧化钙", ["生石灰"]],
+  ["Fe3O4", "四氧化三铁"], ["MnO2", "二氧化锰"], ["CuO", "氧化铜"],
+  ["Ca(OH)2", "氢氧化钙", ["熟石灰", "石灰水"]],
+  ["CaCO3", "碳酸钙", ["石灰石", "大理石"]],
+  ["CH4", "甲烷", ["天然气主要成分", "沼气主要成分"]],
+  ["C2H5OH", "乙醇", ["酒精"]],
+  ["H2", "氢气", ["最轻气体", "可燃气体"]],
+  ["O2", "氧气", ["供给呼吸气体", "助燃气体"]],
+  ["N2", "氮气", ["空气中最多的气体"]],
+  ["HCl", "盐酸", ["氢氯酸"]],
+  ["CH3COOH", "乙酸", ["醋酸", "冰醋酸"]],
+  ["KMnO4", "高锰酸钾", ["灰锰氧"]]
+].map(([symbol, name, aliases = []]) => ({
+  id: `formula-${symbol}`, formula: symbol, symbol, name, aliases,
+  category: "formula", subgroup: "formula"
 }));
+
+function normalizeSubstanceKey(value) {
+  return String(value || "").trim().replace(/\s+/g, "").toUpperCase();
+}
+
+// Formula, standard name and every alias all resolve to this same object.
+const substanceAliasMap = new Map();
+formulas.forEach((item) => {
+  [item.formula, item.name, ...item.aliases].forEach((key) => {
+    substanceAliasMap.set(normalizeSubstanceKey(key), item);
+  });
+});
+
+function findSubstance(value) {
+  const key = normalizeSubstanceKey(value);
+  return substanceAliasMap.get(key) || substanceAliasMap.get(key.replace(/0/g, "O")) || null;
+}
+
+function substanceNames(item) {
+  return [item.name, ...item.aliases];
+}
+
+function randomSubstanceName(item) {
+  const names = substanceNames(item);
+  return names[Math.floor(Math.random() * names.length)];
+}
+
+function substanceDetails(item) {
+  return item.aliases.length
+    ? `标准名称：${item.name}\n俗名：${item.aliases.join("、")}\n化学式：${item.formula}`
+    : `标准名称：${item.name}\n化学式：${item.formula}`;
+}
 
 const equations = [
   [1, "镁在氧气中燃烧", "2Mg + O2 → 2MgO", "点燃", "发出耀眼白光，生成白色固体"],
@@ -170,22 +213,35 @@ function buildQuizBank() {
   const formulaQuestions = formulas.flatMap((item) => [
     {
       id: `quiz-formula-forward-${item.symbol}`, type: "formula", category: "formula", subtype: "forward", itemId: item.id,
-      prompt: `${item.name}的化学式是？`, answers: [item.symbol],
+      prompt: `${randomSubstanceName(item)}的化学式是？`, answers: [item.symbol],
       displayAnswer: item.symbol, help: "请正确填写元素符号和数字"
     },
     {
       id: `quiz-formula-reverse-${item.symbol}`, type: "formula", category: "formula", subtype: "reverse", itemId: item.id,
-      prompt: `${item.symbol} 是什么物质？`, answers: [item.name],
+      prompt: `${item.symbol} 是什么物质？`, answers: substanceNames(item),
       displayAnswer: item.name, answerKind: "chinese-name", help: "请填写物质的中文名称"
     }
   ]);
   const equationQuestions = equations.map((item) => ({
     id: `quiz-${item.id}`, type: "equation", category: "equation", subtype: `level-${item.level}`, itemId: item.id, level: item.level,
-    prompt: `请写出“${item.name}”的化学方程式`,
+    prompt: `请写出“${equationPromptName(item)}”的化学方程式`,
     answers: [item.equation], displayAnswer: item.equation,
     help: `条件：${item.condition}`
   }));
   return [...valenceQuestions, ...elementQuestions, ...formulaQuestions, ...equationQuestions];
+}
+
+function equationPromptName(equation) {
+  let name = equation.name;
+  const eligible = formulas.filter((item) =>
+    ["CaCO3", "CaO", "Ca(OH)2", "HCl"].includes(item.formula));
+  eligible.forEach((item) => {
+    item.aliases.forEach((alias) => {
+      if (name.includes(alias)) name = name.replace(alias, item.name);
+    });
+    if (name.includes(item.name)) name = name.replace(item.name, randomSubstanceName(item));
+  });
+  return name;
 }
 
 const quizBank = buildQuizBank();
@@ -222,6 +278,13 @@ function evaluate(question, answer) {
   if (question.type === "equation") {
     return normalizeEquation(answer) === normalizeEquation(question.answers[0]) ? "correct" : "incorrect";
   }
+  if (question.category === "formula") {
+    const submittedSubstance = findSubstance(answer);
+    const expectedSubstance = findSubstance(question.answers[0]);
+    if (submittedSubstance && expectedSubstance && submittedSubstance.id === expectedSubstance.id) {
+      return "correct";
+    }
+  }
   if (question.answerKind === "chinese-name") {
     const normalized = normalizeChineseNameAnswer(answer);
     return question.answers.some((value) => normalizeChineseNameAnswer(value) === normalized) ? "correct" : "incorrect";
@@ -255,10 +318,13 @@ function explainWrongAnswer(input, correctAnswer = "") {
     };
   }
 
-  const formula = formulas.find((item) =>
-    normalizeQuestion(item.symbol) === normalized || normalizeQuestion(item.name) === normalized);
+  const formula = findSubstance(original);
   if (formula) {
-    return { found: true, explanation: `你写的 ${original} 是${formula.name}。` };
+    const aliasText = formula.aliases.length ? `，俗名有${formula.aliases.join("、")}` : "";
+    return {
+      found: true,
+      explanation: `你写的 ${original} 是${formula.name}（${formula.formula}）${aliasText}。`
+    };
   }
 
   const radical = valences.find((item) => item.subgroup === "radical" &&
@@ -345,7 +411,7 @@ const flashcards = [
     reviewQuestionId: `quiz-valence-${item.symbol}`
   })),
   ...formulas.map((item) => ({
-    id: `flash-${item.id}`, front: item.name, hint: "常见化学式",
+    id: `flash-${item.id}`, front: randomSubstanceName(item), hint: "常见名称 / 俗名",
     answer: item.symbol, label: "化学式", category: "formula",
     reviewQuestionId: `quiz-formula-forward-${item.symbol}`
   })),
@@ -498,7 +564,9 @@ function renderReference(filter = "all", search = "") {
   const searchable = [...valences, ...formulas];
   const matched = searchable.filter((item) => {
     const categoryMatch = filter === "all" || item.subgroup === filter;
-    const textMatch = !query || normalizeText(`${item.symbol}${item.name}`).includes(query);
+    const textMatch = !query || normalizeText(
+      `${item.symbol}${item.name}${item.aliases?.join("") || ""}`
+    ).includes(query);
     return categoryMatch && textMatch;
   });
   const errorSymbols = new Set(["Fe", "Cu", "Mn", "Cl", "SO4", "NH4", "Fe3O4", "H2O2"]);
@@ -522,6 +590,9 @@ function renderReference(filter = "all", search = "") {
             <span class="reference-tag">${group === "frequent" ? "易错" : LABELS[item.subgroup]}</span>
             <div class="reference-symbol">${item.symbol}</div>
             <div class="reference-name">${item.name}</div>
+            ${item.aliases?.length
+              ? `<div class="reference-aliases">俗名：${item.aliases.join("、")}</div>`
+              : ""}
             <div class="valence">${item.category === "formula" ? item.symbol : item.valences.join(" / ")}</div>
             <div class="mastery-stars" title="熟练度">${starsText(mastery[progressId])}</div>
           </article>`;
@@ -918,8 +989,9 @@ function submitQuiz() {
   entry.result = result;
   quizSession.total += 1;
   if (result === "correct") {
+    const substance = findSubstanceByQuestion(currentQuizQuestion);
     entry.feedbackText = currentQuizQuestion.answerKind === "chinese-name"
-      ? `回答正确！\n标准名称：${currentQuizQuestion.displayAnswer}`
+      ? `回答正确！\n${substance ? substanceDetails(substance) : `标准名称：${currentQuizQuestion.displayAnswer}`}`
       : `回答正确！\n你的答案：${userAnswer}\n正确答案：${currentQuizQuestion.displayAnswer}`;
     quizSession.correct += 1;
     quizSession.streak += 1;
@@ -947,6 +1019,12 @@ function submitQuiz() {
   renderQuizHistoryEntry();
 }
 
+function findSubstanceByQuestion(question) {
+  return question?.category === "formula"
+    ? formulas.find((item) => item.id === question.itemId) || null
+    : null;
+}
+
 /* -------------------------- Offline question answer ----------------------- */
 function normalizeQuestion(value) {
   return value
@@ -962,14 +1040,35 @@ function extractQuestionCore(input) {
     .replace(/(是什么反应|是何反应|的化合价|常见化合价|是什么|是啥|叫啥|反应)$/g, "");
 }
 
+function canonicalizeSubstanceTerms(value) {
+  let result = normalizeQuestion(value);
+  formulas.forEach((item) => {
+    item.aliases.forEach((alias) => {
+      result = result.replaceAll(normalizeQuestion(alias), normalizeQuestion(item.name));
+    });
+  });
+  return result;
+}
+
 function formatValences(values) {
   return values.join(" 和 ");
 }
 
-function formulaAnswer(item, suggestion = false) {
-  const classification = item.symbol === "H2O2" ? "常见过氧化物" : "常见氧化物";
+function formulaAnswer(item, suggestion = false, matchedText = "") {
   const prefix = suggestion ? `你可能想问的是 ${item.symbol}。\n` : "";
-  return `${prefix}${item.symbol} 是${item.name}。\n它属于${classification}。`;
+  const matchedAlias = item.aliases.find((alias) =>
+    normalizeQuestion(alias) === normalizeQuestion(matchedText));
+  if (matchedAlias === "干冰") {
+    return `${prefix}干冰是二氧化碳（CO2）的固体形式。`;
+  }
+  if (matchedAlias) {
+    return `${prefix}${matchedAlias}是${item.name}（${item.formula}）。` +
+      (item.aliases.length > 1
+        ? `\n其他常见俗名：${item.aliases.filter((alias) => alias !== matchedAlias).join("、")}。`
+        : "");
+  }
+  return `${prefix}${item.formula} 是${item.name}。` +
+    (item.aliases.length ? `\n俗名或生活名称：${item.aliases.join("、")}。` : "");
 }
 
 function valenceAnswer(item, askValenceOnly = false) {
@@ -1092,19 +1191,20 @@ function answerQuestion(input) {
 
   const asksValence = normalized.includes("化合价");
   const asksReaction = normalized.includes("反应") || normalized.includes("浑浊") || normalized.includes("现象");
+  const canonicalCore = canonicalizeSubstanceTerms(core);
   const equation = equations.find((item) => {
-    const name = normalizeQuestion(item.name);
+    const name = canonicalizeSubstanceTerms(item.name);
     const phenomenon = normalizeQuestion(item.phenomenon);
-    return name === core || name.includes(core) || phenomenon.includes(core);
+    return name === canonicalCore || name.includes(canonicalCore) || phenomenon.includes(core);
   });
   if (equation && (asksReaction || core.length >= 4)) {
     return { found: true, type: "equation", answer: equationAnswer(equation) };
   }
 
-  const formula = formulas.find((item) =>
-    normalizeQuestion(item.symbol) === core || normalizeQuestion(item.name) === core
-  );
-  if (formula) return { found: true, type: "formula", answer: formulaAnswer(formula) };
+  const formula = findSubstance(core);
+  if (formula) {
+    return { found: true, type: "formula", answer: formulaAnswer(formula, false, core) };
+  }
 
   const radical = valences.find((item) => item.subgroup === "radical" &&
     (normalizeQuestion(item.symbol) === core || normalizeQuestion(item.name) === core));
