@@ -31,6 +31,17 @@ body {
 
 button, input { font: inherit; }
 button { cursor: pointer; }
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 
 .app-header {
   background: var(--surface);
@@ -526,6 +537,56 @@ button { cursor: pointer; }
 .feedback.partial { color: var(--yellow); background: var(--yellow-soft); }
 #next-question { margin-top: 10px; }
 
+.chat-shell { width: min(780px, 100%); margin: 0 auto; overflow: hidden; }
+.chat-history {
+  height: 430px;
+  padding: 24px;
+  overflow-y: auto;
+  background: linear-gradient(180deg, #f8faff, #f5f7fc);
+  border-bottom: 1px solid var(--line);
+}
+.chat-message { display: flex; margin-bottom: 15px; }
+.chat-message.user { justify-content: flex-end; }
+.chat-bubble {
+  max-width: min(78%, 560px);
+  padding: 12px 15px;
+  color: var(--ink);
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 5px 16px 16px 16px;
+  box-shadow: 0 5px 14px rgba(45,59,96,.05);
+  white-space: pre-wrap;
+}
+.chat-message.user .chat-bubble {
+  color: white;
+  background: var(--primary);
+  border-color: var(--primary);
+  border-radius: 16px 5px 16px 16px;
+}
+.question-examples { padding: 12px 18px 0; display: flex; align-items: center; gap: 7px; overflow-x: auto; }
+.question-examples span { flex: 0 0 auto; color: var(--muted); font-size: 12px; }
+.question-examples button {
+  flex: 0 0 auto;
+  padding: 5px 9px;
+  color: var(--primary);
+  background: var(--primary-soft);
+  border: 0;
+  border-radius: 14px;
+  font-size: 12px;
+}
+.chat-composer { padding: 14px 18px 18px; display: grid; grid-template-columns: 1fr auto; gap: 10px; }
+.chat-composer input {
+  min-width: 0;
+  padding: 11px 13px;
+  color: var(--ink);
+  background: #fafbfe;
+  border: 2px solid var(--line);
+  border-radius: 11px;
+  outline: 0;
+}
+.chat-composer input:focus { border-color: #9eafea; box-shadow: 0 0 0 4px var(--primary-soft); }
+.local-note { color: var(--muted); text-align: center; font-size: 12px; }
+
 .legend { display: flex; gap: 15px; color: var(--muted); font-size: 13px; }
 .dot { display: inline-block; width: 8px; height: 8px; margin-right: 5px; border-radius: 50%; }
 .dot.due { background: var(--red); }
@@ -618,6 +679,10 @@ footer { padding: 25px; color: #929bad; text-align: center; font-size: 13px; }
   .quiz-card { padding: 27px 20px 30px; }
   .quiz-stats { width: 100%; }
   .quiz-stats span { flex: 1; text-align: center; white-space: nowrap; }
+  .chat-history { height: 390px; padding: 16px 12px; }
+  .chat-bubble { max-width: 88%; }
+  .question-examples { padding-inline: 12px; }
+  .chat-composer { padding: 12px; }
   .mistake-card { grid-template-columns: 58px 1fr; padding: 17px 14px; gap: 12px; }
   .mistake-symbol { font-size: 29px; }
   .mistake-actions { justify-content: stretch; }

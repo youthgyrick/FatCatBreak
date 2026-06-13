@@ -88,7 +88,8 @@ const LABELS = {
 const STORAGE = {
   mistakes: "chem-memory-mistakes-v2",
   stats: "chem-memory-stats-v2",
-  equations: "chem-memory-equation-progress-v1"
+  equations: "chem-memory-equation-progress-v1",
+  chat: "chem-memory-chat-history-v1"
 };
 const EQUATION_UNLOCK_ATTEMPTS = 8;
 const EQUATION_UNLOCK_ACCURACY = 0.8;
@@ -118,6 +119,8 @@ let equationProgress = StorageService.load(STORAGE.equations, {
   unlockedLevel: 1,
   levels: { 1: { attempts: 0, correct: 0 }, 2: { attempts: 0, correct: 0 }, 3: { attempts: 0, correct: 0 } }
 });
+const storedChatHistory = StorageService.load(STORAGE.chat, []);
+let chatHistory = Array.isArray(storedChatHistory) ? storedChatHistory : [];
 
 function todayKey() {
   const date = new Date();
@@ -638,6 +641,167 @@ function submitQuiz() {
     `${Math.round(quizSession.correct / quizSession.total * 100)}%`;
 }
 
+/* -------------------------- Offline question answer ----------------------- */
+function normalizeQuestion(value) {
+  return value
+    .trim()
+    .replace(/\s+/g, "")
+    .replace(/[？?。！!，,；;：:“”"'（）()]/g, "")
+    .toUpperCase();
+}
+
+function extractQuestionCore(input) {
+  return normalizeQuestion(input)
+    .replace(/^(请问|请告诉我|我想知道)/, "")
+    .replace(/(是什么反应|是何反应|的化合价|常见化合价|是什么|是啥|叫啥|反应)$/g, "");
+}
+
+function formatValences(values) {
+  return values.join(" 和 ");
+}
+
+function formulaAnswer(item, suggestion = false) {
+  const classification = item.symbol === "H2O2" ? "常见过氧化物" : "常见氧化物";
+  const prefix = suggestion ? `你可能想问的是 ${item.symbol}。\n` : "";
+  return `${prefix}${item.symbol} 是${item.name}。\n它属于${classification}。`;
+}
+
+function valenceAnswer(item, askValenceOnly = false) {
+  const values = formatValences(item.valences);
+  if (item.subgroup === "radical") {
+    return `${item.symbol} 是${item.name}。\n常见化合价是 ${values}。`;
+  }
+  return askValenceOnly
+    ? `${item.symbol} ${item.name}的常见化合价是 ${values}。`
+    : `${item.symbol} 是${item.name}。\n常见化合价是 ${values}。`;
+}
+
+function equationAnswer(item) {
+  return `对应反应是：\n${item.equation}\n条件：${item.condition}\n现象：${item.phenomenon}。`;
+}
+
+function levenshtein(left, right) {
+  const rows = Array.from({ length: left.length + 1 }, () => Array(right.length + 1).fill(0));
+  for (let row = 0; row <= left.length; row += 1) rows[row][0] = row;
+  for (let column = 0; column <= right.length; column += 1) rows[0][column] = column;
+  for (let row = 1; row <= left.length; row += 1) {
+    for (let column = 1; column <= right.length; column += 1) {
+      rows[row][column] = Math.min(
+        rows[row - 1][column] + 1,
+        rows[row][column - 1] + 1,
+        rows[row - 1][column - 1] + (left[row - 1] === right[column - 1] ? 0 : 1)
+      );
+    }
+  }
+  return rows[left.length][right.length];
+}
+
+function commonPrefixLength(left, right) {
+  let length = 0;
+  while (length < left.length && length < right.length && left[length] === right[length]) length += 1;
+  return length;
+}
+
+function fuzzyFormula(core) {
+  if (!core || core.length < 2) return null;
+  const correctedCore = core.replace(/0/g, "O");
+  const ranked = formulas.map((item) => {
+    const candidate = normalizeQuestion(item.symbol);
+    const distance = levenshtein(correctedCore, candidate);
+    const score = distance - commonPrefixLength(correctedCore, candidate) * 0.2;
+    return { item, distance, score };
+  }).sort((left, right) => left.score - right.score);
+  const best = ranked[0];
+  const limit = Math.max(1, Math.floor(Math.max(correctedCore.length, normalizeQuestion(best.item.symbol).length) * 0.4));
+  return best.distance <= limit ? best.item : null;
+}
+
+function answerQuestion(input) {
+  const normalized = normalizeQuestion(input);
+  const core = extractQuestionCore(input);
+  if (!core) {
+    return { found: false, type: "empty", answer: "请先输入一个想了解的化学问题。" };
+  }
+
+  const asksValence = normalized.includes("化合价");
+  const asksReaction = normalized.includes("反应") || normalized.includes("浑浊") || normalized.includes("现象");
+  const equation = equations.find((item) => {
+    const name = normalizeQuestion(item.name);
+    const phenomenon = normalizeQuestion(item.phenomenon);
+    return name === core || name.includes(core) || phenomenon.includes(core);
+  });
+  if (equation && (asksReaction || core.length >= 4)) {
+    return { found: true, type: "equation", answer: equationAnswer(equation) };
+  }
+
+  const formula = formulas.find((item) =>
+    normalizeQuestion(item.symbol) === core || normalizeQuestion(item.name) === core
+  );
+  if (formula) return { found: true, type: "formula", answer: formulaAnswer(formula) };
+
+  const radical = valences.find((item) => item.subgroup === "radical" &&
+    (normalizeQuestion(item.symbol) === core || normalizeQuestion(item.name) === core));
+  if (radical) return { found: true, type: "radical", answer: valenceAnswer(radical, asksValence) };
+
+  const valence = valences.find((item) =>
+    normalizeQuestion(item.symbol) === core || normalizeQuestion(item.name) === core);
+  if (valence) return { found: true, type: "element", answer: valenceAnswer(valence, asksValence) };
+
+  const element = elements.find((item) =>
+    normalizeQuestion(item.symbol) === core || normalizeQuestion(item.name) === core);
+  if (element) {
+    return {
+      found: true,
+      type: "element",
+      answer: `${element.symbol} 是${element.name}，是第 ${element.atomicNumber} 号元素。`
+    };
+  }
+
+  const correctedFormula = fuzzyFormula(core);
+  if (correctedFormula) {
+    return { found: true, type: "suggestion", answer: formulaAnswer(correctedFormula, true) };
+  }
+
+  return {
+    found: false,
+    type: "unknown",
+    answer: "我暂时没有在本地知识库找到这个内容，可以先检查拼写，或以后扩展知识库。"
+  };
+}
+
+function renderChat() {
+  const container = document.querySelector("#chat-history");
+  container.replaceChildren();
+  const messages = chatHistory.length ? chatHistory : [{
+    role: "assistant",
+    text: "你好！我只使用网页内置的化学知识库回答问题。\n你可以问我元素、化合价、原子团、化学式或常见反应。"
+  }];
+  messages.forEach((message) => {
+    const row = document.createElement("div");
+    row.className = `chat-message ${message.role}`;
+    const bubble = document.createElement("div");
+    bubble.className = "chat-bubble";
+    bubble.textContent = message.text;
+    row.appendChild(bubble);
+    container.appendChild(row);
+  });
+  container.scrollTop = container.scrollHeight;
+}
+
+function submitQuestion(prefilledQuestion) {
+  const input = document.querySelector("#ask-input");
+  const question = typeof prefilledQuestion === "string" ? prefilledQuestion : input.value;
+  if (!question.trim()) return;
+  const response = answerQuestion(question);
+  chatHistory.push({ role: "user", text: question.trim() });
+  chatHistory.push({ role: "assistant", text: response.answer, type: response.type });
+  chatHistory = chatHistory.slice(-40);
+  StorageService.save(STORAGE.chat, chatHistory);
+  input.value = "";
+  renderChat();
+  input.focus();
+}
+
 /* ------------------------------ Mistake book ------------------------------ */
 function remainingTime(timestamp) {
   if (!timestamp || timestamp <= Date.now()) return "现在可以复习";
@@ -727,6 +891,20 @@ function bindEvents() {
   document.querySelector("#start-equation-quiz").addEventListener("click", startEquationQuiz);
   document.querySelector("#practice-unlocked-level").addEventListener("click", startEquationQuiz);
 
+  document.querySelector("#send-question").addEventListener("click", () => submitQuestion());
+  document.querySelector("#ask-input").addEventListener("keydown", (event) => {
+    if (event.key === "Enter" && !event.isComposing) submitQuestion();
+  });
+  document.querySelector(".question-examples").addEventListener("click", (event) => {
+    const button = event.target.closest("[data-question]");
+    if (button) submitQuestion(button.dataset.question);
+  });
+  document.querySelector("#clear-chat").addEventListener("click", () => {
+    chatHistory = [];
+    StorageService.save(STORAGE.chat, chatHistory);
+    renderChat();
+  });
+
   document.querySelector("#show-answer").addEventListener("click", () => {
     document.querySelector("#flash-answer").hidden = false;
     document.querySelector("#flash-prompt").hidden = true;
@@ -777,6 +955,7 @@ function initialize() {
   renderElementCards();
   renderMnemonics();
   renderEquationModule();
+  renderChat();
   bindEvents();
   showMiniQuestion("element");
   showMiniQuestion("sequence");

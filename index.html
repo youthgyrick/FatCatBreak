@@ -24,6 +24,7 @@
       <button class="tab" data-tab="equations">化学方程式</button>
       <button class="tab" data-tab="flashcards">闪卡</button>
       <button class="tab" data-tab="quiz">测验</button>
+      <button class="tab" data-tab="ask">问一问</button>
       <button class="tab" data-tab="mistakes">错题本 <span id="mistake-badge" class="tab-badge" hidden>0</span></button>
     </div>
   </nav>
@@ -183,6 +184,32 @@
         <button id="submit-answer" class="button primary wide">提交答案</button>
         <button id="next-question" class="button secondary wide" hidden>下一题</button>
       </div>
+    </section>
+
+    <section id="ask" class="page">
+      <div class="page-intro intro-row">
+        <div>
+          <span class="eyebrow">本地知识库 · 完全离线</span>
+          <h2>问一问</h2>
+          <p>可以询问元素、化合价、原子团、化学式或常见反应，不会连接 AI 或互联网。</p>
+        </div>
+        <button class="button danger-ghost" id="clear-chat">清空对话</button>
+      </div>
+      <div class="chat-shell card">
+        <div id="chat-history" class="chat-history" aria-live="polite"></div>
+        <div class="question-examples">
+          <span>试着问：</span>
+          <button data-question="P2O5 是啥">P2O5 是啥</button>
+          <button data-question="Fe 的化合价">Fe 的化合价</button>
+          <button data-question="石灰水变浑浊是什么反应">石灰水变浑浊</button>
+        </div>
+        <div class="chat-composer">
+          <label class="sr-only" for="ask-input">输入化学问题</label>
+          <input id="ask-input" autocomplete="off" placeholder="例如：SO4 是什么">
+          <button class="button primary" id="send-question">发送</button>
+        </div>
+      </div>
+      <p class="local-note">回答仅来自当前网页内置知识库，可能无法覆盖所有化学问题。</p>
     </section>
 
     <section id="mistakes" class="page">
