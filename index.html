@@ -21,6 +21,7 @@
       <button class="tab" data-tab="reference">速查</button>
       <button class="tab" data-tab="elements">元素记忆</button>
       <button class="tab" data-tab="mnemonic">口诀</button>
+      <button class="tab" data-tab="equations">化学方程式</button>
       <button class="tab" data-tab="flashcards">闪卡</button>
       <button class="tab" data-tab="quiz">测验</button>
       <button class="tab" data-tab="mistakes">错题本 <span id="mistake-badge" class="tab-badge" hidden>0</span></button>
@@ -111,6 +112,33 @@
       </div>
       <div id="mnemonic-list" class="mnemonic-list"></div>
       <aside class="tip-card"><strong>记忆提醒</strong><p>口诀记录的是常见化合价，具体物质中仍要根据化学式判断。</p></aside>
+    </section>
+
+    <section id="equations" class="page">
+      <div class="page-intro intro-row">
+        <div>
+          <span class="eyebrow">分级学习 · 逐步解锁</span>
+          <h2>常见化学方程式</h2>
+          <p>默认从 Level 1 开始；本级至少答 8 题且正确率达到 80%，即可解锁下一级。</p>
+        </div>
+        <button class="button primary" id="start-equation-quiz">练习当前等级</button>
+      </div>
+      <div id="equation-levels" class="level-overview"></div>
+      <div class="equation-toolbar card">
+        <div id="equation-filters" class="filter-row">
+          <button class="filter active" data-level="1">Level 1</button>
+          <button class="filter" data-level="2">Level 2</button>
+          <button class="filter" data-level="3">Level 3</button>
+        </div>
+        <span id="equation-filter-note">基础必背</span>
+      </div>
+      <div id="equation-list" class="equation-list"></div>
+      <div id="equation-locked" class="locked-state card" hidden>
+        <div class="lock-icon">🔒</div>
+        <h3>这个等级尚未解锁</h3>
+        <p id="equation-lock-message">先完成上一级练习并达到 80% 正确率。</p>
+        <button class="button secondary" id="practice-unlocked-level">练习已解锁等级</button>
+      </div>
     </section>
 
     <section id="flashcards" class="page">

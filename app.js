@@ -42,7 +42,36 @@ const formulas = [
   id: `formula-${symbol}`, symbol, name, category: "formula", subgroup: "formula"
 }));
 
-const chemistryData = [...elements, ...valences, ...formulas];
+const equations = [
+  [1, "镁在氧气中燃烧", "2Mg + O2 → 2MgO", "点燃", "发出耀眼白光，生成白色固体"],
+  [1, "铁在氧气中燃烧", "3Fe + 2O2 → Fe3O4", "点燃", "剧烈燃烧、火星四射，生成黑色固体"],
+  [1, "红磷在氧气中燃烧", "4P + 5O2 → 2P2O5", "点燃", "产生大量白烟，放出热量"],
+  [1, "硫在氧气中燃烧", "S + O2 → SO2", "点燃", "发出明亮蓝紫色火焰，生成有刺激性气味的气体"],
+  [1, "氢气在氧气中燃烧", "2H2 + O2 → 2H2O", "点燃", "发出淡蓝色火焰，放出热量"],
+  [1, "水的电解", "2H2O → 2H2 + O2", "通电", "正、负极产生气泡，气体体积比约为 1∶2"],
+  [1, "二氧化碳使澄清石灰水变浑浊", "CO2 + Ca(OH)2 → CaCO3↓ + H2O", "无", "澄清石灰水变浑浊，产生白色沉淀"],
+  [1, "过氧化氢分解制氧气", "2H2O2 → 2H2O + O2", "MnO2 作催化剂", "产生大量气泡，带火星木条复燃"],
+  [2, "碳在氧气中充分燃烧", "C + O2 → CO2", "点燃", "发出白光，放出热量"],
+  [2, "碳在氧气中不充分燃烧", "2C + O2 → 2CO", "点燃", "生成无色有毒气体"],
+  [2, "生石灰与水反应", "CaO + H2O → Ca(OH)2", "无", "放出大量热，生成白色固体"],
+  [2, "二氧化碳与水反应", "CO2 + H2O → H2CO3", "无", "生成碳酸，溶液呈酸性"],
+  [2, "碳酸分解", "H2CO3 → H2O + CO2", "无", "产生二氧化碳气体"],
+  [2, "二氧化碳与碳反应", "CO2 + C → 2CO", "高温", "生成一氧化碳"],
+  [2, "碳酸钙分解", "CaCO3 → CaO + CO2", "高温", "生成氧化钙并放出二氧化碳"],
+  [2, "碳还原氧化铜", "C + 2CuO → 2Cu + CO2", "高温", "黑色粉末逐渐变红，生成能使石灰水变浑浊的气体"],
+  [3, "一氧化碳还原氧化铜", "CO + CuO → Cu + CO2", "加热", "黑色氧化铜逐渐变红，生成二氧化碳"],
+  [3, "氢气还原氧化铜", "H2 + CuO → Cu + H2O", "加热", "黑色氧化铜逐渐变红，管壁出现水珠"],
+  [3, "高锰酸钾制氧气", "2KMnO4 → K2MnO4 + MnO2 + O2", "加热", "产生能使带火星木条复燃的气体"],
+  [3, "氯酸钾制氧气", "2KClO3 → 2KCl + 3O2", "加热，MnO2 作催化剂", "产生能使带火星木条复燃的气体"],
+  [3, "碳酸钙与盐酸反应", "CaCO3 + 2HCl → CaCl2 + H2O + CO2", "无", "固体逐渐溶解，产生大量气泡"],
+  [3, "甲烷在氧气中燃烧", "CH4 + 2O2 → CO2 + 2H2O", "点燃", "发出明亮蓝色火焰，放出热量"],
+  [3, "硫酸铜与氢氧化钠反应", "CuSO4 + 2NaOH → Na2SO4 + Cu(OH)2", "无", "产生蓝色沉淀"]
+].map(([level, name, equation, condition, phenomenon], index) => ({
+  id: `equation-${index + 1}`, category: "equation", subgroup: `level-${level}`,
+  level, name, equation, condition, phenomenon
+}));
+
+const chemistryData = [...elements, ...valences, ...formulas, ...equations];
 const mnemonics = [
   ["一价氢氯钾钠银", "H（氢）、Cl（氯）、K（钾）、Na（钠）、Ag（银）常见一价"],
   ["二价氧钙钡镁锌", "O（氧）、Ca（钙）、Ba（钡）、Mg（镁）、Zn（锌）常见二价"],
@@ -54,9 +83,15 @@ const mnemonics = [
 
 const LABELS = {
   fixed: "固定价", variable: "可变价", radical: "原子团", formula: "化学式",
-  valence: "化合价", element: "元素", formulaType: "化学式"
+  valence: "化合价", element: "元素", formulaType: "化学式", equation: "方程式"
 };
-const STORAGE = { mistakes: "chem-memory-mistakes-v2", stats: "chem-memory-stats-v2" };
+const STORAGE = {
+  mistakes: "chem-memory-mistakes-v2",
+  stats: "chem-memory-stats-v2",
+  equations: "chem-memory-equation-progress-v1"
+};
+const EQUATION_UNLOCK_ATTEMPTS = 8;
+const EQUATION_UNLOCK_ACCURACY = 0.8;
 const REVIEW_INTERVALS = [
   10 * 60 * 1000, 24 * 60 * 60 * 1000, 3 * 86400000,
   7 * 86400000, 14 * 86400000, 30 * 86400000
@@ -79,6 +114,10 @@ const StorageService = {
 
 let mistakes = StorageService.load(STORAGE.mistakes, {});
 let stats = StorageService.load(STORAGE.stats, {});
+let equationProgress = StorageService.load(STORAGE.equations, {
+  unlockedLevel: 1,
+  levels: { 1: { attempts: 0, correct: 0 }, 2: { attempts: 0, correct: 0 }, 3: { attempts: 0, correct: 0 } }
+});
 
 function todayKey() {
   const date = new Date();
@@ -126,7 +165,13 @@ function buildQuizBank() {
       displayAnswer: item.name, help: "请填写物质的中文名称"
     }
   ]);
-  return [...valenceQuestions, ...elementQuestions, ...formulaQuestions];
+  const equationQuestions = equations.map((item) => ({
+    id: `quiz-${item.id}`, type: "equation", itemId: item.id, level: item.level,
+    prompt: `请写出“${item.name}”的化学方程式`,
+    answers: [item.equation], displayAnswer: item.equation,
+    help: `条件：${item.condition}`
+  }));
+  return [...valenceQuestions, ...elementQuestions, ...formulaQuestions, ...equationQuestions];
 }
 
 const quizBank = buildQuizBank();
@@ -134,6 +179,12 @@ const questionMap = new Map(quizBank.map((question) => [question.id, question]))
 
 function normalizeText(value) {
   return value.trim().replace(/\s+/g, "").toLowerCase();
+}
+
+function normalizeEquation(value) {
+  return normalizeText(value)
+    .replace(/(?:->|=>|=)/g, "→")
+    .replace(/[↑↓]/g, "");
 }
 
 function parseValences(value) {
@@ -146,6 +197,9 @@ function parseValences(value) {
 }
 
 function evaluate(question, answer) {
+  if (question.type === "equation") {
+    return normalizeEquation(answer) === normalizeEquation(question.answers[0]) ? "correct" : "incorrect";
+  }
   if (question.type !== "valence") {
     const normalized = normalizeText(answer);
     return question.answers.some((value) => normalizeText(value) === normalized) ? "correct" : "incorrect";
@@ -170,13 +224,14 @@ function shuffle(items) {
   return output;
 }
 
-function createQueue(getItems) {
+function createQueue(getItems, shouldShuffle = true) {
   let items = [];
   let total = 0;
   return {
     next() {
       if (!items.length) {
-        items = shuffle(getItems());
+        const nextItems = getItems();
+        items = shouldShuffle ? shuffle(nextItems) : nextItems;
         total = items.length;
       }
       return { item: items.shift(), done: total - items.length, total };
@@ -199,7 +254,17 @@ const flashcards = [
 ];
 
 const flashcardQueue = createQueue(() => flashcards);
-const quizQueue = createQueue(() => quizBank.filter((question) => !dueQuestionIds().has(question.id)));
+const quizQueue = createQueue(() => {
+  const available = quizBank.filter((question) =>
+    !dueQuestionIds().has(question.id) &&
+    (question.type !== "equation" || question.level <= equationProgress.unlockedLevel)
+  );
+  const priorityEquations = shuffle(available.filter((question) =>
+    question.type === "equation" && question.level === equationProgress.unlockedLevel
+  ));
+  const remaining = shuffle(available.filter((question) => !priorityEquations.includes(question)));
+  return [...priorityEquations, ...remaining];
+}, false);
 const reviewQueue = createQueue(() => dueRecords().map((record) => questionMap.get(record.id)).filter(Boolean));
 const elementPracticeQueue = createQueue(buildElementPractice);
 const sequenceQueue = createQueue(buildSequenceChallenges);
@@ -333,6 +398,94 @@ function updateDashboard() {
   const badge = document.querySelector("#mistake-badge");
   badge.textContent = active.length;
   badge.hidden = active.length === 0;
+}
+
+/* -------------------------- Equation level learning ----------------------- */
+let selectedEquationLevel = 1;
+
+function levelStats(level) {
+  equationProgress.levels ||= {};
+  equationProgress.levels[level] ||= { attempts: 0, correct: 0 };
+  return equationProgress.levels[level];
+}
+
+function equationAccuracy(level) {
+  const levelData = levelStats(level);
+  return levelData.attempts ? levelData.correct / levelData.attempts : 0;
+}
+
+function recordEquationResult(question, result) {
+  if (question.type !== "equation") return;
+  const levelData = levelStats(question.level);
+  levelData.attempts += 1;
+  if (result === "correct") levelData.correct += 1;
+
+  const canUnlock = question.level === equationProgress.unlockedLevel &&
+    question.level < 3 &&
+    levelData.attempts >= EQUATION_UNLOCK_ATTEMPTS &&
+    equationAccuracy(question.level) >= EQUATION_UNLOCK_ACCURACY;
+  if (canUnlock) {
+    equationProgress.unlockedLevel += 1;
+    quizQueue.reset();
+  }
+  StorageService.save(STORAGE.equations, equationProgress);
+  renderEquationModule();
+}
+
+function renderEquationModule() {
+  document.querySelector("#equation-levels").innerHTML = [1, 2, 3].map((level) => {
+    const statsForLevel = levelStats(level);
+    const accuracy = Math.round(equationAccuracy(level) * 100);
+    const unlocked = level <= equationProgress.unlockedLevel;
+    const completed = level < equationProgress.unlockedLevel || (level === 3 && statsForLevel.attempts >= EQUATION_UNLOCK_ATTEMPTS && accuracy >= 80);
+    return `
+      <article class="level-card card ${unlocked ? "unlocked" : "locked"}">
+        <div class="level-card-top">
+          <span class="level-badge">Level ${level}</span>
+          <span>${completed ? "✓ 已达标" : unlocked ? "学习中" : "🔒 未解锁"}</span>
+        </div>
+        <strong>${level === 1 ? "基础必背" : level === 2 ? "常见反应" : "提高训练"}</strong>
+        <p>${unlocked ? `已答 ${statsForLevel.attempts} 题 · 正确率 ${accuracy}%` : "完成上一级后解锁"}</p>
+        <div class="unlock-bar"><i style="width:${unlocked ? Math.min(accuracy, 100) : 0}%"></i></div>
+      </article>`;
+  }).join("");
+
+  const unlocked = selectedEquationLevel <= equationProgress.unlockedLevel;
+  document.querySelector("#equation-list").hidden = !unlocked;
+  document.querySelector("#equation-locked").hidden = unlocked;
+  document.querySelector("#equation-filter-note").textContent =
+    selectedEquationLevel === 1 ? "基础必背" : selectedEquationLevel === 2 ? "常见反应" : "提高训练";
+  document.querySelectorAll("#equation-filters .filter").forEach((button) => {
+    const level = Number(button.dataset.level);
+    button.classList.toggle("active", level === selectedEquationLevel);
+    button.classList.toggle("is-locked", level > equationProgress.unlockedLevel);
+  });
+  if (!unlocked) {
+    document.querySelector("#equation-lock-message").textContent =
+      `先完成 Level ${selectedEquationLevel - 1} 至少 ${EQUATION_UNLOCK_ATTEMPTS} 道测验，并达到 80% 正确率。`;
+    return;
+  }
+  document.querySelector("#equation-list").innerHTML = equations
+    .filter((item) => item.level === selectedEquationLevel)
+    .map((item, index) => `
+      <article class="equation-card card">
+        <div class="equation-heading">
+          <span class="equation-index">${index + 1}</span>
+          <div><span class="level-badge">Level ${item.level}</span><h3>${item.name}</h3></div>
+        </div>
+        <div class="equation-expression">${item.equation}</div>
+        <dl>
+          <div><dt>条件</dt><dd>${item.condition}</dd></div>
+          <div><dt>现象</dt><dd>${item.phenomenon}</dd></div>
+        </dl>
+      </article>`).join("");
+}
+
+function startEquationQuiz() {
+  selectedEquationLevel = equationProgress.unlockedLevel;
+  quizQueue.reset();
+  currentQuizQuestion = null;
+  switchTab("quiz");
 }
 
 /* -------------------------- Element memory trainer ------------------------ */
@@ -472,6 +625,7 @@ function submitQuiz() {
     quizSession.streak = 0;
     markWrong(currentQuizQuestion);
   }
+  recordEquationResult(currentQuizQuestion, result);
   feedback.className = `feedback ${result}`;
   feedback.hidden = false;
   recordDaily(result);
@@ -564,6 +718,15 @@ function bindEvents() {
     button.textContent = explanation.hidden ? "显示解释" : "隐藏解释";
   });
 
+  document.querySelector("#equation-filters").addEventListener("click", (event) => {
+    const button = event.target.closest(".filter");
+    if (!button) return;
+    selectedEquationLevel = Number(button.dataset.level);
+    renderEquationModule();
+  });
+  document.querySelector("#start-equation-quiz").addEventListener("click", startEquationQuiz);
+  document.querySelector("#practice-unlocked-level").addEventListener("click", startEquationQuiz);
+
   document.querySelector("#show-answer").addEventListener("click", () => {
     document.querySelector("#flash-answer").hidden = false;
     document.querySelector("#flash-prompt").hidden = true;
@@ -613,6 +776,7 @@ function initialize() {
   renderReference();
   renderElementCards();
   renderMnemonics();
+  renderEquationModule();
   bindEvents();
   showMiniQuestion("element");
   showMiniQuestion("sequence");
