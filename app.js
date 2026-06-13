@@ -1023,11 +1023,46 @@ function fuzzyFormula(core) {
 }
 
 function enableTestMode() {
+  if (localStorage.getItem("devUnlockAll") !== "true") {
+    localStorage.setItem("devUnlockPreviousLevel", String(equationProgress.unlockedLevel));
+  }
   localStorage.setItem("devUnlockAll", "true");
   equationProgress.unlockedLevel = 3;
   StorageService.save(STORAGE.equations, equationProgress);
+  flashcardQueue.reset();
   quizQueue.reset();
+  reviewQueue.reset();
   renderEquationModule();
+}
+
+function unlockedLevelFromLearningProgress() {
+  let level = 1;
+  for (let current = 1; current < 3; current += 1) {
+    const progress = equationProgress.levels?.[current] || { attempts: 0, correct: 0 };
+    const accuracy = progress.attempts ? progress.correct / progress.attempts : 0;
+    if (progress.attempts >= EQUATION_UNLOCK_ATTEMPTS && accuracy >= EQUATION_UNLOCK_ACCURACY) {
+      level = current + 1;
+    } else {
+      break;
+    }
+  }
+  return level;
+}
+
+function disableTestMode() {
+  if (localStorage.getItem("devUnlockAll") !== "true") return false;
+  const previousLevel = Number(localStorage.getItem("devUnlockPreviousLevel"));
+  equationProgress.unlockedLevel = [1, 2, 3].includes(previousLevel)
+    ? previousLevel
+    : unlockedLevelFromLearningProgress();
+  localStorage.removeItem("devUnlockAll");
+  localStorage.removeItem("devUnlockPreviousLevel");
+  StorageService.save(STORAGE.equations, equationProgress);
+  flashcardQueue.reset();
+  quizQueue.reset();
+  reviewQueue.reset();
+  renderEquationModule();
+  return true;
 }
 
 function answerQuestion(input) {
@@ -1038,6 +1073,16 @@ function answerQuestion(input) {
       found: true,
       type: "dev-unlock",
       answer: "测试模式已开启，所有关卡已解锁。"
+    };
+  }
+  if (normalized === "GG") {
+    const disabled = disableTestMode();
+    return {
+      found: true,
+      type: "dev-lock",
+      answer: disabled
+        ? "测试模式已关闭，关卡已重新上锁。"
+        : "当前已经是正常学习模式。"
     };
   }
   const core = extractQuestionCore(input);
