@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="面向初中生的化合价速查、背诵与测验工具">
+  <title>化合价记忆助手</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <span class="brand-icon" aria-hidden="true">⚗</span>
+      <div>
+        <h1>化合价记忆助手</h1>
+        <p>轻松记忆 · 每天进步一点点</p>
+      </div>
+    </div>
+  </header>
+
+  <nav class="tab-bar" aria-label="主要功能">
+    <div class="tab-scroll">
+      <button class="tab active" data-tab="home" aria-selected="true">首页</button>
+      <button class="tab" data-tab="reference" aria-selected="false">速查</button>
+      <button class="tab" data-tab="mnemonic" aria-selected="false">口诀</button>
+      <button class="tab" data-tab="flashcards" aria-selected="false">闪卡</button>
+      <button class="tab" data-tab="quiz" aria-selected="false">测验</button>
+      <button class="tab" data-tab="mistakes" aria-selected="false">
+        错题本 <span id="mistake-badge" class="tab-badge" hidden>0</span>
+      </button>
+    </div>
+  </nav>
+
+  <main class="container">
+    <section id="home" class="page active" aria-labelledby="home-title">
+      <div class="hero card">
+        <div class="hero-copy">
+          <span class="eyebrow">今日学习计划</span>
+          <h2 id="home-title">每天 5 分钟，记住常见化合价</h2>
+          <p>从一道小题开始，坚持练习，化合价也可以变得简单。</p>
+          <button class="button primary" id="start-quiz">开始今日测验 <span>→</span></button>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <div class="atom-orbit orbit-one"></div>
+          <div class="atom-orbit orbit-two"></div>
+          <div class="atom-core">+2</div>
+          <span class="electron e-one"></span>
+          <span class="electron e-two"></span>
+        </div>
+      </div>
+
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">学习记录</span>
+          <h2>今日练习</h2>
+        </div>
+        <span id="today-date" class="date-label"></span>
+      </div>
+      <div class="stats-grid">
+        <article class="stat-card card">
+          <div class="stat-icon blue">✎</div>
+          <div><strong id="today-total">0</strong><span>今日答题数</span></div>
+        </article>
+        <article class="stat-card card">
+          <div class="stat-icon green">✓</div>
+          <div><strong id="today-accuracy">0%</strong><span>今日正确率</span></div>
+        </article>
+        <article class="stat-card card">
+          <div class="stat-icon orange">↻</div>
+          <div><strong id="mistake-total">0</strong><span>待复习错题</span></div>
+        </article>
+      </div>
+
+      <div id="due-review-card" class="due-card card" hidden>
+        <div>
+          <span class="eyebrow">复习提醒</span>
+          <h3>有 <span id="due-count">0</span> 道错题到期了</h3>
+          <p>趁记忆还新鲜，花一分钟巩固一下吧。</p>
+        </div>
+        <button class="button secondary" id="review-due">立即复习</button>
+      </div>
+    </section>
+
+    <section id="reference" class="page" aria-labelledby="reference-title">
+      <div class="page-intro">
+        <span class="eyebrow">随用随查</span>
+        <h2 id="reference-title">化合价速查表</h2>
+        <p>按类别整理常见元素和原子团，颜色帮助你快速区分正负价。</p>
+      </div>
+      <div id="reference-content"></div>
+    </section>
+
+    <section id="mnemonic" class="page" aria-labelledby="mnemonic-title">
+      <div class="page-intro intro-row">
+        <div>
+          <span class="eyebrow">朗读三遍更好记</span>
+          <h2 id="mnemonic-title">化合价口诀</h2>
+          <p>先尝试自己回忆，再打开解释检查。</p>
+        </div>
+        <button class="button ghost" id="toggle-explanations">隐藏全部解释</button>
+      </div>
+      <div id="mnemonic-list" class="mnemonic-list"></div>
+      <aside class="tip-card">
+        <strong>背诵小技巧</strong>
+        <p>口诀记的是常见化合价，遇到可变价元素时还要结合具体化合物判断。</p>
+      </aside>
+    </section>
+
+    <section id="flashcards" class="page" aria-labelledby="flashcard-title">
+      <div class="page-intro centered">
+        <span class="eyebrow">快速自测</span>
+        <h2 id="flashcard-title">翻一翻，记一记</h2>
+        <p>看到符号后先在心里回答，再点击显示答案。</p>
+      </div>
+      <div class="study-panel">
+        <div class="flashcard" id="flashcard">
+          <span id="flash-type" class="chip">常见元素</span>
+          <div id="flash-symbol" class="flash-symbol">Na</div>
+          <div id="flash-name" class="flash-name">钠</div>
+          <div id="flash-answer" class="flash-answer" hidden>
+            <span>常见化合价</span>
+            <strong>+1</strong>
+          </div>
+          <p id="flash-prompt" class="flash-prompt">它的常见化合价是什么？</p>
+        </div>
+        <button id="show-answer" class="button primary wide">显示答案</button>
+        <div id="flash-actions" class="button-row" hidden>
+          <button id="flash-known" class="button success">记住了</button>
+          <button id="flash-unknown" class="button warning">不熟悉</button>
+          <button id="flash-next" class="button secondary">下一张</button>
+        </div>
+        <p id="flash-feedback" class="inline-feedback" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section id="quiz" class="page" aria-labelledby="quiz-title">
+      <div class="page-intro intro-row">
+        <div>
+          <span class="eyebrow">填空挑战</span>
+          <h2 id="quiz-title">化合价测验</h2>
+          <p id="quiz-source">随机抽题，认真填写每一个正负号。</p>
+        </div>
+        <div class="quiz-stats">
+          <span>连续答对 <strong id="quiz-streak">0</strong></span>
+          <span>正确率 <strong id="quiz-accuracy">0%</strong></span>
+          <span>共 <strong id="quiz-total">0</strong> 题</span>
+        </div>
+      </div>
+
+      <div class="quiz-card card">
+        <span id="quiz-type" class="chip">常见元素</span>
+        <p class="question-label">请填写下面项目的常见化合价</p>
+        <div id="quiz-symbol" class="quiz-symbol">Na</div>
+        <div id="quiz-name" class="quiz-name">钠</div>
+        <label for="quiz-input">你的答案</label>
+        <input id="quiz-input" type="text" inputmode="text" autocomplete="off"
+               placeholder="例如：+1 或 +2/+3">
+        <p class="input-help">可变价可用 “/”、逗号或空格分隔</p>
+        <div id="quiz-feedback" class="feedback" hidden aria-live="polite"></div>
+        <button id="submit-answer" class="button primary wide">提交答案</button>
+        <button id="next-question" class="button secondary wide" hidden>下一题</button>
+      </div>
+    </section>
+
+    <section id="mistakes" class="page" aria-labelledby="mistakes-title">
+      <div class="page-intro intro-row">
+        <div>
+          <span class="eyebrow">遗忘曲线复习</span>
+          <h2 id="mistakes-title">错题本</h2>
+          <p>系统会根据掌握程度，自动安排合适的复习时间。</p>
+        </div>
+        <div class="legend">
+          <span><i class="dot due"></i>待复习</span>
+          <span><i class="dot waiting"></i>未到期</span>
+        </div>
+      </div>
+      <div id="mistakes-list" class="mistakes-list"></div>
+      <div id="empty-mistakes" class="empty-state card" hidden>
+        <div class="empty-icon">✓</div>
+        <h3>暂时没有错题</h3>
+        <p>太棒了！继续练习，保持现在的状态吧。</p>
+        <button class="button primary" data-go-tab="quiz">去做测验</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>化合价记忆助手 · 坚持每天练习 5 分钟</p>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>
