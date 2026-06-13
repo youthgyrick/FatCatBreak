@@ -23,6 +23,7 @@ const valenceData = [
   { symbol: "NO3", name: "硝酸根", valences: ["-1"], type: "group" },
   { symbol: "SO4", name: "硫酸根", valences: ["-2"], type: "group" },
   { symbol: "CO3", name: "碳酸根", valences: ["-2"], type: "group" },
+  { symbol: "PO4", name: "磷酸根", valences: ["-3"], type: "group" },
   { symbol: "NH4", name: "铵根", valences: ["+1"], type: "group" }
 ];
 
@@ -32,7 +33,12 @@ const mnemonics = [
   ["三铝四硅五价磷", "Al（铝）+3，Si（硅）+4，P（磷）+5"],
   ["二三铁，二四碳", "Fe（铁）常见 +2、+3；C（碳）常见 +2、+4"],
   ["二四六硫都齐全", "S（硫）常见 -2、+4、+6"],
-  ["铜汞二价最常见", "Cu（铜）、Hg（汞）的 +2 价最常见；铜也有 +1 价"]
+  ["铜汞二价最常见", "Cu（铜）、Hg（汞）的 +2 价最常见；铜也有 +1 价"],
+  ["莫忘单质都为零", "元素以单质形式存在时，化合价为 0，例如 H₂、O₂、Fe"],
+  ["负一氢氧硝酸根", "OH（氢氧根）、NO₃（硝酸根）都是 -1 价"],
+  ["负二硫酸碳酸根", "SO₄（硫酸根）、CO₃（碳酸根）都是 -2 价"],
+  ["负三记住磷酸根", "PO₄（磷酸根）是 -3 价"],
+  ["正一价的是铵根", "NH₄（铵根）是 +1 价"]
 ];
 
 const STORAGE = {
@@ -55,7 +61,14 @@ let currentFlashcard = null;
 let currentQuestion = null;
 let forcedQuestionSymbol = null;
 let quizAnswered = false;
+let flashRated = false;
 let session = { total: 0, correct: 0, streak: 0 };
+let flashcardQueue = [];
+let flashcardDueMistakeQueue = [];
+let quizQueue = [];
+let dueMistakeQueue = [];
+let flashRound = { normalTotal: 0, normalDone: 0, dueTotal: 0, dueDone: 0 };
+let quizRound = { normalTotal: 0, normalDone: 0, dueTotal: 0, dueDone: 0 };
 
 function loadJSON(key, fallback) {
   try {
@@ -134,13 +147,73 @@ function renderMnemonics() {
     </article>`).join("");
 }
 
-function randomItem(items) {
-  return items[Math.floor(Math.random() * items.length)];
+function shuffle(items) {
+  const shuffled = [...items];
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+  }
+  return shuffled;
+}
+
+function buildLearningRound(mode) {
+  const dueItems = shuffle(dueMistakes().map((record) => itemBySymbol(record.symbol)).filter(Boolean));
+  const dueSymbols = new Set(dueItems.map((item) => item.symbol));
+  const normalItems = shuffle(valenceData.filter((item) => !dueSymbols.has(item.symbol)));
+  const round = {
+    normalTotal: normalItems.length,
+    normalDone: 0,
+    dueTotal: dueItems.length,
+    dueDone: 0
+  };
+
+  if (mode === "flashcard") {
+    flashcardDueMistakeQueue = dueItems;
+    flashcardQueue = normalItems;
+    flashRound = round;
+  } else {
+    dueMistakeQueue = dueItems;
+    quizQueue = normalItems;
+    quizRound = round;
+  }
+}
+
+function takeFromQueue(mode) {
+  if (mode === "flashcard") {
+    if (!flashcardDueMistakeQueue.length && !flashcardQueue.length) buildLearningRound("flashcard");
+    if (flashcardDueMistakeQueue.length) {
+      flashRound.dueDone += 1;
+      return { item: flashcardDueMistakeQueue.shift(), source: "due" };
+    }
+    flashRound.normalDone += 1;
+    return { item: flashcardQueue.shift(), source: "normal" };
+  }
+
+  if (!dueMistakeQueue.length && !quizQueue.length) buildLearningRound("quiz");
+  if (dueMistakeQueue.length) {
+    quizRound.dueDone += 1;
+    return { item: dueMistakeQueue.shift(), source: "due" };
+  }
+  quizRound.normalDone += 1;
+  return { item: quizQueue.shift(), source: "normal" };
+}
+
+function showRoundProgress(mode, source) {
+  const round = mode === "flashcard" ? flashRound : quizRound;
+  const isDue = source === "due";
+  const label = isDue ? "到期错题复习" : "普通学习";
+  const done = isDue ? round.dueDone : round.normalDone;
+  const total = isDue ? round.dueTotal : round.normalTotal;
+  document.querySelector(`#${mode === "flashcard" ? "flash" : "quiz"}-round-label`).textContent = label;
+  document.querySelector(`#${mode === "flashcard" ? "flash" : "quiz"}-progress`).textContent =
+    mode === "flashcard" ? `本轮进度：${done} / ${total}` : `${done} / ${total}`;
 }
 
 function nextFlashcard() {
-  let candidates = valenceData.filter((item) => item.symbol !== currentFlashcard?.symbol);
-  currentFlashcard = randomItem(candidates.length ? candidates : valenceData);
+  const next = takeFromQueue("flashcard");
+  currentFlashcard = next.item;
+  flashRated = false;
+  showRoundProgress("flashcard", next.source);
   document.querySelector("#flash-type").textContent = typeNames[currentFlashcard.type];
   document.querySelector("#flash-symbol").textContent = currentFlashcard.symbol;
   document.querySelector("#flash-name").textContent = currentFlashcard.name;
@@ -198,25 +271,28 @@ function dueMistakes() {
 }
 
 function nextQuestion() {
-  const due = dueMistakes();
-  let source = "random";
+  let source;
   if (forcedQuestionSymbol) {
     currentQuestion = itemBySymbol(forcedQuestionSymbol);
     forcedQuestionSymbol = null;
     source = "review";
-  } else if (due.length) {
-    currentQuestion = itemBySymbol(randomItem(due).symbol);
-    source = "due";
   } else {
-    const candidates = valenceData.filter((item) => item.symbol !== currentQuestion?.symbol);
-    currentQuestion = randomItem(candidates.length ? candidates : valenceData);
+    const next = takeFromQueue("quiz");
+    currentQuestion = next.item;
+    source = next.source;
   }
   quizAnswered = false;
+  if (source === "review") {
+    document.querySelector("#quiz-round-label").textContent = "立即复习";
+    document.querySelector("#quiz-progress").textContent = "单题";
+  } else {
+    showRoundProgress("quiz", source);
+  }
   document.querySelector("#quiz-type").textContent = typeNames[currentQuestion.type];
   document.querySelector("#quiz-symbol").textContent = currentQuestion.symbol;
   document.querySelector("#quiz-name").textContent = currentQuestion.name;
   document.querySelector("#quiz-source").textContent =
-    source === "random" ? "随机抽题，认真填写每一个正负号。" :
+    source === "normal" ? "本轮题目已洗牌，每个项目只出现一次。" :
     source === "due" ? "优先复习到期错题，加深记忆。" : "正在立即复习这道错题。";
   const input = document.querySelector("#quiz-input");
   input.value = "";
@@ -388,10 +464,14 @@ function initializeEvents() {
     document.querySelector("#flash-actions").hidden = false;
   });
   document.querySelector("#flash-known").addEventListener("click", () => {
+    if (flashRated) return;
+    flashRated = true;
     markCorrect(currentFlashcard);
     document.querySelector("#flash-feedback").textContent = "很好！记忆等级已更新。";
   });
   document.querySelector("#flash-unknown").addEventListener("click", () => {
+    if (flashRated) return;
+    flashRated = true;
     markWrong(currentFlashcard);
     document.querySelector("#flash-feedback").textContent = "已加入错题本，10 分钟后会提醒复习。";
   });

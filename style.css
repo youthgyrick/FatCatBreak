@@ -309,6 +309,14 @@ button { cursor: pointer; }
 .tip-card p { margin: 3px 0 0; }
 
 .study-panel { width: min(540px, 100%); margin: 27px auto; }
+.round-progress {
+  margin: 0 4px 10px;
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: 13px;
+}
+.round-progress strong { color: var(--primary); }
 .flashcard {
   min-height: 340px;
   margin-bottom: 18px;

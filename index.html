@@ -113,6 +113,10 @@
         <p>看到符号后先在心里回答，再点击显示答案。</p>
       </div>
       <div class="study-panel">
+        <div class="round-progress" aria-live="polite">
+          <span id="flash-round-label">普通学习</span>
+          <strong id="flash-progress">本轮进度：0 / 0</strong>
+        </div>
         <div class="flashcard" id="flashcard">
           <span id="flash-type" class="chip">常见元素</span>
           <div id="flash-symbol" class="flash-symbol">Na</div>
@@ -141,6 +145,7 @@
           <p id="quiz-source">随机抽题，认真填写每一个正负号。</p>
         </div>
         <div class="quiz-stats">
+          <span><span id="quiz-round-label">普通学习</span> <strong id="quiz-progress">0 / 0</strong></span>
           <span>连续答对 <strong id="quiz-streak">0</strong></span>
           <span>正确率 <strong id="quiz-accuracy">0%</strong></span>
           <span>共 <strong id="quiz-total">0</strong> 题</span>
