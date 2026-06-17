@@ -8,6 +8,7 @@ fi
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 APP="$ROOT/dist/FatCatBreak.app"
+ICON="$ROOT/Native/FatCatBreak.icns"
 OSACOMPILE="${OSACOMPILE_BIN:-/usr/bin/osacompile}"
 PLIST_BUDDY="${PLIST_BUDDY_BIN:-/usr/libexec/PlistBuddy}"
 
@@ -16,10 +17,15 @@ if [[ ! -x "$OSACOMPILE" ]]; then
   exit 1
 fi
 
+if [[ ! -f "$ICON" ]]; then
+  echo "错误：缺少应用图标：$ICON" >&2
+  exit 1
+fi
+
 rm -rf "$APP"
 mkdir -p "$ROOT/dist"
 printf '正在检查 AppleScriptObjC 语法并创建 applet（无需 Xcode 或 SDK）…\n'
-if ! "$OSACOMPILE" -l AppleScript -o "$APP" "$ROOT/Native/main.applescript"; then
+if ! "$OSACOMPILE" -s -l AppleScript -o "$APP" "$ROOT/Native/main.applescript"; then
   echo "错误：AppleScriptObjC 语法检查失败，未生成应用。" >&2
   exit 1
 fi
@@ -45,10 +51,15 @@ set_or_add_plist_value() {
 set_or_add_plist_value CFBundleIdentifier string com.hellocodex.fatcatbreak
 set_or_add_plist_value CFBundleName string 胖猫休息
 set_or_add_plist_value CFBundleDisplayName string 胖猫休息
-set_or_add_plist_value CFBundleShortVersionString string 1.0.9
-set_or_add_plist_value CFBundleVersion string 10
-set_or_add_plist_value LSUIElement bool true
+set_or_add_plist_value CFBundleShortVersionString string 1.6.0
+set_or_add_plist_value CFBundleVersion string 21
+set_or_add_plist_value CFBundleIconFile string FatCatBreak
+set_or_add_plist_value CFBundleIconName string FatCatBreak
+set_or_add_plist_value LSUIElement bool false
 set_or_add_plist_value NSHighResolutionCapable bool true
+
+mkdir -p "$APP/Contents/Resources"
+cp "$ICON" "$APP/Contents/Resources/FatCatBreak.icns"
 
 plutil -lint "$APP/Contents/Info.plist" >/dev/null
 printf '构建完成：%s\n' "$APP"

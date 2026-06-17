@@ -14,15 +14,18 @@ cat > "$FAKE_BIN/osacompile" <<'MOCK'
 out=""
 source=""
 language=""
+stay_open=false
 while [[ $# -gt 0 ]]; do
   case "$1" in
     -o) shift; out="$1" ;;
     -l) shift; language="$1" ;;
+    -s) stay_open=true ;;
     *.applescript) source="$1" ;;
   esac
   shift
 done
 [[ "$language" == "AppleScript" ]] || exit 3
+[[ "$stay_open" == "true" ]] || exit 4
 mkdir -p "$out/Contents/MacOS" "$out/Contents/Resources/Scripts"
 printf '#!/bin/bash\n' > "$out/Contents/MacOS/applet"
 chmod +x "$out/Contents/MacOS/applet"
@@ -84,7 +87,9 @@ APP="$ROOT/dist/FatCatBreak.app"
 [[ -x "$APP/Contents/MacOS/applet" ]]
 [[ -f "$APP/Contents/Resources/Scripts/main.scpt" ]]
 [[ -f "$APP/Contents/Info.plist" ]]
+[[ -f "$APP/Contents/Resources/FatCatBreak.icns" ]]
 cmp "$ROOT/Native/main.applescript" "$APP/Contents/Resources/Scripts/main.scpt"
+cmp "$ROOT/Native/FatCatBreak.icns" "$APP/Contents/Resources/FatCatBreak.icns"
 
 python3 - "$APP/Contents/Info.plist" <<'PY'
 import plistlib
@@ -95,9 +100,11 @@ expected = {
     'CFBundleIdentifier': 'com.hellocodex.fatcatbreak',
     'CFBundleName': '胖猫休息',
     'CFBundleDisplayName': '胖猫休息',
-    'CFBundleShortVersionString': '1.0.9',
-    'CFBundleVersion': '10',
-    'LSUIElement': True,
+    'CFBundleShortVersionString': '1.6.0',
+    'CFBundleVersion': '21',
+    'CFBundleIconFile': 'FatCatBreak',
+    'CFBundleIconName': 'FatCatBreak',
+    'LSUIElement': False,
     'NSHighResolutionCapable': True,
 }
 for key, value in expected.items():
@@ -117,6 +124,68 @@ fi
 
 if rg -n '^[[:space:]]*(property[[:space:]]+app[[:space:]]*:|set[[:space:]]+app[[:space:]]+to|app.s)' "$ROOT/Native/main.applescript"; then
   echo "错误：app 会被旧版 AppleScript 解析为只读的 application 术语。" >&2
+  exit 1
+fi
+
+if rg -n '(path to library folder from user domain|do shell script|display alert)' "$ROOT/Native/main.applescript"; then
+  echo "错误：脚本重新引入了 Tahoe osacompile 无法解析的 Standard Additions 语句。" >&2
+  exit 1
+fi
+
+rg -Fq 'html,body{width:100%;height:100%;margin:0;overflow:hidden;background:transparent}' "$ROOT/Native/main.applescript"
+rg -Fq "theWindow's setBackgroundColor:clearColor" "$ROOT/Native/main.applescript"
+rg -Fq "webView's setUnderPageBackgroundColor:clearColor" "$ROOT/Native/main.applescript"
+rg -Fq "webView's setValue:(false) forKey:(\"drawsBackground\")" "$ROOT/Native/main.applescript"
+rg -Fq 'doubleForKey:"TriggerIntervalHours"' "$ROOT/Native/main.applescript"
+rg -Fq 'property breakDuration : 30' "$ROOT/Native/main.applescript"
+rg -Fq 'property durationField : missing value' "$ROOT/Native/main.applescript"
+rg -Fq 'doubleForKey:"BreakDurationSeconds"' "$ROOT/Native/main.applescript"
+rg -Fq 'objectForKey:"BreakDurationSeconds"' "$ROOT/Native/main.applescript"
+rg -Fq 'seconds (1–600)' "$ROOT/Native/main.applescript"
+rg -Fq 'if s1 < 1 then set s1 to 1' "$ROOT/Native/main.applescript"
+rg -Fq 'if s1 > 600 then set s1 to 600' "$ROOT/Native/main.applescript"
+rg -Fq "animation:walk-across var(--break-duration)" "$ROOT/Native/main.applescript"
+rg -Fq "body style='--break-duration:" "$ROOT/Native/main.applescript"
+rg -Fq '/Library/LaunchAgents/com.hellocodex.fatcatbreak.plist' "$ROOT/Native/main.applescript"
+rg -Fq 'on build_settings_window()' "$ROOT/Native/main.applescript"
+rg -Fq 'on reopen' "$ROOT/Native/main.applescript"
+rg -Fq 'on idle' "$ROOT/Native/main.applescript"
+rg -Fq 'CGEventSourceButtonState(0, 0)' "$ROOT/Native/main.applescript"
+rg -Fq 'on mouse_is_over(b1)' "$ROOT/Native/main.applescript"
+rg -Fq 'NSMouseInRect(p1, r2, false)' "$ROOT/Native/main.applescript"
+rg -Fq 'property loginHitView : missing value' "$ROOT/Native/main.applescript"
+rg -Fq 'my mouse_is_over(loginHitView)' "$ROOT/Native/main.applescript"
+rg -Fq 'set loginEnabled to not (my login_item_enabled())' "$ROOT/Native/main.applescript"
+rg -Fq 'CGEventSourceKeyState(0, 53)' "$ROOT/Native/main.applescript"
+rg -Fq 'property breakEndDate : missing value' "$ROOT/Native/main.applescript"
+rg -Fq "settingsWindow's orderOut:(missing value)" "$ROOT/Native/main.applescript"
+rg -Fq 'on reopen' "$ROOT/Native/main.applescript"
+rg -Fq 'my show_settings()' "$ROOT/Native/main.applescript"
+rg -Fq 'scene-walk' "$ROOT/Native/main.applescript"
+rg -Fq 'scene-nap' "$ROOT/Native/main.applescript"
+rg -Fq 'scene-sign' "$ROOT/Native/main.applescript"
+rg -Fq 'scene-drink' "$ROOT/Native/main.applescript"
+rg -Fq 'scene-neck' "$ROOT/Native/main.applescript"
+rg -Fq '喝口水，放松一下' "$ROOT/Native/main.applescript"
+rg -Fq '转转脖子，松一松' "$ROOT/Native/main.applescript"
+rg -Fq 'class='"'"'cup'"'"'' "$ROOT/Native/main.applescript"
+rg -Fq 'class='"'"'neckCue'"'"'' "$ROOT/Native/main.applescript"
+rg -Fq '@keyframes sip' "$ROOT/Native/main.applescript"
+rg -Fq '@keyframes neck-turn' "$ROOT/Native/main.applescript"
+rg -Fq 'Math.floor(Math.random()*scenes.length)' "$ROOT/Native/main.applescript"
+
+if awk '
+  /^on run$/ { in_run = 1 }
+  /^end run$/ { in_run = 0 }
+  in_run && /my show_settings\(\)/ { found = 1 }
+  END { exit found ? 0 : 1 }
+' "$ROOT/Native/main.applescript"; then
+  echo "错误：启动时不能自动显示设置窗口；应通过 Dock reopen 打开。" >&2
+  exit 1
+fi
+
+if rg -n "runUntilDate" "$ROOT/Native/main.applescript"; then
+  echo "错误：休息流程重新引入了阻塞主线程的 runUntilDate，WebKit 动画将无法绘制。" >&2
   exit 1
 fi
 
