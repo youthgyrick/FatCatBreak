@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Class 8 下 单词练习</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app-shell">
+    <section id="homeView" class="card">
+      <h1>Class 8 下 单词练习</h1>
+      <p class="muted">选择 Unit 和练习模式，开始背单词。</p>
+      <label>Class 选择框<select id="classSelect"></select></label>
+      <label>Unit 选择框<select id="unitSelect"></select></label>
+      <label>练习模式选择框<select id="modeSelect">
+        <option>英译中</option><option>中译英</option><option>拼写</option><option>听写</option>
+      </select></label>
+      <div class="actions"><button id="startBtn" class="primary">开始练习</button><button id="wrongBookBtn">查看错题本</button></div>
+    </section>
+
+    <section id="practiceView" class="card hidden">
+      <div class="topbar"><strong id="practiceTitle"></strong><span id="progressText"></span></div>
+      <div id="questionArea" class="question"></div>
+      <div id="feedbackArea" class="feedback hidden"></div>
+      <div class="actions"><button id="homeBtn">返回首页</button></div>
+    </section>
+
+    <section id="resultView" class="card hidden">
+      <h2>本次练习完成</h2>
+      <div id="resultStats" class="stats"></div>
+      <div class="actions"><button id="resultHomeBtn" class="primary">返回首页</button><button id="practiceWrongBtn">练习错题</button></div>
+    </section>
+
+    <section id="wrongBookView" class="card hidden">
+      <h2>错题本</h2>
+      <p id="wrongCount" class="muted"></p>
+      <label>按 Unit 筛选<select id="wrongUnitFilter"></select></label>
+      <label>错题练习模式<select id="wrongModeSelect"><option>中译英</option><option>英译中</option><option>拼写</option><option>听写</option></select></label>
+      <div id="wrongList" class="wrong-list"></div>
+      <div class="actions"><button id="practiceAllWrongBtn" class="primary">练习全部错题</button><button id="clearWrongBtn" class="danger">清空错题本</button><button id="wrongHomeBtn">返回首页</button></div>
+    </section>
+  </main>
+  <script src="vocab-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
