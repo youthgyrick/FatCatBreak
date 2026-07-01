@@ -5,9 +5,13 @@ final class BreakView: NSView {
     var remainingSeconds: Int = BreakSession.defaultDuration {
         didSet { needsDisplay = true }
     }
+    var highlightedTasks: [String] = [] {
+        didSet { needsDisplay = true }
+    }
 
     private var animationStart = CACurrentMediaTime()
     private var displayTimer: Timer?
+    private let scene = FatCatScene.allCases.randomElement() ?? .walk
 
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
@@ -31,20 +35,30 @@ final class BreakView: NSView {
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
         let time = CACurrentMediaTime() - animationStart
-        drawMessage()
-        drawCat(at: catPosition(time: time), phase: time)
+        drawHighlightedTasks()
+        drawMessage(for: scene)
+        drawCat(for: scene, time: time)
     }
 
     private func catPosition(time: TimeInterval) -> NSPoint {
-        let travelWidth = bounds.width + 320
-        let x = CGFloat((time * 125).truncatingRemainder(dividingBy: travelWidth)) - 160
+        let travelWidth = bounds.width + FatCatArt.canvasSize.width
+        let x = CGFloat((time * 125).truncatingRemainder(dividingBy: travelWidth)) - FatCatArt.canvasSize.width
         let baseY = max(90, bounds.height * 0.25)
-        return NSPoint(x: x, y: baseY + sin(time * 7) * 5)
+        return NSPoint(x: x, y: baseY)
     }
 
-    private func drawMessage() {
-        let title = "休息一下，看看远处"
-        let countdown = "胖猫将在 \(remainingSeconds) 秒后让路"
+    private func centeredCatRect(y: CGFloat) -> NSRect {
+        NSRect(
+            x: (bounds.width - FatCatArt.canvasSize.width) / 2,
+            y: y,
+            width: FatCatArt.canvasSize.width,
+            height: FatCatArt.canvasSize.height
+        )
+    }
+
+    private func drawMessage(for scene: FatCatScene) {
+        let title = scene.title
+        let countdown = "\(scene.subtitle)，\(remainingSeconds) 秒后让路"
         let paragraph = NSMutableParagraphStyle()
         paragraph.alignment = .center
 
@@ -63,87 +77,60 @@ final class BreakView: NSView {
         countdown.draw(in: NSRect(x: 20, y: bounds.midY - 6, width: bounds.width - 40, height: 34), withAttributes: countdownAttributes)
     }
 
-    private func drawCat(at position: NSPoint, phase: TimeInterval) {
-        NSGraphicsContext.saveGraphicsState()
-        let transform = NSAffineTransform()
-        transform.translateX(by: position.x, yBy: position.y)
-        transform.concat()
+    private func drawHighlightedTasks() {
+        let visibleTasks = Array(highlightedTasks.prefix(4))
+        guard !visibleTasks.isEmpty else { return }
 
-        let outline = NSColor(calibratedRed: 0.18, green: 0.14, blue: 0.12, alpha: 1)
-        let fur = NSColor(calibratedRed: 0.94, green: 0.58, blue: 0.24, alpha: 1)
-        let cream = NSColor(calibratedRed: 1.0, green: 0.86, blue: 0.64, alpha: 1)
-        let legSwing = CGFloat(sin(phase * 9)) * 9
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.alignment = .left
+        paragraph.lineBreakMode = .byTruncatingTail
+        let leftInset = max(42, bounds.width * 0.07)
+        let columnWidth = min(max(280, bounds.width * 0.28), 420)
+        let labelAttributes: [NSAttributedString.Key: Any] = [
+            .font: NSFont.systemFont(ofSize: 15, weight: .semibold),
+            .foregroundColor: NSColor.white.withAlphaComponent(0.78),
+            .paragraphStyle: paragraph
+        ]
+        let baseY = bounds.midY + 118
+        "Today".draw(
+            in: NSRect(x: leftInset + 4, y: baseY + 28, width: columnWidth, height: 22),
+            withAttributes: labelAttributes
+        )
 
-        // Tail, behind the body.
-        let tail = NSBezierPath()
-        tail.move(to: NSPoint(x: 34, y: 68))
-        tail.curve(to: NSPoint(x: 1, y: 112), controlPoint1: NSPoint(x: 4, y: 71), controlPoint2: NSPoint(x: -12, y: 98))
-        tail.curve(to: NSPoint(x: 20, y: 126), controlPoint1: NSPoint(x: 6, y: 131), controlPoint2: NSPoint(x: 15, y: 133))
-        tail.lineWidth = 18
-        tail.lineCapStyle = .round
-        outline.setStroke(); tail.stroke()
-        tail.lineWidth = 12
-        fur.setStroke(); tail.stroke()
+        let taskAttributes: [NSAttributedString.Key: Any] = [
+            .font: NSFont.systemFont(ofSize: 20, weight: .bold),
+            .foregroundColor: NSColor.white,
+            .paragraphStyle: paragraph
+        ]
+        let pillHeight: CGFloat = 38
+        let spacing: CGFloat = 10
+        let totalHeight = CGFloat(visibleTasks.count) * pillHeight + CGFloat(max(0, visibleTasks.count - 1)) * spacing
+        var y = baseY - totalHeight
 
-        // Short walking legs.
-        drawLeg(x: 72 + legSwing, color: fur, outline: outline)
-        drawLeg(x: 120 - legSwing, color: fur, outline: outline)
-        drawLeg(x: 164 + legSwing, color: fur, outline: outline)
-
-        let body = NSBezierPath(ovalIn: NSRect(x: 30, y: 34, width: 160, height: 105))
-        outline.setFill(); body.fill()
-        let innerBody = NSBezierPath(ovalIn: NSRect(x: 35, y: 39, width: 150, height: 95))
-        fur.setFill(); innerBody.fill()
-
-        let belly = NSBezierPath(ovalIn: NSRect(x: 70, y: 43, width: 92, height: 70))
-        cream.setFill(); belly.fill()
-
-        // Ears and oversized round head.
-        let leftEar = triangle(NSPoint(x: 143, y: 139), NSPoint(x: 154, y: 180), NSPoint(x: 174, y: 146))
-        let rightEar = triangle(NSPoint(x: 194, y: 146), NSPoint(x: 216, y: 178), NSPoint(x: 226, y: 136))
-        outline.setFill(); leftEar.fill(); rightEar.fill()
-        let head = NSBezierPath(ovalIn: NSRect(x: 132, y: 83, width: 105, height: 85))
-        outline.setFill(); head.fill()
-        let innerHead = NSBezierPath(ovalIn: NSRect(x: 137, y: 88, width: 95, height: 75))
-        fur.setFill(); innerHead.fill()
-
-        // Face.
-        outline.setFill()
-        NSBezierPath(ovalIn: NSRect(x: 162, y: 127, width: 9, height: 12)).fill()
-        NSBezierPath(ovalIn: NSRect(x: 202, y: 127, width: 9, height: 12)).fill()
-        NSBezierPath(ovalIn: NSRect(x: 183, y: 111, width: 10, height: 7)).fill()
-        let muzzle = NSBezierPath()
-        muzzle.move(to: NSPoint(x: 188, y: 112))
-        muzzle.curve(to: NSPoint(x: 176, y: 104), controlPoint1: NSPoint(x: 186, y: 106), controlPoint2: NSPoint(x: 181, y: 103))
-        muzzle.move(to: NSPoint(x: 188, y: 112))
-        muzzle.curve(to: NSPoint(x: 200, y: 104), controlPoint1: NSPoint(x: 190, y: 106), controlPoint2: NSPoint(x: 195, y: 103))
-        muzzle.lineWidth = 3; muzzle.stroke()
-
-        drawWhiskers(outline: outline)
-        NSGraphicsContext.restoreGraphicsState()
+        for task in visibleTasks.reversed() {
+            let width = min(columnWidth, max(220, task.size(withAttributes: taskAttributes).width + 56))
+            let rect = NSRect(x: leftInset, y: y, width: width, height: pillHeight)
+            let path = NSBezierPath(roundedRect: rect, xRadius: 19, yRadius: 19)
+            NSColor.systemOrange.withAlphaComponent(0.92).setFill()
+            path.fill()
+            NSColor.white.withAlphaComponent(0.24).setStroke()
+            path.lineWidth = 1
+            path.stroke()
+            task.draw(in: rect.insetBy(dx: 20, dy: 7), withAttributes: taskAttributes)
+            y += pillHeight + spacing
+        }
     }
 
-    private func drawLeg(x: CGFloat, color: NSColor, outline: NSColor) {
-        let outer = NSBezierPath(roundedRect: NSRect(x: x, y: 18, width: 28, height: 43), xRadius: 14, yRadius: 14)
-        outline.setFill(); outer.fill()
-        let inner = NSBezierPath(roundedRect: NSRect(x: x + 4, y: 22, width: 20, height: 35), xRadius: 10, yRadius: 10)
-        color.setFill(); inner.fill()
-    }
-
-    private func triangle(_ a: NSPoint, _ b: NSPoint, _ c: NSPoint) -> NSBezierPath {
-        let path = NSBezierPath()
-        path.move(to: a); path.line(to: b); path.line(to: c); path.close()
-        return path
-    }
-
-    private func drawWhiskers(outline: NSColor) {
-        let whiskers = NSBezierPath()
-        whiskers.move(to: NSPoint(x: 174, y: 111)); whiskers.line(to: NSPoint(x: 143, y: 116))
-        whiskers.move(to: NSPoint(x: 174, y: 105)); whiskers.line(to: NSPoint(x: 142, y: 101))
-        whiskers.move(to: NSPoint(x: 201, y: 111)); whiskers.line(to: NSPoint(x: 232, y: 117))
-        whiskers.move(to: NSPoint(x: 201, y: 105)); whiskers.line(to: NSPoint(x: 233, y: 101))
-        whiskers.lineWidth = 2.5
-        outline.setStroke(); whiskers.stroke()
+    private func drawCat(for scene: FatCatScene, time: TimeInterval) {
+        let rect: NSRect
+        switch scene {
+        case .walk:
+            let position = catPosition(time: time)
+            rect = NSRect(x: position.x, y: position.y, width: FatCatArt.canvasSize.width, height: FatCatArt.canvasSize.height)
+        case .nap, .sign, .drink, .neck, .divination:
+            rect = centeredCatRect(y: max(82, bounds.height * 0.16))
+        }
+        FatCatArt.draw(in: rect, phase: time, scene: scene, showsStage: false)
     }
 }
 #endif

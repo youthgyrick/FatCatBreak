@@ -10,11 +10,24 @@ final class BreakWindow: NSWindow {
             contentRect: screen.frame,
             styleMask: [.borderless],
             backing: .buffered,
-            defer: false,
-            screen: screen
+            defer: false
         )
+        configure(for: screen)
+    }
 
-        setFrame(screen.frame, display: true)
+    override init(contentRect: NSRect, styleMask style: NSWindow.StyleMask, backing backingStoreType: NSWindow.BackingStoreType, defer flag: Bool) {
+        breakView = BreakView(frame: NSRect(origin: .zero, size: contentRect.size))
+        super.init(contentRect: contentRect, styleMask: style, backing: backingStoreType, defer: flag)
+        configure(for: nil)
+    }
+
+    private func configure(for screen: NSScreen?) {
+        if let screen {
+            breakView.frame = NSRect(origin: .zero, size: screen.frame.size)
+            setFrame(screen.frame, display: true)
+        } else {
+            breakView.frame = NSRect(origin: .zero, size: frame.size)
+        }
         level = .screenSaver
         backgroundColor = .clear
         isOpaque = false

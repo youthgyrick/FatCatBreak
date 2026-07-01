@@ -7,6 +7,17 @@ struct TodoTask: Codable, Equatable, Identifiable {
     var completed: Bool
     let createdAt: String
     var completedAt: String?
+    var description: String
+
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case title
+        case dueDate
+        case completed
+        case createdAt
+        case completedAt
+        case description
+    }
 
     init(
         id: String = UUID().uuidString,
@@ -14,7 +25,8 @@ struct TodoTask: Codable, Equatable, Identifiable {
         dueDate: String? = nil,
         completed: Bool = false,
         createdAt: String = ISO8601DateFormatter().string(from: Date()),
-        completedAt: String? = nil
+        completedAt: String? = nil,
+        description: String = ""
     ) {
         self.id = id
         self.title = title
@@ -22,6 +34,18 @@ struct TodoTask: Codable, Equatable, Identifiable {
         self.completed = completed
         self.createdAt = createdAt
         self.completedAt = completedAt
+        self.description = description
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        title = try container.decode(String.self, forKey: .title)
+        dueDate = try container.decodeIfPresent(String.self, forKey: .dueDate)
+        completed = try container.decode(Bool.self, forKey: .completed)
+        createdAt = try container.decode(String.self, forKey: .createdAt)
+        completedAt = try container.decodeIfPresent(String.self, forKey: .completedAt)
+        description = try container.decodeIfPresent(String.self, forKey: .description) ?? ""
     }
 }
 

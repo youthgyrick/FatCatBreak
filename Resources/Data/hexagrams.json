@@ -1,0 +1,2562 @@
+{
+  "schemaVersion": "0.1",
+  "source": "64卦解析.doc（用户上传，64页，每页包含一个主卦图与卦名）",
+  "binaryRule": "阳爻=1，阴爻=0；binary 字段按从下到上（初爻→上爻）排列，例如乾为天=111111。",
+  "renderRule": "如需按图片/界面从上到下绘制，请使用 linesTopToBottom 或 binaryTopToBottom。",
+  "trigrams": {
+    "乾": {
+      "element": "天",
+      "symbol": "☰",
+      "bits_bottom_to_top": "111",
+      "bits_top_to_bottom": "111",
+      "unicode": "☰"
+    },
+    "兑": {
+      "element": "泽",
+      "symbol": "☱",
+      "bits_bottom_to_top": "110",
+      "bits_top_to_bottom": "011",
+      "unicode": "☱"
+    },
+    "离": {
+      "element": "火",
+      "symbol": "☲",
+      "bits_bottom_to_top": "101",
+      "bits_top_to_bottom": "101",
+      "unicode": "☲"
+    },
+    "震": {
+      "element": "雷",
+      "symbol": "☳",
+      "bits_bottom_to_top": "100",
+      "bits_top_to_bottom": "001",
+      "unicode": "☳"
+    },
+    "巽": {
+      "element": "风",
+      "symbol": "☴",
+      "bits_bottom_to_top": "011",
+      "bits_top_to_bottom": "110",
+      "unicode": "☴"
+    },
+    "坎": {
+      "element": "水",
+      "symbol": "☵",
+      "bits_bottom_to_top": "010",
+      "bits_top_to_bottom": "010",
+      "unicode": "☵"
+    },
+    "艮": {
+      "element": "山",
+      "symbol": "☶",
+      "bits_bottom_to_top": "001",
+      "bits_top_to_bottom": "100",
+      "unicode": "☶"
+    },
+    "坤": {
+      "element": "地",
+      "symbol": "☷",
+      "bits_bottom_to_top": "000",
+      "bits_top_to_bottom": "000",
+      "unicode": "☷"
+    }
+  },
+  "hexagrams": [
+    {
+      "id": 1,
+      "kingWenNumber": 1,
+      "name": "乾为天",
+      "shortName": "乾",
+      "unicode": "䷀",
+      "binary": "111111",
+      "binaryBottomToTop": "111111",
+      "binaryTopToBottom": "111111",
+      "linesBottomToTop": [
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚊"
+      ],
+      "linesTopToBottom": [
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚊"
+      ],
+      "upperTrigram": {
+        "name": "乾",
+        "element": "天",
+        "symbol": "☰",
+        "binaryBottomToTop": "111"
+      },
+      "lowerTrigram": {
+        "name": "乾",
+        "element": "天",
+        "symbol": "☰",
+        "binaryBottomToTop": "111"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 2,
+      "kingWenNumber": 2,
+      "name": "坤为地",
+      "shortName": "坤",
+      "unicode": "䷁",
+      "binary": "000000",
+      "binaryBottomToTop": "000000",
+      "binaryTopToBottom": "000000",
+      "linesBottomToTop": [
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚋"
+      ],
+      "linesTopToBottom": [
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚋"
+      ],
+      "upperTrigram": {
+        "name": "坤",
+        "element": "地",
+        "symbol": "☷",
+        "binaryBottomToTop": "000"
+      },
+      "lowerTrigram": {
+        "name": "坤",
+        "element": "地",
+        "symbol": "☷",
+        "binaryBottomToTop": "000"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 3,
+      "kingWenNumber": 3,
+      "name": "水雷屯",
+      "shortName": "屯",
+      "unicode": "䷂",
+      "binary": "100010",
+      "binaryBottomToTop": "100010",
+      "binaryTopToBottom": "010001",
+      "linesBottomToTop": [
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚋"
+      ],
+      "linesTopToBottom": [
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚊"
+      ],
+      "upperTrigram": {
+        "name": "坎",
+        "element": "水",
+        "symbol": "☵",
+        "binaryBottomToTop": "010"
+      },
+      "lowerTrigram": {
+        "name": "震",
+        "element": "雷",
+        "symbol": "☳",
+        "binaryBottomToTop": "100"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 4,
+      "kingWenNumber": 4,
+      "name": "山水蒙",
+      "shortName": "蒙",
+      "unicode": "䷃",
+      "binary": "010001",
+      "binaryBottomToTop": "010001",
+      "binaryTopToBottom": "100010",
+      "linesBottomToTop": [
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚊"
+      ],
+      "linesTopToBottom": [
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚋"
+      ],
+      "upperTrigram": {
+        "name": "艮",
+        "element": "山",
+        "symbol": "☶",
+        "binaryBottomToTop": "001"
+      },
+      "lowerTrigram": {
+        "name": "坎",
+        "element": "水",
+        "symbol": "☵",
+        "binaryBottomToTop": "010"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 5,
+      "kingWenNumber": 5,
+      "name": "水天需",
+      "shortName": "需",
+      "unicode": "䷄",
+      "binary": "111010",
+      "binaryBottomToTop": "111010",
+      "binaryTopToBottom": "010111",
+      "linesBottomToTop": [
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚋"
+      ],
+      "linesTopToBottom": [
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚊"
+      ],
+      "upperTrigram": {
+        "name": "坎",
+        "element": "水",
+        "symbol": "☵",
+        "binaryBottomToTop": "010"
+      },
+      "lowerTrigram": {
+        "name": "乾",
+        "element": "天",
+        "symbol": "☰",
+        "binaryBottomToTop": "111"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 6,
+      "kingWenNumber": 6,
+      "name": "天水讼",
+      "shortName": "讼",
+      "unicode": "䷅",
+      "binary": "010111",
+      "binaryBottomToTop": "010111",
+      "binaryTopToBottom": "111010",
+      "linesBottomToTop": [
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚊"
+      ],
+      "linesTopToBottom": [
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚋"
+      ],
+      "upperTrigram": {
+        "name": "乾",
+        "element": "天",
+        "symbol": "☰",
+        "binaryBottomToTop": "111"
+      },
+      "lowerTrigram": {
+        "name": "坎",
+        "element": "水",
+        "symbol": "☵",
+        "binaryBottomToTop": "010"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 7,
+      "kingWenNumber": 7,
+      "name": "地水师",
+      "shortName": "师",
+      "unicode": "䷆",
+      "binary": "010000",
+      "binaryBottomToTop": "010000",
+      "binaryTopToBottom": "000010",
+      "linesBottomToTop": [
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚋"
+      ],
+      "linesTopToBottom": [
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚋"
+      ],
+      "upperTrigram": {
+        "name": "坤",
+        "element": "地",
+        "symbol": "☷",
+        "binaryBottomToTop": "000"
+      },
+      "lowerTrigram": {
+        "name": "坎",
+        "element": "水",
+        "symbol": "☵",
+        "binaryBottomToTop": "010"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 8,
+      "kingWenNumber": 8,
+      "name": "水地比",
+      "shortName": "比",
+      "unicode": "䷇",
+      "binary": "000010",
+      "binaryBottomToTop": "000010",
+      "binaryTopToBottom": "010000",
+      "linesBottomToTop": [
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚋"
+      ],
+      "linesTopToBottom": [
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚋"
+      ],
+      "upperTrigram": {
+        "name": "坎",
+        "element": "水",
+        "symbol": "☵",
+        "binaryBottomToTop": "010"
+      },
+      "lowerTrigram": {
+        "name": "坤",
+        "element": "地",
+        "symbol": "☷",
+        "binaryBottomToTop": "000"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 9,
+      "kingWenNumber": 9,
+      "name": "风天小畜",
+      "shortName": "小畜",
+      "unicode": "䷈",
+      "binary": "111011",
+      "binaryBottomToTop": "111011",
+      "binaryTopToBottom": "110111",
+      "linesBottomToTop": [
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚊"
+      ],
+      "linesTopToBottom": [
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚊"
+      ],
+      "upperTrigram": {
+        "name": "巽",
+        "element": "风",
+        "symbol": "☴",
+        "binaryBottomToTop": "011"
+      },
+      "lowerTrigram": {
+        "name": "乾",
+        "element": "天",
+        "symbol": "☰",
+        "binaryBottomToTop": "111"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 10,
+      "kingWenNumber": 10,
+      "name": "天泽履",
+      "shortName": "履",
+      "unicode": "䷉",
+      "binary": "110111",
+      "binaryBottomToTop": "110111",
+      "binaryTopToBottom": "111011",
+      "linesBottomToTop": [
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚊"
+      ],
+      "linesTopToBottom": [
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚊"
+      ],
+      "upperTrigram": {
+        "name": "乾",
+        "element": "天",
+        "symbol": "☰",
+        "binaryBottomToTop": "111"
+      },
+      "lowerTrigram": {
+        "name": "兑",
+        "element": "泽",
+        "symbol": "☱",
+        "binaryBottomToTop": "110"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 11,
+      "kingWenNumber": 11,
+      "name": "地天泰",
+      "shortName": "泰",
+      "unicode": "䷊",
+      "binary": "111000",
+      "binaryBottomToTop": "111000",
+      "binaryTopToBottom": "000111",
+      "linesBottomToTop": [
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚋"
+      ],
+      "linesTopToBottom": [
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚊"
+      ],
+      "upperTrigram": {
+        "name": "坤",
+        "element": "地",
+        "symbol": "☷",
+        "binaryBottomToTop": "000"
+      },
+      "lowerTrigram": {
+        "name": "乾",
+        "element": "天",
+        "symbol": "☰",
+        "binaryBottomToTop": "111"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 12,
+      "kingWenNumber": 12,
+      "name": "天地否",
+      "shortName": "否",
+      "unicode": "䷋",
+      "binary": "000111",
+      "binaryBottomToTop": "000111",
+      "binaryTopToBottom": "111000",
+      "linesBottomToTop": [
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚊"
+      ],
+      "linesTopToBottom": [
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚋"
+      ],
+      "upperTrigram": {
+        "name": "乾",
+        "element": "天",
+        "symbol": "☰",
+        "binaryBottomToTop": "111"
+      },
+      "lowerTrigram": {
+        "name": "坤",
+        "element": "地",
+        "symbol": "☷",
+        "binaryBottomToTop": "000"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 13,
+      "kingWenNumber": 13,
+      "name": "天火同人",
+      "shortName": "同人",
+      "unicode": "䷌",
+      "binary": "101111",
+      "binaryBottomToTop": "101111",
+      "binaryTopToBottom": "111101",
+      "linesBottomToTop": [
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚊"
+      ],
+      "linesTopToBottom": [
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚊"
+      ],
+      "upperTrigram": {
+        "name": "乾",
+        "element": "天",
+        "symbol": "☰",
+        "binaryBottomToTop": "111"
+      },
+      "lowerTrigram": {
+        "name": "离",
+        "element": "火",
+        "symbol": "☲",
+        "binaryBottomToTop": "101"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 14,
+      "kingWenNumber": 14,
+      "name": "火天大有",
+      "shortName": "大有",
+      "unicode": "䷍",
+      "binary": "111101",
+      "binaryBottomToTop": "111101",
+      "binaryTopToBottom": "101111",
+      "linesBottomToTop": [
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚊"
+      ],
+      "linesTopToBottom": [
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚊"
+      ],
+      "upperTrigram": {
+        "name": "离",
+        "element": "火",
+        "symbol": "☲",
+        "binaryBottomToTop": "101"
+      },
+      "lowerTrigram": {
+        "name": "乾",
+        "element": "天",
+        "symbol": "☰",
+        "binaryBottomToTop": "111"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 15,
+      "kingWenNumber": 15,
+      "name": "地山谦",
+      "shortName": "谦",
+      "unicode": "䷎",
+      "binary": "001000",
+      "binaryBottomToTop": "001000",
+      "binaryTopToBottom": "000100",
+      "linesBottomToTop": [
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚋"
+      ],
+      "linesTopToBottom": [
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚋"
+      ],
+      "upperTrigram": {
+        "name": "坤",
+        "element": "地",
+        "symbol": "☷",
+        "binaryBottomToTop": "000"
+      },
+      "lowerTrigram": {
+        "name": "艮",
+        "element": "山",
+        "symbol": "☶",
+        "binaryBottomToTop": "001"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 16,
+      "kingWenNumber": 16,
+      "name": "雷地豫",
+      "shortName": "豫",
+      "unicode": "䷏",
+      "binary": "000100",
+      "binaryBottomToTop": "000100",
+      "binaryTopToBottom": "001000",
+      "linesBottomToTop": [
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚋"
+      ],
+      "linesTopToBottom": [
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚋"
+      ],
+      "upperTrigram": {
+        "name": "震",
+        "element": "雷",
+        "symbol": "☳",
+        "binaryBottomToTop": "100"
+      },
+      "lowerTrigram": {
+        "name": "坤",
+        "element": "地",
+        "symbol": "☷",
+        "binaryBottomToTop": "000"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 17,
+      "kingWenNumber": 17,
+      "name": "泽雷随",
+      "shortName": "随",
+      "unicode": "䷐",
+      "binary": "100110",
+      "binaryBottomToTop": "100110",
+      "binaryTopToBottom": "011001",
+      "linesBottomToTop": [
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚋"
+      ],
+      "linesTopToBottom": [
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚊"
+      ],
+      "upperTrigram": {
+        "name": "兑",
+        "element": "泽",
+        "symbol": "☱",
+        "binaryBottomToTop": "110"
+      },
+      "lowerTrigram": {
+        "name": "震",
+        "element": "雷",
+        "symbol": "☳",
+        "binaryBottomToTop": "100"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 18,
+      "kingWenNumber": 18,
+      "name": "山风蛊",
+      "shortName": "蛊",
+      "unicode": "䷑",
+      "binary": "011001",
+      "binaryBottomToTop": "011001",
+      "binaryTopToBottom": "100110",
+      "linesBottomToTop": [
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚊"
+      ],
+      "linesTopToBottom": [
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚋"
+      ],
+      "upperTrigram": {
+        "name": "艮",
+        "element": "山",
+        "symbol": "☶",
+        "binaryBottomToTop": "001"
+      },
+      "lowerTrigram": {
+        "name": "巽",
+        "element": "风",
+        "symbol": "☴",
+        "binaryBottomToTop": "011"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 19,
+      "kingWenNumber": 19,
+      "name": "地泽临",
+      "shortName": "临",
+      "unicode": "䷒",
+      "binary": "110000",
+      "binaryBottomToTop": "110000",
+      "binaryTopToBottom": "000011",
+      "linesBottomToTop": [
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚋"
+      ],
+      "linesTopToBottom": [
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚊"
+      ],
+      "upperTrigram": {
+        "name": "坤",
+        "element": "地",
+        "symbol": "☷",
+        "binaryBottomToTop": "000"
+      },
+      "lowerTrigram": {
+        "name": "兑",
+        "element": "泽",
+        "symbol": "☱",
+        "binaryBottomToTop": "110"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 20,
+      "kingWenNumber": 20,
+      "name": "风地观",
+      "shortName": "观",
+      "unicode": "䷓",
+      "binary": "000011",
+      "binaryBottomToTop": "000011",
+      "binaryTopToBottom": "110000",
+      "linesBottomToTop": [
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚊"
+      ],
+      "linesTopToBottom": [
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚋"
+      ],
+      "upperTrigram": {
+        "name": "巽",
+        "element": "风",
+        "symbol": "☴",
+        "binaryBottomToTop": "011"
+      },
+      "lowerTrigram": {
+        "name": "坤",
+        "element": "地",
+        "symbol": "☷",
+        "binaryBottomToTop": "000"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 21,
+      "kingWenNumber": 21,
+      "name": "火雷噬嗑",
+      "shortName": "噬嗑",
+      "unicode": "䷔",
+      "binary": "100101",
+      "binaryBottomToTop": "100101",
+      "binaryTopToBottom": "101001",
+      "linesBottomToTop": [
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚊"
+      ],
+      "linesTopToBottom": [
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚊"
+      ],
+      "upperTrigram": {
+        "name": "离",
+        "element": "火",
+        "symbol": "☲",
+        "binaryBottomToTop": "101"
+      },
+      "lowerTrigram": {
+        "name": "震",
+        "element": "雷",
+        "symbol": "☳",
+        "binaryBottomToTop": "100"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 22,
+      "kingWenNumber": 22,
+      "name": "山火贲",
+      "shortName": "贲",
+      "unicode": "䷕",
+      "binary": "101001",
+      "binaryBottomToTop": "101001",
+      "binaryTopToBottom": "100101",
+      "linesBottomToTop": [
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚊"
+      ],
+      "linesTopToBottom": [
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚊"
+      ],
+      "upperTrigram": {
+        "name": "艮",
+        "element": "山",
+        "symbol": "☶",
+        "binaryBottomToTop": "001"
+      },
+      "lowerTrigram": {
+        "name": "离",
+        "element": "火",
+        "symbol": "☲",
+        "binaryBottomToTop": "101"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 23,
+      "kingWenNumber": 23,
+      "name": "山地剥",
+      "shortName": "剥",
+      "unicode": "䷖",
+      "binary": "000001",
+      "binaryBottomToTop": "000001",
+      "binaryTopToBottom": "100000",
+      "linesBottomToTop": [
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚊"
+      ],
+      "linesTopToBottom": [
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚋"
+      ],
+      "upperTrigram": {
+        "name": "艮",
+        "element": "山",
+        "symbol": "☶",
+        "binaryBottomToTop": "001"
+      },
+      "lowerTrigram": {
+        "name": "坤",
+        "element": "地",
+        "symbol": "☷",
+        "binaryBottomToTop": "000"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 24,
+      "kingWenNumber": 24,
+      "name": "地雷复",
+      "shortName": "复",
+      "unicode": "䷗",
+      "binary": "100000",
+      "binaryBottomToTop": "100000",
+      "binaryTopToBottom": "000001",
+      "linesBottomToTop": [
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚋"
+      ],
+      "linesTopToBottom": [
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚊"
+      ],
+      "upperTrigram": {
+        "name": "坤",
+        "element": "地",
+        "symbol": "☷",
+        "binaryBottomToTop": "000"
+      },
+      "lowerTrigram": {
+        "name": "震",
+        "element": "雷",
+        "symbol": "☳",
+        "binaryBottomToTop": "100"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 25,
+      "kingWenNumber": 25,
+      "name": "天雷无妄",
+      "shortName": "无妄",
+      "unicode": "䷘",
+      "binary": "100111",
+      "binaryBottomToTop": "100111",
+      "binaryTopToBottom": "111001",
+      "linesBottomToTop": [
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚊"
+      ],
+      "linesTopToBottom": [
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚊"
+      ],
+      "upperTrigram": {
+        "name": "乾",
+        "element": "天",
+        "symbol": "☰",
+        "binaryBottomToTop": "111"
+      },
+      "lowerTrigram": {
+        "name": "震",
+        "element": "雷",
+        "symbol": "☳",
+        "binaryBottomToTop": "100"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 26,
+      "kingWenNumber": 26,
+      "name": "山天大畜",
+      "shortName": "大畜",
+      "unicode": "䷙",
+      "binary": "111001",
+      "binaryBottomToTop": "111001",
+      "binaryTopToBottom": "100111",
+      "linesBottomToTop": [
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚊"
+      ],
+      "linesTopToBottom": [
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚊"
+      ],
+      "upperTrigram": {
+        "name": "艮",
+        "element": "山",
+        "symbol": "☶",
+        "binaryBottomToTop": "001"
+      },
+      "lowerTrigram": {
+        "name": "乾",
+        "element": "天",
+        "symbol": "☰",
+        "binaryBottomToTop": "111"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 27,
+      "kingWenNumber": 27,
+      "name": "山雷颐",
+      "shortName": "颐",
+      "unicode": "䷚",
+      "binary": "100001",
+      "binaryBottomToTop": "100001",
+      "binaryTopToBottom": "100001",
+      "linesBottomToTop": [
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚊"
+      ],
+      "linesTopToBottom": [
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚊"
+      ],
+      "upperTrigram": {
+        "name": "艮",
+        "element": "山",
+        "symbol": "☶",
+        "binaryBottomToTop": "001"
+      },
+      "lowerTrigram": {
+        "name": "震",
+        "element": "雷",
+        "symbol": "☳",
+        "binaryBottomToTop": "100"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 28,
+      "kingWenNumber": 28,
+      "name": "泽风大过",
+      "shortName": "大过",
+      "unicode": "䷛",
+      "binary": "011110",
+      "binaryBottomToTop": "011110",
+      "binaryTopToBottom": "011110",
+      "linesBottomToTop": [
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚋"
+      ],
+      "linesTopToBottom": [
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚋"
+      ],
+      "upperTrigram": {
+        "name": "兑",
+        "element": "泽",
+        "symbol": "☱",
+        "binaryBottomToTop": "110"
+      },
+      "lowerTrigram": {
+        "name": "巽",
+        "element": "风",
+        "symbol": "☴",
+        "binaryBottomToTop": "011"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 29,
+      "kingWenNumber": 29,
+      "name": "坎为水",
+      "shortName": "坎",
+      "unicode": "䷜",
+      "binary": "010010",
+      "binaryBottomToTop": "010010",
+      "binaryTopToBottom": "010010",
+      "linesBottomToTop": [
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚋"
+      ],
+      "linesTopToBottom": [
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚋"
+      ],
+      "upperTrigram": {
+        "name": "坎",
+        "element": "水",
+        "symbol": "☵",
+        "binaryBottomToTop": "010"
+      },
+      "lowerTrigram": {
+        "name": "坎",
+        "element": "水",
+        "symbol": "☵",
+        "binaryBottomToTop": "010"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 30,
+      "kingWenNumber": 30,
+      "name": "离为火",
+      "shortName": "离",
+      "unicode": "䷝",
+      "binary": "101101",
+      "binaryBottomToTop": "101101",
+      "binaryTopToBottom": "101101",
+      "linesBottomToTop": [
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚊"
+      ],
+      "linesTopToBottom": [
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚊"
+      ],
+      "upperTrigram": {
+        "name": "离",
+        "element": "火",
+        "symbol": "☲",
+        "binaryBottomToTop": "101"
+      },
+      "lowerTrigram": {
+        "name": "离",
+        "element": "火",
+        "symbol": "☲",
+        "binaryBottomToTop": "101"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 31,
+      "kingWenNumber": 31,
+      "name": "泽山咸",
+      "shortName": "咸",
+      "unicode": "䷞",
+      "binary": "001110",
+      "binaryBottomToTop": "001110",
+      "binaryTopToBottom": "011100",
+      "linesBottomToTop": [
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚋"
+      ],
+      "linesTopToBottom": [
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚋"
+      ],
+      "upperTrigram": {
+        "name": "兑",
+        "element": "泽",
+        "symbol": "☱",
+        "binaryBottomToTop": "110"
+      },
+      "lowerTrigram": {
+        "name": "艮",
+        "element": "山",
+        "symbol": "☶",
+        "binaryBottomToTop": "001"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 32,
+      "kingWenNumber": 32,
+      "name": "雷风恒",
+      "shortName": "恒",
+      "unicode": "䷟",
+      "binary": "011100",
+      "binaryBottomToTop": "011100",
+      "binaryTopToBottom": "001110",
+      "linesBottomToTop": [
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚋"
+      ],
+      "linesTopToBottom": [
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚋"
+      ],
+      "upperTrigram": {
+        "name": "震",
+        "element": "雷",
+        "symbol": "☳",
+        "binaryBottomToTop": "100"
+      },
+      "lowerTrigram": {
+        "name": "巽",
+        "element": "风",
+        "symbol": "☴",
+        "binaryBottomToTop": "011"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 33,
+      "kingWenNumber": 33,
+      "name": "天山遁",
+      "shortName": "遁",
+      "unicode": "䷠",
+      "binary": "001111",
+      "binaryBottomToTop": "001111",
+      "binaryTopToBottom": "111100",
+      "linesBottomToTop": [
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚊"
+      ],
+      "linesTopToBottom": [
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚋"
+      ],
+      "upperTrigram": {
+        "name": "乾",
+        "element": "天",
+        "symbol": "☰",
+        "binaryBottomToTop": "111"
+      },
+      "lowerTrigram": {
+        "name": "艮",
+        "element": "山",
+        "symbol": "☶",
+        "binaryBottomToTop": "001"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 34,
+      "kingWenNumber": 34,
+      "name": "雷天大壮",
+      "shortName": "大壮",
+      "unicode": "䷡",
+      "binary": "111100",
+      "binaryBottomToTop": "111100",
+      "binaryTopToBottom": "001111",
+      "linesBottomToTop": [
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚋"
+      ],
+      "linesTopToBottom": [
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚊"
+      ],
+      "upperTrigram": {
+        "name": "震",
+        "element": "雷",
+        "symbol": "☳",
+        "binaryBottomToTop": "100"
+      },
+      "lowerTrigram": {
+        "name": "乾",
+        "element": "天",
+        "symbol": "☰",
+        "binaryBottomToTop": "111"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 35,
+      "kingWenNumber": 35,
+      "name": "火地晋",
+      "shortName": "晋",
+      "unicode": "䷢",
+      "binary": "000101",
+      "binaryBottomToTop": "000101",
+      "binaryTopToBottom": "101000",
+      "linesBottomToTop": [
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚊"
+      ],
+      "linesTopToBottom": [
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚋"
+      ],
+      "upperTrigram": {
+        "name": "离",
+        "element": "火",
+        "symbol": "☲",
+        "binaryBottomToTop": "101"
+      },
+      "lowerTrigram": {
+        "name": "坤",
+        "element": "地",
+        "symbol": "☷",
+        "binaryBottomToTop": "000"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 36,
+      "kingWenNumber": 36,
+      "name": "地火明夷",
+      "shortName": "明夷",
+      "unicode": "䷣",
+      "binary": "101000",
+      "binaryBottomToTop": "101000",
+      "binaryTopToBottom": "000101",
+      "linesBottomToTop": [
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚋"
+      ],
+      "linesTopToBottom": [
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚊"
+      ],
+      "upperTrigram": {
+        "name": "坤",
+        "element": "地",
+        "symbol": "☷",
+        "binaryBottomToTop": "000"
+      },
+      "lowerTrigram": {
+        "name": "离",
+        "element": "火",
+        "symbol": "☲",
+        "binaryBottomToTop": "101"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 37,
+      "kingWenNumber": 37,
+      "name": "风火家人",
+      "shortName": "家人",
+      "unicode": "䷤",
+      "binary": "101011",
+      "binaryBottomToTop": "101011",
+      "binaryTopToBottom": "110101",
+      "linesBottomToTop": [
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚊"
+      ],
+      "linesTopToBottom": [
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚊"
+      ],
+      "upperTrigram": {
+        "name": "巽",
+        "element": "风",
+        "symbol": "☴",
+        "binaryBottomToTop": "011"
+      },
+      "lowerTrigram": {
+        "name": "离",
+        "element": "火",
+        "symbol": "☲",
+        "binaryBottomToTop": "101"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 38,
+      "kingWenNumber": 38,
+      "name": "火泽睽",
+      "shortName": "睽",
+      "unicode": "䷥",
+      "binary": "110101",
+      "binaryBottomToTop": "110101",
+      "binaryTopToBottom": "101011",
+      "linesBottomToTop": [
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚊"
+      ],
+      "linesTopToBottom": [
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚊"
+      ],
+      "upperTrigram": {
+        "name": "离",
+        "element": "火",
+        "symbol": "☲",
+        "binaryBottomToTop": "101"
+      },
+      "lowerTrigram": {
+        "name": "兑",
+        "element": "泽",
+        "symbol": "☱",
+        "binaryBottomToTop": "110"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 39,
+      "kingWenNumber": 39,
+      "name": "水山蹇",
+      "shortName": "蹇",
+      "unicode": "䷦",
+      "binary": "001010",
+      "binaryBottomToTop": "001010",
+      "binaryTopToBottom": "010100",
+      "linesBottomToTop": [
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚋"
+      ],
+      "linesTopToBottom": [
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚋"
+      ],
+      "upperTrigram": {
+        "name": "坎",
+        "element": "水",
+        "symbol": "☵",
+        "binaryBottomToTop": "010"
+      },
+      "lowerTrigram": {
+        "name": "艮",
+        "element": "山",
+        "symbol": "☶",
+        "binaryBottomToTop": "001"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 40,
+      "kingWenNumber": 40,
+      "name": "雷水解",
+      "shortName": "解",
+      "unicode": "䷧",
+      "binary": "010100",
+      "binaryBottomToTop": "010100",
+      "binaryTopToBottom": "001010",
+      "linesBottomToTop": [
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚋"
+      ],
+      "linesTopToBottom": [
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚋"
+      ],
+      "upperTrigram": {
+        "name": "震",
+        "element": "雷",
+        "symbol": "☳",
+        "binaryBottomToTop": "100"
+      },
+      "lowerTrigram": {
+        "name": "坎",
+        "element": "水",
+        "symbol": "☵",
+        "binaryBottomToTop": "010"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 41,
+      "kingWenNumber": 41,
+      "name": "山泽损",
+      "shortName": "损",
+      "unicode": "䷨",
+      "binary": "110001",
+      "binaryBottomToTop": "110001",
+      "binaryTopToBottom": "100011",
+      "linesBottomToTop": [
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚊"
+      ],
+      "linesTopToBottom": [
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚊"
+      ],
+      "upperTrigram": {
+        "name": "艮",
+        "element": "山",
+        "symbol": "☶",
+        "binaryBottomToTop": "001"
+      },
+      "lowerTrigram": {
+        "name": "兑",
+        "element": "泽",
+        "symbol": "☱",
+        "binaryBottomToTop": "110"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 42,
+      "kingWenNumber": 42,
+      "name": "风雷益",
+      "shortName": "益",
+      "unicode": "䷩",
+      "binary": "100011",
+      "binaryBottomToTop": "100011",
+      "binaryTopToBottom": "110001",
+      "linesBottomToTop": [
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚊"
+      ],
+      "linesTopToBottom": [
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚊"
+      ],
+      "upperTrigram": {
+        "name": "巽",
+        "element": "风",
+        "symbol": "☴",
+        "binaryBottomToTop": "011"
+      },
+      "lowerTrigram": {
+        "name": "震",
+        "element": "雷",
+        "symbol": "☳",
+        "binaryBottomToTop": "100"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 43,
+      "kingWenNumber": 43,
+      "name": "泽天夬",
+      "shortName": "夬",
+      "unicode": "䷪",
+      "binary": "111110",
+      "binaryBottomToTop": "111110",
+      "binaryTopToBottom": "011111",
+      "linesBottomToTop": [
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚋"
+      ],
+      "linesTopToBottom": [
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚊"
+      ],
+      "upperTrigram": {
+        "name": "兑",
+        "element": "泽",
+        "symbol": "☱",
+        "binaryBottomToTop": "110"
+      },
+      "lowerTrigram": {
+        "name": "乾",
+        "element": "天",
+        "symbol": "☰",
+        "binaryBottomToTop": "111"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 44,
+      "kingWenNumber": 44,
+      "name": "天风姤",
+      "shortName": "姤",
+      "unicode": "䷫",
+      "binary": "011111",
+      "binaryBottomToTop": "011111",
+      "binaryTopToBottom": "111110",
+      "linesBottomToTop": [
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚊"
+      ],
+      "linesTopToBottom": [
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚋"
+      ],
+      "upperTrigram": {
+        "name": "乾",
+        "element": "天",
+        "symbol": "☰",
+        "binaryBottomToTop": "111"
+      },
+      "lowerTrigram": {
+        "name": "巽",
+        "element": "风",
+        "symbol": "☴",
+        "binaryBottomToTop": "011"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 45,
+      "kingWenNumber": 45,
+      "name": "泽地萃",
+      "shortName": "萃",
+      "unicode": "䷬",
+      "binary": "000110",
+      "binaryBottomToTop": "000110",
+      "binaryTopToBottom": "011000",
+      "linesBottomToTop": [
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚋"
+      ],
+      "linesTopToBottom": [
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚋"
+      ],
+      "upperTrigram": {
+        "name": "兑",
+        "element": "泽",
+        "symbol": "☱",
+        "binaryBottomToTop": "110"
+      },
+      "lowerTrigram": {
+        "name": "坤",
+        "element": "地",
+        "symbol": "☷",
+        "binaryBottomToTop": "000"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 46,
+      "kingWenNumber": 46,
+      "name": "地风升",
+      "shortName": "升",
+      "unicode": "䷭",
+      "binary": "011000",
+      "binaryBottomToTop": "011000",
+      "binaryTopToBottom": "000110",
+      "linesBottomToTop": [
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚋"
+      ],
+      "linesTopToBottom": [
+        "⚋",
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚋"
+      ],
+      "upperTrigram": {
+        "name": "坤",
+        "element": "地",
+        "symbol": "☷",
+        "binaryBottomToTop": "000"
+      },
+      "lowerTrigram": {
+        "name": "巽",
+        "element": "风",
+        "symbol": "☴",
+        "binaryBottomToTop": "011"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 47,
+      "kingWenNumber": 47,
+      "name": "泽水困",
+      "shortName": "困",
+      "unicode": "䷮",
+      "binary": "010110",
+      "binaryBottomToTop": "010110",
+      "binaryTopToBottom": "011010",
+      "linesBottomToTop": [
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚋"
+      ],
+      "linesTopToBottom": [
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚋"
+      ],
+      "upperTrigram": {
+        "name": "兑",
+        "element": "泽",
+        "symbol": "☱",
+        "binaryBottomToTop": "110"
+      },
+      "lowerTrigram": {
+        "name": "坎",
+        "element": "水",
+        "symbol": "☵",
+        "binaryBottomToTop": "010"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 48,
+      "kingWenNumber": 48,
+      "name": "水风井",
+      "shortName": "井",
+      "unicode": "䷯",
+      "binary": "011010",
+      "binaryBottomToTop": "011010",
+      "binaryTopToBottom": "010110",
+      "linesBottomToTop": [
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚋"
+      ],
+      "linesTopToBottom": [
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚋"
+      ],
+      "upperTrigram": {
+        "name": "坎",
+        "element": "水",
+        "symbol": "☵",
+        "binaryBottomToTop": "010"
+      },
+      "lowerTrigram": {
+        "name": "巽",
+        "element": "风",
+        "symbol": "☴",
+        "binaryBottomToTop": "011"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 49,
+      "kingWenNumber": 49,
+      "name": "泽火革",
+      "shortName": "革",
+      "unicode": "䷰",
+      "binary": "101110",
+      "binaryBottomToTop": "101110",
+      "binaryTopToBottom": "011101",
+      "linesBottomToTop": [
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚋"
+      ],
+      "linesTopToBottom": [
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚊"
+      ],
+      "upperTrigram": {
+        "name": "兑",
+        "element": "泽",
+        "symbol": "☱",
+        "binaryBottomToTop": "110"
+      },
+      "lowerTrigram": {
+        "name": "离",
+        "element": "火",
+        "symbol": "☲",
+        "binaryBottomToTop": "101"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 50,
+      "kingWenNumber": 50,
+      "name": "火风鼎",
+      "shortName": "鼎",
+      "unicode": "䷱",
+      "binary": "011101",
+      "binaryBottomToTop": "011101",
+      "binaryTopToBottom": "101110",
+      "linesBottomToTop": [
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚊"
+      ],
+      "linesTopToBottom": [
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚊",
+        "⚋"
+      ],
+      "upperTrigram": {
+        "name": "离",
+        "element": "火",
+        "symbol": "☲",
+        "binaryBottomToTop": "101"
+      },
+      "lowerTrigram": {
+        "name": "巽",
+        "element": "风",
+        "symbol": "☴",
+        "binaryBottomToTop": "011"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 51,
+      "kingWenNumber": 51,
+      "name": "震为雷",
+      "shortName": "震",
+      "unicode": "䷲",
+      "binary": "100100",
+      "binaryBottomToTop": "100100",
+      "binaryTopToBottom": "001001",
+      "linesBottomToTop": [
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚋"
+      ],
+      "linesTopToBottom": [
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚊"
+      ],
+      "upperTrigram": {
+        "name": "震",
+        "element": "雷",
+        "symbol": "☳",
+        "binaryBottomToTop": "100"
+      },
+      "lowerTrigram": {
+        "name": "震",
+        "element": "雷",
+        "symbol": "☳",
+        "binaryBottomToTop": "100"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 52,
+      "kingWenNumber": 52,
+      "name": "艮为山",
+      "shortName": "艮",
+      "unicode": "䷳",
+      "binary": "001001",
+      "binaryBottomToTop": "001001",
+      "binaryTopToBottom": "100100",
+      "linesBottomToTop": [
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚊"
+      ],
+      "linesTopToBottom": [
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚋"
+      ],
+      "upperTrigram": {
+        "name": "艮",
+        "element": "山",
+        "symbol": "☶",
+        "binaryBottomToTop": "001"
+      },
+      "lowerTrigram": {
+        "name": "艮",
+        "element": "山",
+        "symbol": "☶",
+        "binaryBottomToTop": "001"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 53,
+      "kingWenNumber": 53,
+      "name": "风山渐",
+      "shortName": "渐",
+      "unicode": "䷴",
+      "binary": "001011",
+      "binaryBottomToTop": "001011",
+      "binaryTopToBottom": "110100",
+      "linesBottomToTop": [
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚊"
+      ],
+      "linesTopToBottom": [
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚋"
+      ],
+      "upperTrigram": {
+        "name": "巽",
+        "element": "风",
+        "symbol": "☴",
+        "binaryBottomToTop": "011"
+      },
+      "lowerTrigram": {
+        "name": "艮",
+        "element": "山",
+        "symbol": "☶",
+        "binaryBottomToTop": "001"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 54,
+      "kingWenNumber": 54,
+      "name": "雷泽归妹",
+      "shortName": "归妹",
+      "unicode": "䷵",
+      "binary": "110100",
+      "binaryBottomToTop": "110100",
+      "binaryTopToBottom": "001011",
+      "linesBottomToTop": [
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚋"
+      ],
+      "linesTopToBottom": [
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚊"
+      ],
+      "upperTrigram": {
+        "name": "震",
+        "element": "雷",
+        "symbol": "☳",
+        "binaryBottomToTop": "100"
+      },
+      "lowerTrigram": {
+        "name": "兑",
+        "element": "泽",
+        "symbol": "☱",
+        "binaryBottomToTop": "110"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 55,
+      "kingWenNumber": 55,
+      "name": "雷火丰",
+      "shortName": "丰",
+      "unicode": "䷶",
+      "binary": "101100",
+      "binaryBottomToTop": "101100",
+      "binaryTopToBottom": "001101",
+      "linesBottomToTop": [
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚋"
+      ],
+      "linesTopToBottom": [
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚊"
+      ],
+      "upperTrigram": {
+        "name": "震",
+        "element": "雷",
+        "symbol": "☳",
+        "binaryBottomToTop": "100"
+      },
+      "lowerTrigram": {
+        "name": "离",
+        "element": "火",
+        "symbol": "☲",
+        "binaryBottomToTop": "101"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 56,
+      "kingWenNumber": 56,
+      "name": "火山旅",
+      "shortName": "旅",
+      "unicode": "䷷",
+      "binary": "001101",
+      "binaryBottomToTop": "001101",
+      "binaryTopToBottom": "101100",
+      "linesBottomToTop": [
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚊"
+      ],
+      "linesTopToBottom": [
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚋"
+      ],
+      "upperTrigram": {
+        "name": "离",
+        "element": "火",
+        "symbol": "☲",
+        "binaryBottomToTop": "101"
+      },
+      "lowerTrigram": {
+        "name": "艮",
+        "element": "山",
+        "symbol": "☶",
+        "binaryBottomToTop": "001"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 57,
+      "kingWenNumber": 57,
+      "name": "巽为风",
+      "shortName": "巽",
+      "unicode": "䷸",
+      "binary": "011011",
+      "binaryBottomToTop": "011011",
+      "binaryTopToBottom": "110110",
+      "linesBottomToTop": [
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚊"
+      ],
+      "linesTopToBottom": [
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚋"
+      ],
+      "upperTrigram": {
+        "name": "巽",
+        "element": "风",
+        "symbol": "☴",
+        "binaryBottomToTop": "011"
+      },
+      "lowerTrigram": {
+        "name": "巽",
+        "element": "风",
+        "symbol": "☴",
+        "binaryBottomToTop": "011"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 58,
+      "kingWenNumber": 58,
+      "name": "兑为泽",
+      "shortName": "兑",
+      "unicode": "䷹",
+      "binary": "110110",
+      "binaryBottomToTop": "110110",
+      "binaryTopToBottom": "011011",
+      "linesBottomToTop": [
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚋"
+      ],
+      "linesTopToBottom": [
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚊"
+      ],
+      "upperTrigram": {
+        "name": "兑",
+        "element": "泽",
+        "symbol": "☱",
+        "binaryBottomToTop": "110"
+      },
+      "lowerTrigram": {
+        "name": "兑",
+        "element": "泽",
+        "symbol": "☱",
+        "binaryBottomToTop": "110"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 59,
+      "kingWenNumber": 59,
+      "name": "风水涣",
+      "shortName": "涣",
+      "unicode": "䷺",
+      "binary": "010011",
+      "binaryBottomToTop": "010011",
+      "binaryTopToBottom": "110010",
+      "linesBottomToTop": [
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚊"
+      ],
+      "linesTopToBottom": [
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚋"
+      ],
+      "upperTrigram": {
+        "name": "巽",
+        "element": "风",
+        "symbol": "☴",
+        "binaryBottomToTop": "011"
+      },
+      "lowerTrigram": {
+        "name": "坎",
+        "element": "水",
+        "symbol": "☵",
+        "binaryBottomToTop": "010"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 60,
+      "kingWenNumber": 60,
+      "name": "水泽节",
+      "shortName": "节",
+      "unicode": "䷻",
+      "binary": "110010",
+      "binaryBottomToTop": "110010",
+      "binaryTopToBottom": "010011",
+      "linesBottomToTop": [
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚋"
+      ],
+      "linesTopToBottom": [
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚊"
+      ],
+      "upperTrigram": {
+        "name": "坎",
+        "element": "水",
+        "symbol": "☵",
+        "binaryBottomToTop": "010"
+      },
+      "lowerTrigram": {
+        "name": "兑",
+        "element": "泽",
+        "symbol": "☱",
+        "binaryBottomToTop": "110"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 61,
+      "kingWenNumber": 61,
+      "name": "风泽中孚",
+      "shortName": "中孚",
+      "unicode": "䷼",
+      "binary": "110011",
+      "binaryBottomToTop": "110011",
+      "binaryTopToBottom": "110011",
+      "linesBottomToTop": [
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚊"
+      ],
+      "linesTopToBottom": [
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚊"
+      ],
+      "upperTrigram": {
+        "name": "巽",
+        "element": "风",
+        "symbol": "☴",
+        "binaryBottomToTop": "011"
+      },
+      "lowerTrigram": {
+        "name": "兑",
+        "element": "泽",
+        "symbol": "☱",
+        "binaryBottomToTop": "110"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 62,
+      "kingWenNumber": 62,
+      "name": "雷山小过",
+      "shortName": "小过",
+      "unicode": "䷽",
+      "binary": "001100",
+      "binaryBottomToTop": "001100",
+      "binaryTopToBottom": "001100",
+      "linesBottomToTop": [
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚋"
+      ],
+      "linesTopToBottom": [
+        "⚋",
+        "⚋",
+        "⚊",
+        "⚊",
+        "⚋",
+        "⚋"
+      ],
+      "upperTrigram": {
+        "name": "震",
+        "element": "雷",
+        "symbol": "☳",
+        "binaryBottomToTop": "100"
+      },
+      "lowerTrigram": {
+        "name": "艮",
+        "element": "山",
+        "symbol": "☶",
+        "binaryBottomToTop": "001"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 63,
+      "kingWenNumber": 63,
+      "name": "水火既济",
+      "shortName": "既济",
+      "unicode": "䷾",
+      "binary": "101010",
+      "binaryBottomToTop": "101010",
+      "binaryTopToBottom": "010101",
+      "linesBottomToTop": [
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚋"
+      ],
+      "linesTopToBottom": [
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚊"
+      ],
+      "upperTrigram": {
+        "name": "坎",
+        "element": "水",
+        "symbol": "☵",
+        "binaryBottomToTop": "010"
+      },
+      "lowerTrigram": {
+        "name": "离",
+        "element": "火",
+        "symbol": "☲",
+        "binaryBottomToTop": "101"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    },
+    {
+      "id": 64,
+      "kingWenNumber": 64,
+      "name": "火水未济",
+      "shortName": "未济",
+      "unicode": "䷿",
+      "binary": "010101",
+      "binaryBottomToTop": "010101",
+      "binaryTopToBottom": "101010",
+      "linesBottomToTop": [
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚊"
+      ],
+      "linesTopToBottom": [
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚋",
+        "⚊",
+        "⚋"
+      ],
+      "upperTrigram": {
+        "name": "离",
+        "element": "火",
+        "symbol": "☲",
+        "binaryBottomToTop": "101"
+      },
+      "lowerTrigram": {
+        "name": "坎",
+        "element": "水",
+        "symbol": "☵",
+        "binaryBottomToTop": "010"
+      },
+      "renderHint": "linesTopToBottom 用于界面从上到下绘制；binary/binaryBottomToTop 用于计算逻辑，顺序为初爻到上爻。"
+    }
+  ]
+}

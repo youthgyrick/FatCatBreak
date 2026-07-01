@@ -15,8 +15,8 @@
 
 ## 系统要求
 
-- macOS 10.15 Catalina 或更高版本
-- 无需 Xcode、Command Line Tools 或其他开发工具
+- macOS 13 Ventura 或更高版本
+- 本地构建需要 Swift toolchain（Command Line Tools 或 Xcode）
 
 
 ## Todo List 与系统设置
@@ -34,22 +34,11 @@ Swift/AppKit 主应用启动后会打开 `FatCatBreak` 主窗口，默认进入 
 open dist/FatCatBreak.app
 ```
 
-构建脚本通过 macOS 自带的 `/usr/bin/osacompile` 把 AppleScriptObjC 脚本保存为正规的 applet。运行时使用系统 AppKit 和 WebKit，不调用 `clang`、Swift、`xcrun`、SDK 或 `xctest`，因此不受本机 Command Line Tools 版本混装影响。
+构建脚本会编译 Swift/AppKit 主应用，并打包为正规的 `.app`。打开后默认进入 **Todo** Tab，可切换到 **System Settings** 管理休息提醒。
 
 第一次打开未签名的本地构建时，如果 macOS 阻止启动，可在 Finder 中右键应用并选择“打开”。正式分发时应使用 Apple Developer 证书签名并公证。
 
-如果执行 `open` 后没有出现窗口，请运行：
-
-```bash
-./scripts/run_debug.sh
-cat ~/Library/Logs/FatCatBreak.log
-```
-
-调试脚本会在前台显示 AppleScriptObjC 错误；应用本身也会把启动和异常信息写入日志。
-
-当前发布入口不再使用 JXA 的 Objective-C Bridge，因此不会触发旧版 macOS 在解析 `CGRect`/`NSScreen.frame` 时出现的 `NSGetSizeAndAlignment` 崩溃。AppleScriptObjC 调用也已拆成逐步变量，避免旧版 AppleScript 解析器无法处理 `object()’s method()` 链式语法；内容视图尺寸使用 `frame()` 获取，避免旧版解析器把 `bounds` 识别成 AppleScript 内置属性并在 `bounds()` 处报 `-2741`。 NSApplication 实例使用 `breakApplication` 保存，而不使用 `app`，因为部分旧版解析器会把 `app` 规范化成只读的 `application` 术语并报 `-10003`。
-
-打包脚本兼容不同 macOS 版本生成的 applet：如果 `Info.plist` 缺少 `CFBundleIdentifier` 等字段，会自动创建，而不是因 `PlistBuddy Set` 失败而中止。
+如果执行 `open` 后没有出现窗口，请先确认 Swift toolchain 可用，并运行 `swift build` 查看编译错误。
 
 ## 开发
 
@@ -59,4 +48,4 @@ swift run FatCatBreak
 swift test
 ```
 
-`scripts/build_app.sh` 打包的是 `Native/main.applescript` 中的免编译版本。Swift Package 仅保留给拥有现代 Xcode 的开发者进行源码开发与倒计时单元测试；普通用户构建和运行应用不需要 Swift。两个入口的默认休息时长均为 20 秒。
+`scripts/build_app.sh` 打包的是 Swift/AppKit 主应用；`Native/main.applescript` 保留为旧版 AppleScriptObjC 休息遮罩参考实现。默认休息时长为 20 秒。

@@ -2,3 +2,9 @@
 dist/
 .DS_Store
 .swiftpm/
+outputs/*
+!outputs/64gua_yaoci_images/
+!outputs/64gua_yaoci_images/**
+!outputs/64gua_detail_images/
+!outputs/64gua_detail_images/**
+outputs/**/.DS_Store
